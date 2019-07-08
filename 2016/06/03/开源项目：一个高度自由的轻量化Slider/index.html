@@ -1,0 +1,809 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="Android,开源项目,">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1">
+
+
+
+
+
+
+<meta name="description" content="开源库特点：使用自己项目中的ImageLoader,而不是被迫使用库中的图片加载器；库中内置几款常用的指示器，也可以创建自己想要的指示器；丰富多彩的转场动画，亦可以发挥你的创意创造新的特效；可以为每一页建立动画效果。">
+<meta name="keywords" content="Android,开源项目">
+<meta property="og:type" content="article">
+<meta property="og:title" content="开源项目：一个高度自由的轻量化Slider">
+<meta property="og:url" content="http://www.cpacm.net/2016/06/03/开源项目：一个高度自由的轻量化Slider/index.html">
+<meta property="og:site_name" content="cpacm">
+<meta property="og:description" content="开源库特点：使用自己项目中的ImageLoader,而不是被迫使用库中的图片加载器；库中内置几款常用的指示器，也可以创建自己想要的指示器；丰富多彩的转场动画，亦可以发挥你的创意创造新的特效；可以为每一页建立动画效果。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://raw.githubusercontent.com/cpacm/SimpleSlider/develop/pic/simpleslider_indicator.gif">
+<meta property="og:image" content="https://raw.githubusercontent.com/cpacm/SimpleSlider/develop/pic/simpleslider_transform.gif">
+<meta property="og:image" content="https://raw.githubusercontent.com/cpacm/SimpleSlider/develop/pic/simpleslider_animation.gif">
+<meta property="og:updated_time" content="2016-06-02T17:03:23.824Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="开源项目：一个高度自由的轻量化Slider">
+<meta name="twitter:description" content="开源库特点：使用自己项目中的ImageLoader,而不是被迫使用库中的图片加载器；库中内置几款常用的指示器，也可以创建自己想要的指示器；丰富多彩的转场动画，亦可以发挥你的创意创造新的特效；可以为每一页建立动画效果。">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/cpacm/SimpleSlider/develop/pic/simpleslider_indicator.gif">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> 开源项目：一个高度自由的轻量化Slider | cpacm </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?400b16383d4e24e7e0c1604aa14354a4";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">cpacm</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">动漫中毒者，技术宅</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                开源项目：一个高度自由的轻量化Slider
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-06-03T00:50:16+08:00" content="2016-06-03">
+              2016-06-03
+            </time>
+          </span>
+
+          
+            <span class="post-category">
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/06/03/开源项目：一个高度自由的轻量化Slider/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/06/03/开源项目：一个高度自由的轻量化Slider/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/06/03/开源项目：一个高度自由的轻量化Slider/" class="leancloud_visitors" data-flag-title="开源项目：一个高度自由的轻量化Slider">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>这是一款我刚写的开源库，起初写这个是因为我想要一个可以高度自定义化的轮播器，它包括了一下几个特点：  </p>
+<blockquote>
+<p>使用自己项目中的ImageLoader,而不是被迫使用库中的图片加载器；<br>库中内置几款常用的指示器，也可以创建自己想要的指示器；<br>丰富多彩的转场动画，亦可以发挥你的创意创造新的特效；<br>可以为每一页建立动画效果。</p>
+</blockquote>
+<p><a href="https://github.com/cpacm/SimpleSlider" target="_blank" rel="noopener">Github地址</a></p>
+<h3 id="关于无限轮播"><a href="#关于无限轮播" class="headerlink" title="关于无限轮播"></a>关于无限轮播</h3><p>一般的ViewPager播放到最后一个位置时，若要返回到第一个位置则必须从右向左，作为Banner时这是不自然的过渡效果。<br>我们知道ViewPager显示的个数是由PagerAdaper的<code>getCount()</code>方法决定的，既然如此那我们可以给它赋予一个极大的值使ViewPager不断向右轮播，这也是整个无限轮播的核心思想。  </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">InfinitePagerAdapter</span> <span class="keyword">extends</span> <span class="title">PagerAdapter</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String TAG = <span class="string">"InfinitePagerAdapter"</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">boolean</span> DEBUG = <span class="keyword">false</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> BaseSliderAdapter adapter;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">InfinitePagerAdapter</span><span class="params">(BaseSliderAdapter adapter)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.adapter = adapter;</span><br><span class="line">        adapter.registerDataSetObserver(<span class="keyword">new</span> DataSetObserver() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onChanged</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                notifyDataSetChanged();</span><br><span class="line">                <span class="keyword">super</span>.onChanged();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> BaseSliderAdapter <span class="title">getRealAdapter</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.adapter;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> CharSequence <span class="title">getPageTitle</span><span class="params">(<span class="keyword">int</span> position)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> adapter.getPageTitle(position % getRealCount());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getCount</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">// warning: scrolling to very high values (1,000,000+) results in</span></span><br><span class="line">        <span class="comment">// strange drawing behaviour</span></span><br><span class="line">        <span class="keyword">if</span> (getRealCount() == <span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">if</span> (getRealCount() == <span class="number">1</span>) <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">return</span> Integer.MAX_VALUE;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> the &#123;<span class="doctag">@link</span> #getCount()&#125; result of the wrapped adapter</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getRealCount</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> adapter.getCount();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> BaseSliderView <span class="title">getSliderView</span><span class="params">(<span class="keyword">int</span> position)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> adapter.getSliderView(position % getRealCount());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">instantiateItem</span><span class="params">(ViewGroup container, <span class="keyword">int</span> position)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (getRealCount() == <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> virtualPosition = position % getRealCount();</span><br><span class="line">        debug(<span class="string">"instantiateItem: real position: "</span> + position);</span><br><span class="line">        debug(<span class="string">"instantiateItem: virtual position: "</span> + virtualPosition);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// only expose virtual position to the inner adapter</span></span><br><span class="line">        <span class="keyword">return</span> adapter.instantiateItem(container, virtualPosition);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">destroyItem</span><span class="params">(ViewGroup container, <span class="keyword">int</span> position, Object object)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (getRealCount() == <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> virtualPosition = position % getRealCount();</span><br><span class="line">        debug(<span class="string">"destroyItem: real position: "</span> + position);</span><br><span class="line">        debug(<span class="string">"destroyItem: virtual position: "</span> + virtualPosition);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// only expose virtual position to the inner adapter</span></span><br><span class="line">        adapter.destroyItem(container, virtualPosition, object);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">     * Delegate rest of methods directly to the inner adapter.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">finishUpdate</span><span class="params">(ViewGroup container)</span> </span>&#123;</span><br><span class="line">        adapter.finishUpdate(container);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isViewFromObject</span><span class="params">(View view, Object object)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> adapter.isViewFromObject(view, object);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">restoreState</span><span class="params">(Parcelable bundle, ClassLoader classLoader)</span> </span>&#123;</span><br><span class="line">        adapter.restoreState(bundle, classLoader);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Parcelable <span class="title">saveState</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> adapter.saveState();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">startUpdate</span><span class="params">(ViewGroup container)</span> </span>&#123;</span><br><span class="line">        adapter.startUpdate(container);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">     * End delegation</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">debug</span><span class="params">(String message)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (DEBUG) &#123;</span><br><span class="line">            Log.d(TAG, message);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到在代码中还存在着 <code>BaseSliderAdapter</code> 另一个 PagerAdapter ，这是一个正常的PagerAdapter，它既是数据的真正载体同时也起着维护viewpager真正个数的作用。</p>
+<p>但用这个方法实现的无限轮播存在着一个很大的缺陷，在 page 页少于3个的情况下会出现问题，这是由于ViewPager本身的机制导致的。<br>简单来说，ViewPager在显示的时候会同时存在3个page页，当前显示页，当前显示的前一页，当前显示的后一页。当我们轮播到下一页时，原来的前一页会被回收，原来的当前页变成前一页，原来的后一页变成当前页，同时会加载出新的一页作为后一页。<br>而在无限轮播小于等于3页时，由于前一页可能没有被回收就被当做新的一页加载到后一页中，这就导致了view重复被ViewGroup添加，而在Android中View只能被允许拥有一个ParentView,这里就出现了问题。<br>所以在page页少于等于3页的时候还是要使用基础的 PagerAdapter。</p>
+<h3 id="关于指示器"><a href="#关于指示器" class="headerlink" title="关于指示器"></a>关于指示器</h3><p>指示器可以通过继承 <code>ViewPager.OnPageChangeListener</code>与ViewPager保持联动，其监听器包括以下方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onPageScrolled</span><span class="params">(<span class="keyword">int</span> position, <span class="keyword">float</span> positionOffset, <span class="keyword">int</span> positionOffsetPixels)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 滑动时的参数变化</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onPageSelected</span><span class="params">(<span class="keyword">int</span> position)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 滑动到第几页</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onPageScrollStateChanged</span><span class="params">(<span class="keyword">int</span> state)</span> </span>&#123;</span><br><span class="line">   <span class="comment">// 滑动时的状态变化</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>剩下的就是看你怎么定义指示器的界面，附上指示器演示图和一个自定义的指示器代码<br><img src="https://raw.githubusercontent.com/cpacm/SimpleSlider/develop/pic/simpleslider_indicator.gif" alt="indicator"></p>
+<h3 id="关于转场动画"><a href="#关于转场动画" class="headerlink" title="关于转场动画"></a>关于转场动画</h3><p>ViewPager有个方法叫做<code>setPageTransformer(boolean reverseDrawingOrder, PageTransformer transformer)</code>用于设置ViewPager切换时的动画效果<br>但注意这只能在3.0及其以后使用。因为View的动画使用的是属性动画，而属性动画是3.0才推出。当然这个问题可以克服，首先先使用<code>nineoldandroids</code>让动画在3.0之前也能跑起来，然后再去修改ViewPager的源码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setPageTransformer</span><span class="params">(<span class="keyword">boolean</span> reverseDrawingOrder, PageTransformer transformer)</span> </span>&#123;  </span><br><span class="line">    <span class="keyword">if</span> (Build.VERSION.SDK_INT &gt;= <span class="number">11</span>) &#123;  </span><br><span class="line">        <span class="keyword">final</span> <span class="keyword">boolean</span> hasTransformer = transformer != <span class="keyword">null</span>;  </span><br><span class="line">        <span class="keyword">final</span> <span class="keyword">boolean</span> needsPopulate = hasTransformer != (mPageTransformer != <span class="keyword">null</span>);  </span><br><span class="line">        mPageTransformer = transformer;  </span><br><span class="line">        setChildrenDrawingOrderEnabledCompat(hasTransformer);  </span><br><span class="line">        <span class="keyword">if</span> (hasTransformer) &#123;  </span><br><span class="line">            mDrawingOrder = reverseDrawingOrder ? DRAW_ORDER_REVERSE : DRAW_ORDER_FORWARD;  </span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;  </span><br><span class="line">            mDrawingOrder = DRAW_ORDER_DEFAULT;  </span><br><span class="line">        &#125;  </span><br><span class="line">        <span class="keyword">if</span> (needsPopulate) populate();  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>去除<code>if (Build.VERSION.SDK_INT &gt;= 11)</code>这个if判断就行了。<br>所有的PageTransformer都要继承<code>ViewPager.PageTransformer</code>接口，其中包含的方法只有一个</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">transformPage</span><span class="params">(View view, <span class="keyword">float</span> position)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>其中position反映的是view的位置变化。<br>假设现在ViewPager在A页现在滑出B页，则:<br>A页的position变化就是( 0, -1]<br>B页的position变化就是[ 1 , 0 ]<br>根据这个position就可以做出多样的转场变化了。<br><img src="https://raw.githubusercontent.com/cpacm/SimpleSlider/develop/pic/simpleslider_transform.gif" alt="Transform"></p>
+<h3 id="关于pager动画"><a href="#关于pager动画" class="headerlink" title="关于pager动画"></a>关于pager动画</h3><p>同样要利用 <code>ViewPager.OnPageChangeListener</code> 监听ViewPager的变化以实现每个界面的变化。<br>Animation接口</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">OnAnimationListener</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">onNextAnimationStart</span><span class="params">(BaseSliderView slider)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">onNextAnimationEnd</span><span class="params">(BaseSliderView slider)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">onPreAnimationStart</span><span class="params">(BaseSliderView slider)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">onPreAnimationEnd</span><span class="params">(BaseSliderView slider)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>监听变化</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * A &#123;<span class="doctag">@link</span> ViewPager&#125; that allows define custom animation</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AnimationViewPager</span> <span class="keyword">extends</span> <span class="title">ViewPager</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> position = <span class="number">0</span>, prePositon = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">private</span> OnAnimationListener animationListener;</span><br><span class="line">    <span class="keyword">private</span> BaseSliderView slider, preSlider;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">boolean</span> animating = <span class="keyword">false</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">AnimationViewPager</span><span class="params">(Context context)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(context);</span><br><span class="line">        initViewPager();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">AnimationViewPager</span><span class="params">(Context context, AttributeSet attrs)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(context, attrs);</span><br><span class="line">        initViewPager();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">initViewPager</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        addOnPageChangeListener(<span class="keyword">new</span> OnPageChangeListener() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onPageScrolled</span><span class="params">(<span class="keyword">int</span> position, <span class="keyword">float</span> positionOffset, <span class="keyword">int</span> positionOffsetPixels)</span> </span>&#123;</span><br><span class="line">                <span class="keyword">if</span> (position == <span class="number">0</span> &amp;&amp; positionOffset == <span class="number">0</span>) &#123;</span><br><span class="line">                    animateSliderEnd(position);</span><br><span class="line">                    <span class="keyword">if</span> (slider != <span class="keyword">null</span>)</span><br><span class="line">                        animationListener.onNextAnimationEnd(slider);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onPageSelected</span><span class="params">(<span class="keyword">int</span> position)</span> </span>&#123;</span><br><span class="line">                prePositon = AnimationViewPager.<span class="keyword">this</span>.position;</span><br><span class="line">                AnimationViewPager.<span class="keyword">this</span>.position = position;</span><br><span class="line">                <span class="keyword">if</span> (prePositon &gt; position)</span><br><span class="line">                    animateSliderStart(position, position + <span class="number">1</span>);</span><br><span class="line">                <span class="keyword">if</span> (prePositon &lt; position)</span><br><span class="line">                    animateSliderStart(position, position - <span class="number">1</span>);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onPageScrollStateChanged</span><span class="params">(<span class="keyword">int</span> state)</span> </span>&#123;</span><br><span class="line">                <span class="keyword">if</span> (state == SCROLL_STATE_IDLE) &#123;</span><br><span class="line">                    animateSliderEnd(position);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">animateSliderStart</span><span class="params">(<span class="keyword">int</span> position, <span class="keyword">int</span> prePositon)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (animationListener == <span class="keyword">null</span>) <span class="keyword">return</span>;</span><br><span class="line">        BaseSliderView slider = <span class="keyword">null</span>, preSlider = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">if</span> (getAdapter() <span class="keyword">instanceof</span> InfinitePagerAdapter) &#123;</span><br><span class="line">            InfinitePagerAdapter pagerAdapter = (InfinitePagerAdapter) getAdapter();</span><br><span class="line">            slider = pagerAdapter.getSliderView(position);</span><br><span class="line">            preSlider = pagerAdapter.getSliderView(prePositon);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (getAdapter() <span class="keyword">instanceof</span> BaseSliderAdapter) &#123;</span><br><span class="line">            BaseSliderAdapter sliderAdapter = (BaseSliderAdapter) getAdapter();</span><br><span class="line">            slider = sliderAdapter.getSliderView(position);</span><br><span class="line">            preSlider = sliderAdapter.getSliderView(prePositon);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (slider != <span class="keyword">null</span>)</span><br><span class="line">            animationListener.onNextAnimationStart(slider);</span><br><span class="line">        <span class="keyword">if</span> (preSlider != <span class="keyword">null</span>)</span><br><span class="line">            animationListener.onPreAnimationStart(preSlider);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">animateSliderEnd</span><span class="params">(<span class="keyword">int</span> position)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (animationListener == <span class="keyword">null</span>) <span class="keyword">return</span>;</span><br><span class="line">        <span class="keyword">if</span> (getAdapter() <span class="keyword">instanceof</span> InfinitePagerAdapter) &#123;</span><br><span class="line">            InfinitePagerAdapter pagerAdapter = (InfinitePagerAdapter) getAdapter();</span><br><span class="line">            <span class="keyword">if</span> (slider == <span class="keyword">null</span>) slider = pagerAdapter.getSliderView(position);</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (slider != pagerAdapter.getSliderView(position)) &#123;</span><br><span class="line">                preSlider = slider;</span><br><span class="line">                slider = pagerAdapter.getSliderView(position);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (getAdapter() <span class="keyword">instanceof</span> BaseSliderAdapter) &#123;</span><br><span class="line">            BaseSliderAdapter sliderAdapter = (BaseSliderAdapter) getAdapter();</span><br><span class="line">            <span class="keyword">if</span> (slider == <span class="keyword">null</span>) slider = sliderAdapter.getSliderView(position);</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (slider != sliderAdapter.getSliderView(position)) &#123;</span><br><span class="line">                preSlider = slider;</span><br><span class="line">                slider = sliderAdapter.getSliderView(position);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (slider != <span class="keyword">null</span>)</span><br><span class="line">            animationListener.onNextAnimationEnd(slider);</span><br><span class="line">        <span class="keyword">if</span> (preSlider != <span class="keyword">null</span>)</span><br><span class="line">            animationListener.onPreAnimationEnd(preSlider);</span><br><span class="line">        animating = <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> OnAnimationListener <span class="title">getAnimationListener</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> animationListener;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setAnimationListener</span><span class="params">(OnAnimationListener animationListener)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.animationListener = animationListener;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>继承OnAnimationListener接口实现后的例子</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DefaultDescriptionAnimation</span> <span class="keyword">implements</span> <span class="title">OnAnimationListener</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">long</span> DURATION = <span class="number">300</span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onNextAnimationStart</span><span class="params">(BaseSliderView slider)</span> </span>&#123;</span><br><span class="line">        Log.d(<span class="string">"simpleSlider"</span>, <span class="string">"onNextAnimationStart:"</span> + slider.getPageTitle());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onNextAnimationEnd</span><span class="params">(BaseSliderView slider)</span> </span>&#123;</span><br><span class="line">        Log.d(<span class="string">"simpleSlider"</span>, <span class="string">"onNextAnimationEnd:"</span> + slider.getPageTitle());</span><br><span class="line">        DescriptionSliderView sliderView = (DescriptionSliderView) slider;</span><br><span class="line">        <span class="keyword">if</span> (sliderView.getTitleLayout().getVisibility() != View.VISIBLE)</span><br><span class="line">            translateShowAnimate(sliderView.getTitleLayout());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onPreAnimationStart</span><span class="params">(BaseSliderView slider)</span> </span>&#123;</span><br><span class="line">        Log.d(<span class="string">"simpleSlider"</span>, <span class="string">"onPreAnimationStart:"</span> + slider.getPageTitle());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onPreAnimationEnd</span><span class="params">(BaseSliderView slider)</span> </span>&#123;</span><br><span class="line">        Log.d(<span class="string">"simpleSlider"</span>, <span class="string">"onPreAnimationEnd:"</span> + slider.getPageTitle());</span><br><span class="line">        DescriptionSliderView sliderView = (DescriptionSliderView) slider;</span><br><span class="line">        alphaHideAnimate(sliderView.getTitleLayout());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">alphaHideAnimate</span><span class="params">(View v)</span> </span>&#123;</span><br><span class="line">        v.clearAnimation();</span><br><span class="line">        v.setVisibility(View.INVISIBLE);</span><br><span class="line">        AlphaAnimation aa = <span class="keyword">new</span> AlphaAnimation(<span class="number">1</span>, <span class="number">0</span>);</span><br><span class="line">        aa.setDuration(DURATION);</span><br><span class="line">        v.startAnimation(aa);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">translateShowAnimate</span><span class="params">(View v)</span> </span>&#123;</span><br><span class="line">        v.setVisibility(View.VISIBLE);</span><br><span class="line">        v.clearAnimation();</span><br><span class="line">        TranslateAnimation ta = <span class="keyword">new</span> TranslateAnimation(<span class="number">0</span>, <span class="number">0</span>, v.getHeight(), <span class="number">0</span>);</span><br><span class="line">        ta.setDuration(DURATION);</span><br><span class="line">        v.startAnimation(ta);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/cpacm/SimpleSlider/develop/pic/simpleslider_animation.gif" alt="Transform"></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag">#Android</a>
+          
+            <a href="/tags/开源项目/" rel="tag">#开源项目</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/06/01/将你的代码上传 Bintray 仓库/" rel="next" title="将你的代码上传 Bintray 仓库">
+                <i class="fa fa-chevron-left"></i> 将你的代码上传 Bintray 仓库
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/09/21/Rxjava使用帮助/" rel="prev" title="Rxjava使用帮助">
+                Rxjava使用帮助 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/06/03/开源项目：一个高度自由的轻量化Slider/" data-title="开源项目：一个高度自由的轻量化Slider" data-url="http://www.cpacm.net/2016/06/03/开源项目：一个高度自由的轻量化Slider/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/img/author.jpg" alt="cpacm">
+          <p class="site-author-name" itemprop="name">cpacm</p>
+          <p class="site-description motion-element" itemprop="description">请不要忘记，那给你带来感动的，名为二次元的理想乡。</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">52</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/cpacm" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/u/3053253821" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.cnblogs.com/cpacm/" target="_blank" title="博客园">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  博客园
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#关于无限轮播"><span class="nav-number">1.</span> <span class="nav-text">关于无限轮播</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关于指示器"><span class="nav-number">2.</span> <span class="nav-text">关于指示器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关于转场动画"><span class="nav-number">3.</span> <span class="nav-text">关于转场动画</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关于pager动画"><span class="nav-number">4.</span> <span class="nav-text">关于pager动画</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">cpacm</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"cpacm"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("2fmsJHBmgPTnmd1bc7R9GcVX-gzGzoHsz", "CBUSqxdc9PSLibNV3TzlhpWg");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+</body>
+</html>

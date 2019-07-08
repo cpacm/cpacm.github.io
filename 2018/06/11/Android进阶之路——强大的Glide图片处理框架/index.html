@@ -1,0 +1,864 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="Android,高级进阶,">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1">
+
+
+
+
+
+
+<meta name="description" content="Glide是一个快速高效的Android图片加载库，注重于平滑的滚动。Glide提供了易用的API，高性能、可扩展的图片解码管道（decode pipeline），以及自动的资源池技术。">
+<meta name="keywords" content="Android,高级进阶">
+<meta property="og:type" content="article">
+<meta property="og:title" content="强大的Glide图片处理框架">
+<meta property="og:url" content="http://www.cpacm.net/2018/06/11/Android进阶之路——强大的Glide图片处理框架/index.html">
+<meta property="og:site_name" content="cpacm">
+<meta property="og:description" content="Glide是一个快速高效的Android图片加载库，注重于平滑的滚动。Glide提供了易用的API，高性能、可扩展的图片解码管道（decode pipeline），以及自动的资源池技术。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-09-26T16:15:23.567Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="强大的Glide图片处理框架">
+<meta name="twitter:description" content="Glide是一个快速高效的Android图片加载库，注重于平滑的滚动。Glide提供了易用的API，高性能、可扩展的图片解码管道（decode pipeline），以及自动的资源池技术。">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> 强大的Glide图片处理框架 | cpacm </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?400b16383d4e24e7e0c1604aa14354a4";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">cpacm</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">动漫中毒者，技术宅</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                强大的Glide图片处理框架
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2018-06-11T18:14:10+08:00" content="2018-06-11">
+              2018-06-11
+            </time>
+          </span>
+
+          
+            <span class="post-category">
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2018/06/11/Android进阶之路——强大的Glide图片处理框架/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/06/11/Android进阶之路——强大的Glide图片处理框架/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2018/06/11/Android进阶之路——强大的Glide图片处理框架/" class="leancloud_visitors" data-flag-title="强大的Glide图片处理框架">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="强大的Glide图片处理框架"><a href="#强大的Glide图片处理框架" class="headerlink" title="强大的Glide图片处理框架"></a>强大的Glide图片处理框架</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>Glide是一个快速高效的Android图片加载库，注重于平滑的滚动。Glide提供了易用的API，高性能、可扩展的图片解码管道（decode pipeline），以及自动的资源池技术。</p>
+<p>Glide 支持拉取，解码和展示视频快照，图片，和GIF动画。Glide的Api是如此的灵活，开发者甚至可以插入和替换成自己喜爱的任何网络栈。默认情况下，Glide使用的是一个定制化的基于HttpUrlConnection的栈，但同时也提供了与Google Volley和Square OkHttp快速集成的工具库。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Glide.with(fragment).load(url).into(imageView);</span><br></pre></td></tr></table></figure>
+
+<p>Glide使用简明的流式语法API,在大部分情况下一行代码搞定图片加载。</p>
+<p>Glide 充分考虑了Android图片加载性能的两个关键方面：</p>
+<ul>
+<li>图片解码速度</li>
+<li>解码图片带来的资源压力</li>
+</ul>
+<p>为了让用户拥有良好的App使用体验，图片不仅要快速加载，而且还不能因为过多的主线程I/O或频繁的垃圾回收导致页面的闪烁和抖动现象。</p>
+<p>Glide使用了多个步骤来确保在Android上加载图片尽可能的快速和平滑：</p>
+<ul>
+<li>自动、智能地下采样(downsampling)和缓存(caching)，以最小化存储开销和解码次数；</li>
+<li>积极的资源重用，例如字节数组和Bitmap，以最小化昂贵的垃圾回收和堆碎片影响；</li>
+<li>深度的生命周期集成，以确保仅优先处理活跃的Fragment和Activity的请求，并有利于应用在必要时释放资源以避免在后台时被杀掉。</li>
+</ul>
+<p>官方文档：<a href="https://muyangmin.github.io/glide-docs-cn/" target="_blank" rel="noopener">快速高效的Android图片加载库</a></p>
+<h2 id="重要设计原理"><a href="#重要设计原理" class="headerlink" title="重要设计原理"></a>重要设计原理</h2><p>首先Glide会根据with传入的(context)绑定自己内部的生成Fragment的内部LifeCycle,以保证能跟随其生命周期加载图片，停止图片加载（ApplicationContent无法与生命周期绑定）。</p>
+<p>Glide 缓存<br>glide缓存分为两个部分，一部分为内存缓存另一部分为磁盘缓存。在内存缓存中，大部分缓存是放在以LruCache为基础的Map中，但是当图片在被使用时是会移动ActiveResource中避免在LruCache被回避。在磁盘缓存中，有四种缓存策略：无缓存，只缓存缩略图，只缓存原图，缓存原图和缩略图。</p>
+<h3 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h3><p>Glide初始化过程主要在 Glide 类里面的<code>initializeGlide</code> 方法中进行。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">initializeGlide</span><span class="params">(@NonNull Context context, @NonNull GlideBuilder builder)</span> </span>&#123;</span><br><span class="line">  ...</span><br><span class="line">  <span class="comment">// 先获取AppGlideModule</span></span><br><span class="line">  GeneratedAppGlideModule annotationGeneratedModule = getAnnotationGeneratedGlideModules();</span><br><span class="line">  List&lt;com.bumptech.glide.<span class="keyword">module</span>.GlideModule&gt; manifestModules = Collections.emptyList();</span><br><span class="line">  <span class="keyword">if</span> (annotationGeneratedModule == <span class="keyword">null</span> || annotationGeneratedModule.isManifestParsingEnabled()&#123;</span><br><span class="line">    <span class="comment">//获取 manifest 上 GlideModule</span></span><br><span class="line">    manifestModules = <span class="keyword">new</span> ManifestParser(applicationContext).parse();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  </span><br><span class="line">  <span class="keyword">if</span> (annotationGeneratedModule != <span class="keyword">null</span></span><br><span class="line">      &amp;&amp; !annotationGeneratedModule.getExcludedModuleClasses().isEmpty()) &#123;</span><br><span class="line">    Set&lt;Class&lt;?&gt;&gt; excludedModuleClasses =</span><br><span class="line">        annotationGeneratedModule.getExcludedModuleClasses();</span><br><span class="line">    Iterator&lt;com.bumptech.glide.<span class="keyword">module</span>.GlideModule&gt; iterator = manifestModules.iterator();</span><br><span class="line">    <span class="keyword">while</span> (iterator.hasNext()) &#123;</span><br><span class="line">      com.bumptech.glide.<span class="keyword">module</span>.GlideModule current = iterator.next();</span><br><span class="line">      <span class="keyword">if</span> (!excludedModuleClasses.contains(current.getClass())) &#123;</span><br><span class="line">        <span class="keyword">continue</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">if</span> (Log.isLoggable(TAG, Log.DEBUG)) &#123;</span><br><span class="line">        Log.d(TAG, <span class="string">"AppGlideModule excludes manifest GlideModule: "</span> + current);</span><br><span class="line">      &#125;</span><br><span class="line">      iterator.remove();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (Log.isLoggable(TAG, Log.DEBUG)) &#123;</span><br><span class="line">    <span class="keyword">for</span> (com.bumptech.glide.<span class="keyword">module</span>.GlideModule glideModule : manifestModules) &#123;</span><br><span class="line">      Log.d(TAG, <span class="string">"Discovered GlideModule from manifest: "</span> + glideModule.getClass());</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 每个GlideModule调用它们内部的两个方法 applyOptions 和 registerComponents</span></span><br><span class="line">  RequestManagerRetriever.RequestManagerFactory factory =</span><br><span class="line">      annotationGeneratedModule != <span class="keyword">null</span></span><br><span class="line">          ? annotationGeneratedModule.getRequestManagerFactory() : <span class="keyword">null</span>;</span><br><span class="line">  builder.setRequestManagerFactory(factory);</span><br><span class="line">  <span class="keyword">for</span> (com.bumptech.glide.<span class="keyword">module</span>.GlideModule <span class="keyword">module</span> : manifestModules) &#123;</span><br><span class="line">    <span class="keyword">module</span>.applyOptions(applicationContext, builder);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (annotationGeneratedModule != <span class="keyword">null</span>) &#123;</span><br><span class="line">    annotationGeneratedModule.applyOptions(applicationContext, builder);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 利用Builder构建Glide</span></span><br><span class="line">  Glide glide = builder.build(applicationContext);</span><br><span class="line">  <span class="keyword">for</span> (com.bumptech.glide.<span class="keyword">module</span>.GlideModule <span class="keyword">module</span> : manifestModules) &#123;</span><br><span class="line">    <span class="keyword">module</span>.registerComponents(applicationContext, glide, glide.registry);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (annotationGeneratedModule != <span class="keyword">null</span>) &#123;</span><br><span class="line">    annotationGeneratedModule.registerComponents(applicationContext, glide, glide.registry);</span><br><span class="line">  &#125;</span><br><span class="line">  applicationContext.registerComponentCallbacks(glide);</span><br><span class="line">  Glide.glide = glide;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如我们所知，在使用Glide的时候可以自定义 <code>GlideModule</code> 在 <code>AndroidManifest</code> 中声明也可以在创建继承 <code>AppGlideModule</code> 的Module类来进行设置（此处为4.0特性，通过apt解析Annotation得到类）。<strong>继承AppGlideModule类的GLideModule可以设置是否需要读取在AndroidManifest上配置的GlideModule。</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">override fun <span class="title">applyOptions</span><span class="params">(context: Context, builder: GlideBuilder)</span> </span>&#123;</span><br><span class="line">       <span class="comment">//设置内存缓存大小</span></span><br><span class="line">       val maxMemory = Runtime.getRuntime().maxMemory().toInt()<span class="comment">//获取系统分配给应用的总内存大小</span></span><br><span class="line">       val memoryCacheSize = maxMemory / <span class="number">8L</span><span class="comment">//设置图片内存缓存占用八分之一</span></span><br><span class="line">       builder.setMemoryCache(LruResourceCache(memoryCacheSize))</span><br><span class="line"></span><br><span class="line">       val diskCacheSize = <span class="number">1024</span> * <span class="number">1024</span> * <span class="number">50L</span><span class="comment">//最多可以缓存多少字节的数据</span></span><br><span class="line">       val path = FileUtils.cacheDir</span><br><span class="line">       builder.setDiskCache(DiskLruCacheFactory(path, <span class="string">"glide"</span>, diskCacheSize))</span><br><span class="line">       <span class="comment">//builder.setDiskCache(new InternalCacheDiskCacheFactory(context,"cacheDirectoryName", 200*1024*1024));//设置文件缓存的大小为200M</span></span><br><span class="line">       <span class="comment">//builder.setMemoryCache(new LruResourceCache(yourSizeInBytes));//设置内存缓存大小</span></span><br><span class="line">       <span class="comment">//builder.setBitmapPool(new LruBitmapPool(sizeInBytes));//bitmap池大小</span></span><br><span class="line">       <span class="comment">//builder.setDecodeFormat(DecodeFormat.ALWAYS_ARGB_8888);//bitmap格式 default is RGB_565</span></span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>GlideModule 中可以设置Glide的一些配置，比如内存大小，缓存文件保存位置，图片默认解码类型等。</p>
+</blockquote>
+<p>GlideModule 中除去设置配置属性外，也可以注册自定义组件，属于GlideModule中的第二个方法中</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">registerComponents</span><span class="params">(@NonNull Context context, @NonNull Glide glide,</span></span></span><br><span class="line"><span class="function"><span class="params">    @NonNull Registry registry)</span> </span>&#123;</span><br><span class="line">  <span class="comment">// Default empty impl.</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>注册自定义的组件的作用后面再说。</p>
+<p>在调用GlideModule的 <code>registerComponents</code> 方法之前会通过Builder生成Glide实例。</p>
+<p><code>Builder.build()</code>方法中主要是构建线程池（包括sourceExecutor ，diskCacheExecutor ），缓存大小和缓存器，默认的连接监听工厂（connectivityMonitorFactory ），Engine对象和RequestManagerRetriever 对象等等。</p>
+<ol>
+<li>Engine对象<br>在创建Engine对象时传递了几个重要的参数，分别是线程池，内存缓存和硬盘缓存对象等。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">engine =</span><br><span class="line">    <span class="keyword">new</span> Engine(</span><br><span class="line">        memoryCache,</span><br><span class="line">        diskCacheFactory,</span><br><span class="line">        diskCacheExecutor,</span><br><span class="line">        sourceExecutor,</span><br><span class="line">        GlideExecutor.newUnlimitedSourceExecutor(),</span><br><span class="line">        GlideExecutor.newAnimationExecutor(),</span><br><span class="line">        isActiveResourceRetentionAllowed);</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p>Engine是一个非常重要的对象，后面扮演着重要的角色。</p>
+<ol start="2">
+<li>RequestManagertRetriever 对象<br>当开发者不传入自定义的RequestManagertFactory时，就会使用Glide自身默认的DEFAULT_FACTORY.<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> RequestManagerFactory DEFAULT_FACTORY = <span class="keyword">new</span> RequestManagerFactory() &#123;</span><br><span class="line">  <span class="meta">@NonNull</span></span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> RequestManager <span class="title">build</span><span class="params">(@NonNull Glide glide, @NonNull Lifecycle lifecycle,</span></span></span><br><span class="line"><span class="function"><span class="params">      @NonNull RequestManagerTreeNode requestManagerTreeNode, @NonNull Context context)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> RequestManager(glide, lifecycle, requestManagerTreeNode, context);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p>而其中的 RequestManager 就是Glide请求的一个管理器。</p>
+<ol start="3">
+<li>Register对象</li>
+</ol>
+<p>GLide中的 Register 主要是添加很多的注册或解析方式，这在后面用来解析是从内存，文件或是网络获取资源有着重要的作用，而且它每一类解析方式都会提供多个方法，一种方式获取不到将会使用另外一种，知道获取到资源为止，来看下它的register和append方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> ModelLoaderRegistry modelLoaderRegistry;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> EncoderRegistry encoderRegistry;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> ResourceDecoderRegistry decoderRegistry;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> ResourceEncoderRegistry resourceEncoderRegistry;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> DataRewinderRegistry dataRewinderRegistry;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> TranscoderRegistry transcoderRegistry;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> ImageHeaderParserRegistry imageHeaderParserRegistry;</span><br><span class="line"></span><br><span class="line"><span class="meta">@NonNull</span></span><br><span class="line"><span class="meta">@Deprecated</span></span><br><span class="line"><span class="keyword">public</span> &lt;TResource&gt; <span class="function">Registry <span class="title">register</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">    @NonNull Class&lt;TResource&gt; resourceClass, @NonNull ResourceEncoder&lt;TResource&gt; encoder)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> append(resourceClass, encoder);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@NonNull</span></span><br><span class="line"><span class="keyword">public</span> &lt;TResource&gt; <span class="function">Registry <span class="title">append</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">    @NonNull Class&lt;TResource&gt; resourceClass, @NonNull ResourceEncoder&lt;TResource&gt; encoder)</span> </span>&#123;</span><br><span class="line">  resourceEncoderRegistry.append(resourceClass, encoder);</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>不同的注册方法对应着不同的 Register 对象体。</p>
+<h3 id="with-方法"><a href="#with-方法" class="headerlink" title="with()方法"></a>with()方法</h3><p>Glide.with()是Glide的一组静态方法，有好几个重载方法，能够传入参数有 Activity，Context，FragmentActivity，Fragment和View</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">with(android.app.Activity)</span><br><span class="line">with(android.app.Fragment)</span><br><span class="line">with(android.support.v4.app.Fragment)</span><br><span class="line">with(android.support.v4.app.FragmentActivity)</span><br><span class="line">with(android.view)</span><br></pre></td></tr></table></figure>
+
+<p>每一个with()方法重载的代码都非常简单，都是调用 <code>getRetriever(activity).get(activity)</code>，返回一个RequestManager对象。在这里我们将入参分为两类，一类是Application，<br>一类是非Application</p>
+<ol>
+<li>当传入Application 或在非主线程中<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@NonNull</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> RequestManager <span class="title">getApplicationManager</span><span class="params">(@NonNull Context context)</span> </span>&#123;</span><br><span class="line">  <span class="comment">// Either an application context or we're on a background thread.</span></span><br><span class="line">  <span class="keyword">if</span> (applicationManager == <span class="keyword">null</span>) &#123;</span><br><span class="line">    <span class="keyword">synchronized</span> (<span class="keyword">this</span>) &#123;</span><br><span class="line">      <span class="keyword">if</span> (applicationManager == <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="comment">// Normally pause/resume is taken care of by the fragment we add to the fragment or</span></span><br><span class="line">        <span class="comment">// activity. However, in this case since the manager attached to the application will not</span></span><br><span class="line">        <span class="comment">// receive lifecycle events, we must force the manager to start resumed using</span></span><br><span class="line">        <span class="comment">// ApplicationLifecycle.</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// TODO(b/27524013): Factor out this Glide.get() call.</span></span><br><span class="line">        Glide glide = Glide.get(context.getApplicationContext());</span><br><span class="line">        applicationManager =</span><br><span class="line">            factory.build(</span><br><span class="line">                glide,</span><br><span class="line">                <span class="keyword">new</span> ApplicationLifecycle(),</span><br><span class="line">                <span class="keyword">new</span> EmptyRequestManagerTreeNode(),</span><br><span class="line">                context.getApplicationContext());</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> applicationManager;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p>其实这是最简单的一种情况，因为Application对象的生命周期即应用程序的生命周期，因此Glide并不需要做什么特殊的处理，它自动就是和应用程序的生命周期是同步的，如果应用程序关闭的话，Glide的加载也会同时终止。</p>
+<ol start="2">
+<li>非Application且在主线程中<br>此时不论传入Activity、FragmentActivity、Fragment最终都会调用<code>supportFragmentGet</code>或<code>fragmentGet</code>方法，而这两个方法最终流程都是一致的那就是会向当前的Activity当中添加一个隐藏的Fragment。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@NonNull</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> RequestManager <span class="title">supportFragmentGet</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">    @NonNull Context context,</span></span></span><br><span class="line"><span class="function"><span class="params">    @NonNull FragmentManager fm,</span></span></span><br><span class="line"><span class="function"><span class="params">    @Nullable Fragment parentHint,</span></span></span><br><span class="line"><span class="function"><span class="params">    <span class="keyword">boolean</span> isParentVisible)</span> </span>&#123;</span><br><span class="line">  SupportRequestManagerFragment current =</span><br><span class="line">      getSupportRequestManagerFragment(fm, parentHint, isParentVisible);</span><br><span class="line">  RequestManager requestManager = current.getRequestManager();</span><br><span class="line">  <span class="keyword">if</span> (requestManager == <span class="keyword">null</span>) &#123;</span><br><span class="line">    <span class="comment">// TODO(b/27524013): Factor out this Glide.get() call.</span></span><br><span class="line">    Glide glide = Glide.get(context);</span><br><span class="line">    requestManager =</span><br><span class="line">        factory.build(</span><br><span class="line">            glide, current.getGlideLifecycle(), current.getRequestManagerTreeNode(), context);</span><br><span class="line">    current.setRequestManager(requestManager);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> requestManager;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p>Glide通过添加隐藏Fragment的方法以获知Activity的生命周期，因为Fragment可以感知Activity的生命周期，这种技巧也可以在<code>RxPermissions</code>这个开源库中看到。</p>
+<h3 id="load"><a href="#load" class="headerlink" title="load()"></a>load()</h3><p>在调用with方法获取到RequestManager对象的前提下，调用load方法，并传递url参数.<br>这里并没有直接的去加载url获取资源，而是首先调用asDrawable方法来配置图片的信息，其实就是说加载获取的图片资源是转换为drawale或是bitmap或是gif进行图片显示，默认的是使用drawale，也可以使用asGif()/asBitmap()来设置它是已什么形式来展示。load方法目的是为了获取RequestBuilder对象。完成asDrawable方法对RequestBuilder的创建后才调用load方法来传递我们的url地址。</p>
+<p>在 RequestBuilder 对象中，可以通过不停调用 RequestBuilder 对象中的方法赋予自己想要的一些设置，如<code>apply(RequestOptions)</code>,<code>transition(TransitionOptions)</code>,<code>listener(RequestListener)</code>,<code>error(errorBuilder)</code>和<code>thumbnail(RequestBuilder)</code>等。</p>
+<p>load()本质是生成一个RequestBuilder并赋予相应的属性和设置。</p>
+<h3 id="into"><a href="#into" class="headerlink" title="into()"></a>into()</h3><p>在 into() 内容过于繁多，我这里就简单介绍整个流程。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">into()  <span class="comment">//传入 ImageView,并通过ImageViewTargetFactory将其转化为 ViewTarget</span></span><br><span class="line">-&gt; buildRequest() <span class="comment">// 通过一系列的跳转最终调用到 `SingleRequest.obtain`方法返回SingleRequest。</span></span><br><span class="line">-&gt; requestManaget.track(target,request) <span class="comment">//通过RequestManager启动request</span></span><br><span class="line">-&gt; request.begin() <span class="comment">//判断model是否为空为空直接调用onLoadFailed加载失败</span></span><br><span class="line">-&gt; onSizeReady() <span class="comment">// 获取ImageView的宽高来觉得要加载图片的尺寸</span></span><br><span class="line">-&gt; engine.load() <span class="comment">// 所有重要的地方都在这里了。</span></span><br></pre></td></tr></table></figure>
+
+<p>先来梳理下 engine.load()方法里面做了什么</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">①：判断是否在主线程运行，说明到目前为止还是在主线程执行的，并没有真正的开启子线程。</span></span><br><span class="line"><span class="comment">②：通过keyFactory工厂来构建一个EngineKey对象，key关联着model，也就是url，它很根据model，view的宽高等等属性来构建一个EngineKey对象，这个对象可以用来指定缓存地址，可以用来从缓存中查找资源等。</span></span><br><span class="line"><span class="comment">③：根据创建的key对象分别调用loadFromCache和loadFromActiveResources方法来从内存中查找是否有缓存资源，如果有，则回调cb.onResourceReady来直接设置图片了。</span></span><br><span class="line"><span class="comment">④：分别使用engineJobFactory和decodeJobFactory构建EngineJob和DecodeJob对象，这两个对象是真正的加载资源的两个重要类，EngineJob对象负责开启线程去加载资源，并且加载得资源后转换到主线程并进行回调；DecodeJob是真正的执行者，它就是去网络加载资源的地方，EngineJob开启线程，真正执行的是DecodeJob，DecodeJob之后完毕之后叫道EngineJob去分发回调。这就是这两个类的关系。</span></span><br><span class="line"><span class="comment">⑤：EngineJob和DecodeJob的构建是基本一致的，我们看看比较复杂的DecodeJob的构建：在build方法中，首先通过pool来创建一个DecodeJob对象，然后调用DecodeJob对象的init方法进行初始化，在初始化中值得注意的是调用了decodeHelper对象的init方法。decodeHelper方法是DecodeJob的重要辅助类，后面我们会详细的接触它。</span></span><br><span class="line"><span class="comment">⑥：上面也提到回调，这里先cb添加到engineJob.addCallback();中，然后调用EngineJob的start方法来开启线程。</span></span><br><span class="line"><span class="comment"> **/</span></span><br><span class="line">  <span class="keyword">public</span> &lt;R&gt; <span class="function">LoadStatus <span class="title">load</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">      GlideContext glideContext,</span></span></span><br><span class="line"><span class="function"><span class="params">      Object model,</span></span></span><br><span class="line"><span class="function"><span class="params">      Key signature,</span></span></span><br><span class="line"><span class="function"><span class="params">      <span class="keyword">int</span> width,</span></span></span><br><span class="line"><span class="function"><span class="params">      <span class="keyword">int</span> height,</span></span></span><br><span class="line"><span class="function"><span class="params">      Class&lt;?&gt; resourceClass,</span></span></span><br><span class="line"><span class="function"><span class="params">      Class&lt;R&gt; transcodeClass,</span></span></span><br><span class="line"><span class="function"><span class="params">      Priority priority,</span></span></span><br><span class="line"><span class="function"><span class="params">      DiskCacheStrategy diskCacheStrategy,</span></span></span><br><span class="line"><span class="function"><span class="params">      Map&lt;Class&lt;?&gt;, Transformation&lt;?&gt;&gt; transformations,</span></span></span><br><span class="line"><span class="function"><span class="params">      <span class="keyword">boolean</span> isTransformationRequired,</span></span></span><br><span class="line"><span class="function"><span class="params">      <span class="keyword">boolean</span> isScaleOnlyOrNoTransform,</span></span></span><br><span class="line"><span class="function"><span class="params">      Options options,</span></span></span><br><span class="line"><span class="function"><span class="params">      <span class="keyword">boolean</span> isMemoryCacheable,</span></span></span><br><span class="line"><span class="function"><span class="params">      <span class="keyword">boolean</span> useUnlimitedSourceExecutorPool,</span></span></span><br><span class="line"><span class="function"><span class="params">      <span class="keyword">boolean</span> useAnimationPool,</span></span></span><br><span class="line"><span class="function"><span class="params">      <span class="keyword">boolean</span> onlyRetrieveFromCache,</span></span></span><br><span class="line"><span class="function"><span class="params">      ResourceCallback cb)</span> </span>&#123;</span><br><span class="line">    Util.assertMainThread();</span><br><span class="line">    <span class="keyword">long</span> startTime = VERBOSE_IS_LOGGABLE ? LogTime.getLogTime() : <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    EngineKey key = keyFactory.buildKey(model, signature, width, height, transformations,</span><br><span class="line">        resourceClass, transcodeClass, options);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 其中内存的缓存策略也作用在这里</span></span><br><span class="line">    EngineResource&lt;?&gt; active = loadFromActiveResources(key, isMemoryCacheable);</span><br><span class="line">    <span class="keyword">if</span> (active != <span class="keyword">null</span>) &#123;</span><br><span class="line">      cb.onResourceReady(active, DataSource.MEMORY_CACHE);</span><br><span class="line">      <span class="keyword">if</span> (VERBOSE_IS_LOGGABLE) &#123;</span><br><span class="line">        logWithTimeAndKey(<span class="string">"Loaded resource from active resources"</span>, startTime, key);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    EngineResource&lt;?&gt; cached = loadFromCache(key, isMemoryCacheable);</span><br><span class="line">    <span class="keyword">if</span> (cached != <span class="keyword">null</span>) &#123;</span><br><span class="line">      cb.onResourceReady(cached, DataSource.MEMORY_CACHE);</span><br><span class="line">      <span class="keyword">if</span> (VERBOSE_IS_LOGGABLE) &#123;</span><br><span class="line">        logWithTimeAndKey(<span class="string">"Loaded resource from cache"</span>, startTime, key);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    EngineJob&lt;?&gt; current = jobs.get(key, onlyRetrieveFromCache);</span><br><span class="line">    <span class="keyword">if</span> (current != <span class="keyword">null</span>) &#123;</span><br><span class="line">      current.addCallback(cb);</span><br><span class="line">      <span class="keyword">if</span> (VERBOSE_IS_LOGGABLE) &#123;</span><br><span class="line">        logWithTimeAndKey(<span class="string">"Added to existing load"</span>, startTime, key);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">new</span> LoadStatus(cb, current);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    EngineJob&lt;R&gt; engineJob =</span><br><span class="line">        engineJobFactory.build(</span><br><span class="line">            key,</span><br><span class="line">            isMemoryCacheable,</span><br><span class="line">            useUnlimitedSourceExecutorPool,</span><br><span class="line">            useAnimationPool,</span><br><span class="line">            onlyRetrieveFromCache);</span><br><span class="line"></span><br><span class="line">    DecodeJob&lt;R&gt; decodeJob =</span><br><span class="line">        decodeJobFactory.build(</span><br><span class="line">            glideContext,</span><br><span class="line">            model,</span><br><span class="line">            key,</span><br><span class="line">            signature,</span><br><span class="line">            width,</span><br><span class="line">            height,</span><br><span class="line">            resourceClass,</span><br><span class="line">            transcodeClass,</span><br><span class="line">            priority,</span><br><span class="line">            diskCacheStrategy,</span><br><span class="line">            transformations,</span><br><span class="line">            isTransformationRequired,</span><br><span class="line">            isScaleOnlyOrNoTransform,</span><br><span class="line">            onlyRetrieveFromCache,</span><br><span class="line">            options,</span><br><span class="line">            engineJob);</span><br><span class="line"></span><br><span class="line">    jobs.put(key, engineJob);</span><br><span class="line"></span><br><span class="line">    engineJob.addCallback(cb);</span><br><span class="line">    engineJob.start(decodeJob);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (VERBOSE_IS_LOGGABLE) &#123;</span><br><span class="line">      logWithTimeAndKey(<span class="string">"Started new load"</span>, startTime, key);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> LoadStatus(cb, engineJob);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">接上面</span><br><span class="line">-&gt; decodeJob.run() <span class="comment">//真正线程执行的地方</span></span><br><span class="line">-&gt; getNextGenerator() <span class="comment">//getNextGenerator方法中根据stage值来创建对象,返回的是SourceGenerator</span></span><br><span class="line">-&gt; sourceGenerator.startNext() <span class="comment">//这里通过glideContext.getRegistry().getModelLoaders(model)方法获取合适的Loader来进行加载。</span></span><br><span class="line">-&gt; HttpGlideUrlLoader.LoadData() <span class="comment">//如果传入的是url,此时这里就会返回这个Loader</span></span><br><span class="line">-&gt; HttpUrlFetcher.loadDataWithRedirects() <span class="comment">//这里就是利用UrlConnection进行的网络请求</span></span><br><span class="line">-&gt; decodeFromRetrievedData() <span class="comment">//数据请求结束后开始解码</span></span><br><span class="line">-&gt; Registry.getDecodePaths <span class="comment">// 还是通过要转换成的类型如 Drawable.class 从 Registry 中获取相应的解码器，如普通图片的是 BitmaoDrawableTranscoder</span></span><br></pre></td></tr></table></figure>
+
+<p>真正解码过程<br>①：这里首先遍历decoders集合，分别的获取到ResourceDecoder解码器，还记得我们的decoders都包含哪些解码器吗？没错主要包含两种：BitmapDrawable.class和GifDrawable.class。不记得的往上面翻下，上面已详细的讲解过了。</p>
+<p>②：然后通过rewinder.rewindAndGet()获取我们的InputStream数据流：</p>
+<p>③：通过decoder.handles(data, options)方法来过滤掉不相匹配的解码器，最后解码放回Resouce。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>Glide 是一个很复杂的库，很多细节的部分想要完全理解是很花时间的，所以这里我总结一下比较重要的设计理念。</p>
+<ol>
+<li>Glide中通过自己添加一个隐藏的Fragment以实现图片加载的生命周期化</li>
+<li>Glide缓存分为两个部分，一部分为内存缓存另一部分为磁盘缓存。在内存缓存中，大部分缓存是放在以LruCache为基础的Map中，但是当图片在被使用时是会移动ActiveResource中避免在LruCache被回避。在磁盘缓存中，有四种缓存策略：无缓存，只缓存缩略图，只缓存原图，缓存原图和缩略图。</li>
+<li>通过 Registry 注册方法灵活的实现数据的转码策略。</li>
+</ol>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag">#Android</a>
+          
+            <a href="/tags/高级进阶/" rel="tag">#高级进阶</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/05/22/Android进阶之路 —— Restful风格的Retrofit2网络请求器/" rel="next" title="Restful风格的Retrofit2网络请求器">
+                <i class="fa fa-chevron-left"></i> Restful风格的Retrofit2网络请求器
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/06/11/Android进阶之路-OkHttp3网络编程/" rel="prev" title="OkHttp3的网络编程">
+                OkHttp3的网络编程 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2018/06/11/Android进阶之路——强大的Glide图片处理框架/" data-title="强大的Glide图片处理框架" data-url="http://www.cpacm.net/2018/06/11/Android进阶之路——强大的Glide图片处理框架/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/img/author.jpg" alt="cpacm">
+          <p class="site-author-name" itemprop="name">cpacm</p>
+          <p class="site-description motion-element" itemprop="description">请不要忘记，那给你带来感动的，名为二次元的理想乡。</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">52</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/cpacm" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/u/3053253821" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.cnblogs.com/cpacm/" target="_blank" title="博客园">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  博客园
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#强大的Glide图片处理框架"><span class="nav-number">1.</span> <span class="nav-text">强大的Glide图片处理框架</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#重要设计原理"><span class="nav-number">1.2.</span> <span class="nav-text">重要设计原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#初始化"><span class="nav-number">1.2.1.</span> <span class="nav-text">初始化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#with-方法"><span class="nav-number">1.2.2.</span> <span class="nav-text">with()方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#load"><span class="nav-number">1.2.3.</span> <span class="nav-text">load()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#into"><span class="nav-number">1.2.4.</span> <span class="nav-text">into()</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">1.3.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">cpacm</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"cpacm"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("2fmsJHBmgPTnmd1bc7R9GcVX-gzGzoHsz", "CBUSqxdc9PSLibNV3TzlhpWg");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+</body>
+</html>

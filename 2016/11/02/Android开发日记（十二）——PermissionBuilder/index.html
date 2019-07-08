@@ -1,0 +1,879 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="Android,开发系列,">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1">
+
+
+
+
+
+
+<meta name="description" content="Android6.0 发布之后，Android 的权限系统被重新设计。在 23 之前 App 的权限只会在用户安装的时候询问一次，App一旦安装后就可以使用所有的权限了，而从 23 之后，App 可以直接安装，App 只有在运行时需要使用某些权限时才会向用户询问是否授权，此时系统会弹出一个对话框让用户选择确认或者取消授权，同时用户也可以在设置页面对每个 App 的权限进行管理。">
+<meta name="keywords" content="Android,开发系列">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android开发日记（十二）—— Android 6.0权限管理">
+<meta property="og:url" content="http://www.cpacm.net/2016/11/02/Android开发日记（十二）——PermissionBuilder/index.html">
+<meta property="og:site_name" content="cpacm">
+<meta property="og:description" content="Android6.0 发布之后，Android 的权限系统被重新设计。在 23 之前 App 的权限只会在用户安装的时候询问一次，App一旦安装后就可以使用所有的权限了，而从 23 之后，App 可以直接安装，App 只有在运行时需要使用某些权限时才会向用户询问是否授权，此时系统会弹出一个对话框让用户选择确认或者取消授权，同时用户也可以在设置页面对每个 App 的权限进行管理。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://7xi4up.com1.z0.glb.clouddn.com/Permission.jpg">
+<meta property="og:updated_time" content="2017-01-18T16:37:22.194Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android开发日记（十二）—— Android 6.0权限管理">
+<meta name="twitter:description" content="Android6.0 发布之后，Android 的权限系统被重新设计。在 23 之前 App 的权限只会在用户安装的时候询问一次，App一旦安装后就可以使用所有的权限了，而从 23 之后，App 可以直接安装，App 只有在运行时需要使用某些权限时才会向用户询问是否授权，此时系统会弹出一个对话框让用户选择确认或者取消授权，同时用户也可以在设置页面对每个 App 的权限进行管理。">
+<meta name="twitter:image" content="http://7xi4up.com1.z0.glb.clouddn.com/Permission.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> Android开发日记（十二）—— Android 6.0权限管理 | cpacm </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?400b16383d4e24e7e0c1604aa14354a4";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">cpacm</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">动漫中毒者，技术宅</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Android开发日记（十二）—— Android 6.0权限管理
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-11-02T11:58:20+08:00" content="2016-11-02">
+              2016-11-02
+            </time>
+          </span>
+
+          
+            <span class="post-category">
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/11/02/Android开发日记（十二）——PermissionBuilder/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/02/Android开发日记（十二）——PermissionBuilder/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/11/02/Android开发日记（十二）——PermissionBuilder/" class="leancloud_visitors" data-flag-title="Android开发日记（十二）—— Android 6.0权限管理">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Android-6-0权限管理"><a href="#Android-6-0权限管理" class="headerlink" title="Android 6.0权限管理"></a>Android 6.0权限管理</h1><h2 id="关于权限管理"><a href="#关于权限管理" class="headerlink" title="关于权限管理"></a>关于权限管理</h2><p>Android6.0 发布之后，Android 的权限系统被重新设计。在 23 之前 App 的权限只会在用户安装的时候询问一次，App一旦安装后就可以使用所有的权限了，而从 23 之后，App 可以直接安装，App 只有在运行时需要使用某些权限时才会向用户询问是否授权，此时系统会弹出一个对话框让用户选择确认或者取消授权，同时用户也可以在设置页面对每个 App 的权限进行管理。<strong>重要：这个对话框需要开发者手动调用，且不可自行定制样式</strong></p>
+<p>Android Developer 文章：<br><a href="https://developer.android.com/guide/topics/security/permissions.html" target="_blank" rel="noopener">System Permissions</a><br><a href="https://developer.android.com/training/permissions/requesting.html" target="_blank" rel="noopener">Requesting Permissions at Run Time</a><br><a href="https://developer.android.com/training/permissions/best-practices.html" target="_blank" rel="noopener">Permissions Best Practices</a></p>
+<h2 id="通用权限和危险权限"><a href="#通用权限和危险权限" class="headerlink" title="通用权限和危险权限"></a>通用权限和危险权限</h2><h3 id="通用权限"><a href="#通用权限" class="headerlink" title="通用权限"></a>通用权限</h3><p>通用权限是指不涉及用户隐私，只需要在<code>Manifest</code>中声明即可的权限，比如网络、蓝牙等，只要 app 安装，这些权限默认都是被app允许使用的。</p>
+<p>通用权限列表： </p>
+<ul>
+<li>ACCESS_LOCATION_EXTRA_COMMANDS</li>
+<li>ACCESS_NETWORK_STATE</li>
+<li>ACCESS_NOTIFICATION_POLICY</li>
+<li>ACCESS_WIFI_STATE</li>
+<li>BLUETOOTH</li>
+<li>BLUETOOTH_ADMIN</li>
+<li>BROADCAST_STICKY</li>
+<li>CHANGE_NETWORK_STATE</li>
+<li>CHANGE_WIFI_MULTICAST_STATE</li>
+<li>CHANGE_WIFI_STATE</li>
+<li>DISABLE_KEYGUARD</li>
+<li>EXPAND_STATUS_BAR</li>
+<li>GET_PACKAGE_SIZE</li>
+<li>INSTALL_SHORTCUT</li>
+<li>INTERNET</li>
+<li>KILL_BACKGROUND_PROCESSES</li>
+<li>MODIFY_AUDIO_SETTINGS</li>
+<li>NFC</li>
+<li>READ_SYNC_SETTINGS</li>
+<li>READ_SYNC_STATS</li>
+<li>RECEIVE_BOOT_COMPLETED</li>
+<li>REORDER_TASKS</li>
+<li>REQUEST_IGNORE_BATTERY_OPTIMIZATIONS</li>
+<li>REQUEST_INSTALL_PACKAGES</li>
+<li>SET_ALARM</li>
+<li>SET_TIME_ZONE</li>
+<li>SET_WALLPAPER</li>
+<li>SET_WALLPAPER_HINTS</li>
+<li>TRANSMIT_IR</li>
+<li>UNINSTALL_SHORTCUT</li>
+<li>USE_FINGERPRINT</li>
+<li>VIBRATE</li>
+<li>WAKE_LOCK</li>
+<li>WRITE_SYNC_SETTINGS</li>
+</ul>
+<h3 id="危险权限"><a href="#危险权限" class="headerlink" title="危险权限"></a>危险权限</h3><p>所有危险的Android系统权限属于权限组，如果APP运行在Android 6.0 (API level 23)或者更高级别的设备中，而且targetSdkVersion&gt;=23时，系统将会自动采用动态权限管理策略。<br>此类权限也必须在Manifest中申明，否则申请时不提使用用户，直接回调开发者权限被拒绝。<br><strong>同一个权限组的任何一个权限被授权了，这个权限组的其他权限也自动被授权。例如，一旦<code>WRITE_CONTACTS</code>被授权了，App也有<code>READ_CONTACTS</code>和<code>GET_ACCOUNTS</code>了。</strong><br><strong>申请某一个权限的时候系统弹出的Dialog是对整个权限组的说明，而不是单个权限。例如我申请<code>READ_EXTERNAL_STORAGE</code>，系统会提示”允许xxx访问设备上的照片、媒体内容和文件吗？”。</strong><br>如果App运行在Android 5.1 (API level 22)或者更低级别的设备中，或者targetSdkVersion&lt;=22时（此时设备可以是Android 6.0 (API level 23)或者更高），在所有系统中仍将采用旧的权限管理策略，系统会要求用户在安装的时候授予权限。其次，系统就告诉用户App需要什么权限组，而不是个别的某个权限。</p>
+<p>(targetSdkVersion&gt;=23)<br>Dangous Permissions</p>
+<table>
+<thead>
+<tr>
+<th>Permission Group</th>
+<th>Permissions</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>CALENDAR</td>
+<td>READ_CALENDAR <br> WRITE_CALENDAR</td>
+</tr>
+<tr>
+<td>CAMERA</td>
+<td>CAMERA</td>
+</tr>
+<tr>
+<td>CONTACTS</td>
+<td>READ_CONTACTS <br>WRITE_CONTACTS <br>GET_ACCOUNTS</td>
+</tr>
+<tr>
+<td>LOCATION</td>
+<td>ACCESS_FINE_LOCATION <br>ACCESS_COARSE_LOCATION</td>
+</tr>
+<tr>
+<td>MICROPHONE</td>
+<td>RECORD_AUDIO</td>
+</tr>
+<tr>
+<td>PHONE</td>
+<td>READ_PHONE_STATE <br> CALL_PHONE <br> READ_CALL_LOG <br> WRITE_CALL_LOG <br> ADD_VOICEMAIL <br> USE_SIP <br> PROCESS_OUTGOING_CALLS <br></td>
+</tr>
+<tr>
+<td>SENSORS</td>
+<td>BODY_SENSORS</td>
+</tr>
+<tr>
+<td>SMS</td>
+<td>SEND_SMS <br> RECEIVE_SMS <br> READ_SMS <br> RECEIVE_WAP_PUSH <br> RECEIVE_MMS <br></td>
+</tr>
+<tr>
+<td>STORAGE</td>
+<td>READ_EXTERNAL_STORAGE <br> WRITE_EXTERNAL_STORAGE</td>
+</tr>
+</tbody></table>
+<h3 id="两个特殊的权限"><a href="#两个特殊的权限" class="headerlink" title="两个特殊的权限"></a>两个特殊的权限</h3><p><strong>SYSTEM_ALERT_WINDOW</strong> 和 <strong>WRITE_SETTINGS</strong> 这两个权限比较特殊，不能通过代码申请方式获取，必须得用户打开软件设置页手动打开，才能授权。官方建议需要申请该权限时引导用户跳转到Setting中自己去开启权限开关。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> OVERLAY_PERMISSION_REQ_CODE = <span class="number">1234</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@TargetApi</span>(Build.VERSION_CODES.M)</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">requestDrawOverLays</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!Settings.canDrawOverlays(MainActivity.<span class="keyword">this</span>)) &#123;</span><br><span class="line">        Toast.makeText(<span class="keyword">this</span>, <span class="string">"can not DrawOverlays"</span>, Toast.LENGTH_SHORT).show();</span><br><span class="line">        Intent intent = <span class="keyword">new</span> Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse(<span class="string">"package:"</span> + MainActivity.<span class="keyword">this</span>.getPackageName()));</span><br><span class="line">        startActivityForResult(intent, OVERLAY_PERMISSION_REQ_CODE);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">// Already hold the SYSTEM_ALERT_WINDOW permission, do addview or something.</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@TargetApi</span>(Build.VERSION_CODES.M)</span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onActivityResult</span><span class="params">(<span class="keyword">int</span> requestCode, <span class="keyword">int</span> resultCode, Intent data)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (requestCode == OVERLAY_PERMISSION_REQ_CODE) &#123;</span><br><span class="line">        <span class="keyword">if</span> (!Settings.canDrawOverlays(<span class="keyword">this</span>)) &#123;</span><br><span class="line">            <span class="comment">// SYSTEM_ALERT_WINDOW permission not granted...</span></span><br><span class="line">            Toast.makeText(<span class="keyword">this</span>, <span class="string">"Permission Denieddd by user.Please Check it in Settings"</span>, Toast.LENGTH_SHORT).show();</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            Toast.makeText(<span class="keyword">this</span>, <span class="string">"Permission Allowed"</span>, Toast.LENGTH_SHORT).show();</span><br><span class="line">            <span class="comment">// Already hold the SYSTEM_ALERT_WINDOW permission, do addview or something.</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="权限申请流程"><a href="#权限申请流程" class="headerlink" title="权限申请流程"></a>权限申请流程</h2><p><img src="http://7xi4up.com1.z0.glb.clouddn.com/Permission.jpg" alt="权限申请流程"></p>
+<h3 id="checkSelfPermission"><a href="#checkSelfPermission" class="headerlink" title="checkSelfPermission()"></a>checkSelfPermission()</h3><p>1、检查某一个权限的当前状态，在请求某个权限时应该检查这个权限是否已经被用户授权，已经授权的权限应该跳过申请。<br>2、该方法有一个参数是权限名称，有一个int的返回值，可判断检查的权限当前的状态。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (ContextCompat.checkSelfPermission(context, Manifest.permission.READ_CONTACTS)</span><br><span class="line">        != PackageManager.PERMISSION_GRANTED) &#123;</span><br><span class="line">    <span class="comment">// 没有权限</span></span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="comment">// 有权限了</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="requestPermissions"><a href="#requestPermissions" class="headerlink" title="requestPermissions()"></a>requestPermissions()</h3><p>申请权限，调用后系统会显示一个请求用户授权的提示对话框，App不能配置和修改这个对话框。<br>1、 如果需要提示用户这个权限相关的信息或说明，需要在调用 requestPermissions() 之前处理，该方法有两个参数：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> requestCode <span class="comment">//会在回调onRequestPermissionsResult()时返回，用来判断是哪个授权申请的回调。</span></span><br><span class="line">String[] permissions<span class="comment">//权限数组，你需要申请的的权限的数组</span></span><br></pre></td></tr></table></figure>
+
+<p>2、当用户处理完授权操作时，会回调Activity或者Fragment的<code>onRequestPermissionsResult()</code>方法。</p>
+<h3 id="onRequestPermissionsResult"><a href="#onRequestPermissionsResult" class="headerlink" title="onRequestPermissionsResult()"></a>onRequestPermissionsResult()</h3><p>处理权限结果回调，当用户处理完授权操作时，系统会自动回调该方法，此时返回三个参数，可以判断用户是否允许了申请的权限</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> requestCode <span class="comment">// 在调用requestPermissions()时的第一个参数。</span></span><br><span class="line">String[] permissions <span class="comment">//权限数组，在调用requestPermissions()时的第二个参数。</span></span><br><span class="line"><span class="keyword">int</span>[] grantResults <span class="comment">//授权结果数组，对应permissions，具体值和上方提到的PackageManager中的两个常量做比较。</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="shouldShowRequestPermissionRationale"><a href="#shouldShowRequestPermissionRationale" class="headerlink" title="shouldShowRequestPermissionRationale()"></a>shouldShowRequestPermissionRationale()</h3><p>是否应该显示请求权限的说明。<br>1、当第一次请求权限时，用户拒绝了，此时再调用<code>shouldShowRequestPermissionRationale()</code>后会返回true，显示为什么需要这个权限的说明。<br>2、用户在第一次拒绝某个权限后，下次再次申请时，授权的dialog中将会出现“不再提醒”选项，一旦选中勾选了，那么下次申请将不会提示用户。此时调用<code>shouldShowRequestPermissionRationale()</code>会返回false<br>3、设备的策略禁止当前应用获取这个权限的授权：<code>shouldShowRequestPermissionRationale()</code>返回false </p>
+<h2 id="Permission-Builder"><a href="#Permission-Builder" class="headerlink" title="Permission Builder"></a>Permission Builder</h2><p>一个自己实现的Permission辅助库，帮助我们能够快速而简洁的在Android上申请权限。</p>
+<p>Github地址：<a href="https://github.com/cpacm/android_learn/tree/master/PermissionBuilder" target="_blank" rel="noopener">PermissiongBuilder</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag">#Android</a>
+          
+            <a href="/tags/开发系列/" rel="tag">#开发系列</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/10/30/Beats——一款基于萌否网站api的音乐管理软件/" rel="next" title="开源客户端：Beats —— 一款基于萌否网站api的音乐管理软件">
+                <i class="fa fa-chevron-left"></i> 开源客户端：Beats —— 一款基于萌否网站api的音乐管理软件
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/11/29/Java编程思想阅读笔记/" rel="prev" title="Java编程思想阅读笔记">
+                Java编程思想阅读笔记 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/11/02/Android开发日记（十二）——PermissionBuilder/" data-title="Android开发日记（十二）—— Android 6.0权限管理" data-url="http://www.cpacm.net/2016/11/02/Android开发日记（十二）——PermissionBuilder/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/img/author.jpg" alt="cpacm">
+          <p class="site-author-name" itemprop="name">cpacm</p>
+          <p class="site-description motion-element" itemprop="description">请不要忘记，那给你带来感动的，名为二次元的理想乡。</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">52</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/cpacm" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/u/3053253821" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.cnblogs.com/cpacm/" target="_blank" title="博客园">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  博客园
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Android-6-0权限管理"><span class="nav-number">1.</span> <span class="nav-text">Android 6.0权限管理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#关于权限管理"><span class="nav-number">1.1.</span> <span class="nav-text">关于权限管理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#通用权限和危险权限"><span class="nav-number">1.2.</span> <span class="nav-text">通用权限和危险权限</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#通用权限"><span class="nav-number">1.2.1.</span> <span class="nav-text">通用权限</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#危险权限"><span class="nav-number">1.2.2.</span> <span class="nav-text">危险权限</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#两个特殊的权限"><span class="nav-number">1.2.3.</span> <span class="nav-text">两个特殊的权限</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#权限申请流程"><span class="nav-number">1.3.</span> <span class="nav-text">权限申请流程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#checkSelfPermission"><span class="nav-number">1.3.1.</span> <span class="nav-text">checkSelfPermission()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#requestPermissions"><span class="nav-number">1.3.2.</span> <span class="nav-text">requestPermissions()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#onRequestPermissionsResult"><span class="nav-number">1.3.3.</span> <span class="nav-text">onRequestPermissionsResult()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#shouldShowRequestPermissionRationale"><span class="nav-number">1.3.4.</span> <span class="nav-text">shouldShowRequestPermissionRationale()</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Permission-Builder"><span class="nav-number">1.4.</span> <span class="nav-text">Permission Builder</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">cpacm</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"cpacm"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("2fmsJHBmgPTnmd1bc7R9GcVX-gzGzoHsz", "CBUSqxdc9PSLibNV3TzlhpWg");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+</body>
+</html>

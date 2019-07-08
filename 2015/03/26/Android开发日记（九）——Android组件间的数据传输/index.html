@@ -1,0 +1,803 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="Android,开发系列,">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1">
+
+
+
+
+
+
+<meta name="description" content="组件我们有了，那么我们缺少一个组件之间传递信息的渠道。利用Intent做载体，这是一个王道的做法。还有呢，可以利用文件系统来做数据共享。也可以使用Application设置全局数据，利用组件来进行控制数据。">
+<meta name="keywords" content="Android,开发系列">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android开发日记（九）——Android组件间的数据传输">
+<meta property="og:url" content="http://www.cpacm.net/2015/03/26/Android开发日记（九）——Android组件间的数据传输/index.html">
+<meta property="og:site_name" content="cpacm">
+<meta property="og:description" content="组件我们有了，那么我们缺少一个组件之间传递信息的渠道。利用Intent做载体，这是一个王道的做法。还有呢，可以利用文件系统来做数据共享。也可以使用Application设置全局数据，利用组件来进行控制数据。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2015-12-24T19:29:24.231Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android开发日记（九）——Android组件间的数据传输">
+<meta name="twitter:description" content="组件我们有了，那么我们缺少一个组件之间传递信息的渠道。利用Intent做载体，这是一个王道的做法。还有呢，可以利用文件系统来做数据共享。也可以使用Application设置全局数据，利用组件来进行控制数据。">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> Android开发日记（九）——Android组件间的数据传输 | cpacm </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?400b16383d4e24e7e0c1604aa14354a4";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">cpacm</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">动漫中毒者，技术宅</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Android开发日记（九）——Android组件间的数据传输
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2015-03-26T11:00:55+08:00" content="2015-03-26">
+              2015-03-26
+            </time>
+          </span>
+
+          
+            <span class="post-category">
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2015/03/26/Android开发日记（九）——Android组件间的数据传输/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/03/26/Android开发日记（九）——Android组件间的数据传输/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2015/03/26/Android开发日记（九）——Android组件间的数据传输/" class="leancloud_visitors" data-flag-title="Android开发日记（九）——Android组件间的数据传输">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><em>本系列原本写于博客园，现移植到自己的博客上并重新编辑。</em>   </p>
+<h2 id="一、Intent数据传递"><a href="#一、Intent数据传递" class="headerlink" title="一、Intent数据传递"></a>一、Intent数据传递</h2><p>那么首先是简单的跳转。我们可以借助bundle这个容器来存放我们想要传递的数据。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Intent intent = <span class="keyword">new</span> Intent();   </span><br><span class="line">intent.setClass(activity1.<span class="keyword">this</span>, activity2.class);   <span class="comment">//描述起点和目标   </span></span><br><span class="line">Bundle bundle = <span class="keyword">new</span> Bundle();                           <span class="comment">//创建Bundle对象   </span></span><br><span class="line">bundle.putString(<span class="string">"tag"</span>, <span class="string">"Activity1发来的数据"</span>);     <span class="comment">//装入数据   </span></span><br><span class="line">intent.putExtras(bundle);                                <span class="comment">//把Bundle塞入Intent里面   </span></span><br><span class="line">startActivity(intent);                                     <span class="comment">//开始切换</span></span><br></pre></td></tr></table></figure>
+
+<p>另一个接受数据</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Intent intent = <span class="keyword">this</span>.getIntent();        <span class="comment">//获取已有的intent对象   </span></span><br><span class="line">Bundle bundle = intent.getExtras();    <span class="comment">//获取intent里面的bundle对象   </span></span><br><span class="line">string = bundle.getString(<span class="string">"tag"</span>);    <span class="comment">//获取Bundle里面的字符串</span></span><br></pre></td></tr></table></figure>
+
+<p>那么接下来是如何接受从目标Activity返回的处理结果。这里有两种方式，一是在onRestart方法里面接受处理结果，方法实现和Activity2接受从Activity1发来的数据处理一样。另一种方式，是采用应答模式切换。这里，主要介绍下第二种方式。应答模式切换和普通的切换不同在于，普通的是有去没回，应答则是有来有往。代码实现也不一样：<br>从Activity1 切换到Activity2：<code>startActivityForResult(intent,0)</code>;从Activity2返回到 <code>Activity1：setResult(RESULT_OK, intent)</code>。接受返回结果：<code>protected void onActivityResult()</code>。具体代码如下：<br><strong>发送方：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Intent intent = <span class="keyword">new</span> Intent();    </span><br><span class="line">intent = intent.setClass(Activity1.<span class="keyword">this</span>, AnotherActivity.class);    </span><br><span class="line">Bundle bundle = <span class="keyword">new</span> Bundle();    </span><br><span class="line">bundle.putString(<span class="string">"string"</span>,<span class="string">"cpacm"</span>);    </span><br><span class="line">intent.putExtras(bundle);    </span><br><span class="line">startActivityForResult(intent,<span class="number">0</span>);       <span class="comment">//只有这里不同,这里的0是请求码，用于返回数据的识别</span></span><br><span class="line"> <span class="comment">//Activity1.this.finish();  //不能用finish，会触发onDestroy();</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>接收方：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Intent intent = <span class="keyword">new</span> Intent();   </span><br><span class="line">intent = intent.setClass(AnotherActivity.<span class="keyword">this</span>, Activity1.class);   </span><br><span class="line">Bundle bundle = <span class="keyword">new</span> Bundle();   </span><br><span class="line">bundle.putInt(<span class="string">"result"</span>, <span class="string">"Activity2的处理结果"</span>);   </span><br><span class="line">intent.putExtras(bundle);       </span><br><span class="line">AnotherActivity.<span class="keyword">this</span>.setResult(RESULT_OK, intent);   <span class="comment">//RESULT_OK是返回状态码   </span></span><br><span class="line">AnotherActivity.<span class="keyword">this</span>.finish(); <span class="comment">//会触发onDestroy();</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>发送方接受消息：</strong>（其中requestCode是请求码，可以根据请求码的不同来区分不同的处理模块）</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"> <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onActivityResult</span><span class="params">(<span class="keyword">int</span> requestCode, <span class="keyword">int</span> resultCode, Intent data)</span> </span>&#123;    </span><br><span class="line">   <span class="keyword">super</span>.onActivityResult(requestCode, resultCode, data);    </span><br><span class="line">	<span class="keyword">switch</span>(resultCode) &#123; <span class="comment">//根据状态码，处理返回结果    </span></span><br><span class="line">	<span class="keyword">case</span> RESULT_OK:     </span><br><span class="line">		  Bundle bundle =data.getExtras();   <span class="comment">//获取intent里面的bundle对象    </span></span><br><span class="line">			  String result = bundle.getInt(<span class="string">"result"</span>);     </span><br><span class="line">	<span class="keyword">break</span>;       </span><br><span class="line">	<span class="keyword">default</span>:    </span><br><span class="line">	<span class="keyword">break</span>;    </span><br><span class="line">	&#125;         </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="二、文件系统做数据共享"><a href="#二、文件系统做数据共享" class="headerlink" title="二、文件系统做数据共享"></a>二、文件系统做数据共享</h2><p>(1) 通过 <code>Context.getSharedPreferences(String fileName,int mode)</code>方法，可以打开一个xml文件，文件的位置在<code>/data/data/package_name/shared_prefs/fileName.xml</code>，如果不存在，则会自动创建。可以对该文件进行读写操作，在应用内的各组件之间共享数据。如果将mode设置为<code>Context.MODE_WORLD_READ</code>或者<code>Context.MODE_WORLD_WRITE</code>，则还可以被其他应用访问到。不过这不是 android推荐的方式，要实现跨应用共享数据，推荐的方式是用<code>ContentProvider</code>实现 。具体实现方法可以看以前写的文章<a href="http://www.cpacm.net/2015/03/22/Android开发日记（五）——Android数据存储（上）/">Android数据存储（上）</a>和<a href="http://www.cpacm.net/2015/03/22/Android开发日记（六）——Android数据存储（下）/">Android数据存储（下）</a>。<br>(2) 除了比较方便的<code>shared_prefs</code>，也可以创建自定义文件，方法是<code>Context.openFileOutput()</code>，可以在<code>/data/data /package_name/files/</code>目录下创建指定的文件，除此以外，和上面提到的<code>shared_prefs</code>都一样。不过操作起来就复杂一些了。要读取用这种方式创建的文件，可以用<code>Context.openFileInput()</code>方法。<br>(3) 此外，还可以在SD卡上操作文件，通过标准的java.io包内的API就可以。不过要注意的是，SD卡内采用的是FAT文件系统，所以不支持linux 的文件读写权限控制，这点和<code>shared_prefs</code>与file不太一样。如果需要对文件进行读写权限控制，就不能采用写入SD卡的方式。<br>(4) 也可以用android自带的SQLite数据库来做数据持久化，主要用到的类包括<code>SQLiteOpenHelper</code>和<code>SQLiteDatabase</code>。</p>
+<h2 id="三、Application设置全局数据"><a href="#三、Application设置全局数据" class="headerlink" title="三、Application设置全局数据"></a>三、Application设置全局数据</h2><p>在java中，我们使用全局变量时一般都会使用静态变量，然后public类型，让所有类都可以使用这些变量。当然在Android也可以这样做。不过在这里说的是我们可以使用Application来管理这些变量。Application类是一个基类，这个基类的作用是为了获取整个应用程序的状态。 我们可以自己继承或实现这个类，当你要使用自己拓展的application类的时候，只要在manifest.xml中 的<application>标签中name应用自己定义的类就行了，这样做的结果是：当你的应用程序或者包所在的进程创建的时候，这个类就会被实例化。<br>使用的方法很简单，首先继承Application类再去把它重写，主要重写里面的onCreate方法，就是创建的时候，初始化变量的值。然后在整个应用中的各个文件中就可以对该变量进行操作了。<br>启动Application时，系统会创建一个PID，即进程ID，所有的Activity就会在此进程上运行。那么我们在Application创建的时候初始化全局变量，同一个应用的所有Activity都可以取到这些全局变量的值，换句话说，我们在某一个Activity中改变了这些全局变量的值， 那么在同一个应用的其他Activity中值就会改变。这样我们就达到了控制全局变量的目的。（当然application不仅仅局限于这里，它可以配合开发者设置更多的功能）<br>下面一个小例子：</application></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyApp</span> <span class="keyword">extends</span> <span class="title">Application</span></span>&#123;  </span><br><span class="line">  </span><br><span class="line">    <span class="keyword">private</span> String learn;      </span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getLearn</span><span class="params">()</span></span>&#123;  </span><br><span class="line">        <span class="keyword">return</span> learn;  </span><br><span class="line">    &#125;     </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setLearn</span><span class="params">(String s)</span></span>&#123;  </span><br><span class="line">        <span class="keyword">this</span>.learn= s;  </span><br><span class="line">    &#125;  </span><br><span class="line">  </span><br><span class="line">    <span class="meta">@Override</span>  </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">()</span> </span>&#123;  </span><br><span class="line">        <span class="comment">// TODO Auto-generated method stub  </span></span><br><span class="line">        <span class="keyword">super</span>.onCreate();  </span><br><span class="line">        setLearn(<span class="string">"cpacm"</span>); <span class="comment">//初始化全局变量         </span></span><br><span class="line">    &#125;     </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面就是一个继承了Application类的简单使用，我们只是新建了一个字符串变量。没有全局，也没有静态，要使用它必须要通过MyApp才行。<br>接下来看看我们怎么使用它：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">mainActivity</span> <span class="keyword">extends</span> <span class="title">Activity</span> </span>&#123;  </span><br><span class="line">     </span><br><span class="line">    <span class="keyword">private</span> MyYApp myApp;  </span><br><span class="line">     </span><br><span class="line">    <span class="meta">@Override</span>  </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;  </span><br><span class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);  </span><br><span class="line">        setContentView(R.layout.main);  </span><br><span class="line">        myApp= (MyYApp) getApplication(); <span class="comment">//获得自定义的应用程序YApp  </span></span><br><span class="line">        Log.d(<span class="string">"TEST"</span>, <span class="string">"InitLabel:"</span>+myApp.getLearn());   <span class="comment">//将我们放到进程中的全局变量拿出来，看是不是我们曾经设置的值  </span></span><br><span class="line"> </span><br><span class="line">        myApp.setLearn(<span class="string">"ahaha"</span>);  <span class="comment">//修改一下  </span></span><br><span class="line">        Log.d(<span class="string">"TEST"</span>, <span class="string">"ChangeLabel:"</span>+myApp.getLearn()); <span class="comment">//看下，这个值改变了没有  </span></span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>最后在配置文件中注册自己定义的App</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 在这里，将默认的Application设置成自己做的MyApp--&gt;</span>  </span><br><span class="line">   <span class="tag">&lt;<span class="name">application</span> <span class="attr">android:name</span>=<span class="string">"MyApp"</span> <span class="attr">...</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="四、组件控制数据"><a href="#四、组件控制数据" class="headerlink" title="四、组件控制数据"></a>四、组件控制数据</h2><p>第一个当然是正统的ContentProvider组件了，怎么使用它，请看这篇博文，这里就不再讲述了。<a href="http://www.cpacm.net/2015/03/22/Android开发日记（七）——Android四大组件之ContentProvider/">Android四大组件之ContentProvider</a>。<br>service也可以充当数据控制的组件，毕竟service是在后台运行，当它与Activity绑定时，activity就可以从里面获取数据（前提是service没有被销毁）。详情：<a href="http://www.cpacm.net/2015/03/22/Android开发日记（三）——Android四大组件之Service/">Android四大组件之Service</a><br>广播组件也可以，更可以使用sendOrderedBroadcast(intent, null, BroadcastReceiver(), null, Activity.RESULT_OK, null, null);方法对返回的数据进行处理.这个方法是在原有的广播序列的末尾再加一个广播，并作为最后的一个广播，可以对返回的信息进行处理。详情：<a href="http://www.cpacm.net/2015/03/22/Android开发日记（四）——Android四大组件之Broadcast-Receiver/">Android四大组件之Broadcast Receiver</a></p>
+<h2 id="五、结束语"><a href="#五、结束语" class="headerlink" title="五、结束语"></a>五、结束语</h2><p><embed src="http://www.xiami.com/widget/0_1770243080/singlePlayer.swf" type="application/x-shockwave-flash" width="257" height="33" wmode="transparent"><br>到这里为止，Android入门篇的组件部分就基本上完毕了，当然里面还有很多内容可以深究，这方面要大家自己挖掘了。那么接下来就是Android的控件部分了，额，一想到那么多的控件头都大了，不过基本原理都是相通的，举一反三嘛~好了，如果有什么问题也可以联系我一起探讨学习，最后希望大家每天都能向前迈进一步。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag">#Android</a>
+          
+            <a href="/tags/开发系列/" rel="tag">#开发系列</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/03/26/Android开发日记（八）——Android的Intent机制/" rel="next" title="Android开发日记（八）——Android的Intent机制">
+                <i class="fa fa-chevron-left"></i> Android开发日记（八）——Android的Intent机制
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/04/01/Android开发日记（十）——Android的控件解析/" rel="prev" title="Android开发日记（十）——Android的控件解析">
+                Android开发日记（十）——Android的控件解析 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2015/03/26/Android开发日记（九）——Android组件间的数据传输/" data-title="Android开发日记（九）——Android组件间的数据传输" data-url="http://www.cpacm.net/2015/03/26/Android开发日记（九）——Android组件间的数据传输/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/img/author.jpg" alt="cpacm">
+          <p class="site-author-name" itemprop="name">cpacm</p>
+          <p class="site-description motion-element" itemprop="description">请不要忘记，那给你带来感动的，名为二次元的理想乡。</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">52</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/cpacm" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/u/3053253821" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.cnblogs.com/cpacm/" target="_blank" title="博客园">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  博客园
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、Intent数据传递"><span class="nav-number">1.</span> <span class="nav-text">一、Intent数据传递</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、文件系统做数据共享"><span class="nav-number">2.</span> <span class="nav-text">二、文件系统做数据共享</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、Application设置全局数据"><span class="nav-number">3.</span> <span class="nav-text">三、Application设置全局数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四、组件控制数据"><span class="nav-number">4.</span> <span class="nav-text">四、组件控制数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#五、结束语"><span class="nav-number">5.</span> <span class="nav-text">五、结束语</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">cpacm</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"cpacm"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("2fmsJHBmgPTnmd1bc7R9GcVX-gzGzoHsz", "CBUSqxdc9PSLibNV3TzlhpWg");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+</body>
+</html>

@@ -1,0 +1,841 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="Android,开发系列,">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1">
+
+
+
+
+
+
+<meta name="description" content="通常我们在自己开发的 APP 中打开网页无非两种方法： 一是跳转到系统自带的浏览器，二是使用 WebView 控件加载页面。使用 WebView 控件的好处就是可以通过各种 api 接口来定制各种行为，常用的几个设置地方为 WebSettings、JavaScriptInterface、WebViewClient 和 WebChromeClient。平时出现的问题都可以通过修改这些设置来解决。">
+<meta name="keywords" content="Android,开发系列">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android开发日记（十四）——带你解决 WebView 里的常见问题">
+<meta property="og:url" content="http://www.cpacm.net/2017/02/10/Android开发日记（十四）——带你解决 WebView 里的常见问题/index.html">
+<meta property="og:site_name" content="cpacm">
+<meta property="og:description" content="通常我们在自己开发的 APP 中打开网页无非两种方法： 一是跳转到系统自带的浏览器，二是使用 WebView 控件加载页面。使用 WebView 控件的好处就是可以通过各种 api 接口来定制各种行为，常用的几个设置地方为 WebSettings、JavaScriptInterface、WebViewClient 和 WebChromeClient。平时出现的问题都可以通过修改这些设置来解决。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-02-10T13:49:14.322Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android开发日记（十四）——带你解决 WebView 里的常见问题">
+<meta name="twitter:description" content="通常我们在自己开发的 APP 中打开网页无非两种方法： 一是跳转到系统自带的浏览器，二是使用 WebView 控件加载页面。使用 WebView 控件的好处就是可以通过各种 api 接口来定制各种行为，常用的几个设置地方为 WebSettings、JavaScriptInterface、WebViewClient 和 WebChromeClient。平时出现的问题都可以通过修改这些设置来解决。">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> Android开发日记（十四）——带你解决 WebView 里的常见问题 | cpacm </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?400b16383d4e24e7e0c1604aa14354a4";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">cpacm</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">动漫中毒者，技术宅</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Android开发日记（十四）——带你解决 WebView 里的常见问题
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-02-10T21:50:10+08:00" content="2017-02-10">
+              2017-02-10
+            </time>
+          </span>
+
+          
+            <span class="post-category">
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/02/10/Android开发日记（十四）——带你解决 WebView 里的常见问题/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/02/10/Android开发日记（十四）——带你解决 WebView 里的常见问题/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2017/02/10/Android开发日记（十四）——带你解决 WebView 里的常见问题/" class="leancloud_visitors" data-flag-title="Android开发日记（十四）——带你解决 WebView 里的常见问题">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>通常我们在自己开发的 APP 中打开网页无非两种方法： 一是跳转到系统自带的浏览器，二是使用 WebView 控件加载页面。使用 WebView 控件的好处就是可以通过各种 api 接口来定制各种行为，常用的几个设置地方为 <strong>WebSettings</strong>、<strong>JavaScriptInterface</strong>、<strong>WebViewClient</strong> 和 <strong>WebChromeClient</strong>。平时出现的问题都可以通过修改这些设置来解决。</p>
+<a id="more"></a>
+
+<h3 id="使用了-WebView-还是跳转到了系统自带的浏览器？"><a href="#使用了-WebView-还是跳转到了系统自带的浏览器？" class="headerlink" title="使用了 WebView 还是跳转到了系统自带的浏览器？"></a>使用了 WebView 还是跳转到了系统自带的浏览器？</h3><p>很简单的解决方法，为你的 webview 设置一个新的 WebViewClient。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">webView.setWebViewClient(<span class="keyword">new</span> WebViewClient()&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">shouldOverrideUrlLoading</span><span class="params">(WebView view, String url)</span> </span>&#123;</span><br><span class="line">        view.loadUrl(url);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 或者直接添加，效果是一样的</span></span><br><span class="line">webView.setWebViewClient(<span class="keyword">new</span> WebViewClient());</span><br></pre></td></tr></table></figure>
+
+<h3 id="获取网页的标题和图标"><a href="#获取网页的标题和图标" class="headerlink" title="获取网页的标题和图标"></a>获取网页的标题和图标</h3><p>通过 WebChromeClient 可以获取到这些信息。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">webView.setWebChromeClient(<span class="keyword">new</span> WebChromeClient() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onReceivedTitle</span><span class="params">(WebView view, String title)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onReceivedTitle(view, title);</span><br><span class="line">        setTitle(title);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onReceivedIcon</span><span class="params">(WebView view, Bitmap icon)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onReceivedIcon(view, icon);</span><br><span class="line">        setIcon(icon);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>但是，这里有个问题，当通过 <code>webView.goBack()</code> 方式返回上一级Web页面的时候不会触发这个方法，因此会导致标题无法跟随历史记录返回上一级页面。所以需要在 <code>onPageFinished()</code> 中对界面标题重新设置。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">webView.setWebViewClient(<span class="keyword">new</span> WebViewClient()&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onPageFinished</span><span class="params">(WebView view, String url)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onPageFinished(view, url);</span><br><span class="line">        setTitle(String.valueOf(view.getTitle()));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="返回键实现网页的后退键"><a href="#返回键实现网页的后退键" class="headerlink" title="返回键实现网页的后退键"></a>返回键实现网页的后退键</h3><p>在 WebView 中可以通过 goBack() 方法后退到历史记录的上一项。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 在 Actvity 中监听返回键按钮</span></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onBackPressed</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (webView.canGoBack())</span><br><span class="line">        webView.goBack();</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="keyword">super</span>.onBackPressed();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="设置-WebView-的-header"><a href="#设置-WebView-的-header" class="headerlink" title="设置 WebView 的 header"></a>设置 WebView 的 header</h3><p>在 WebView 的 <code>loadUrl()</code> 方法中传入 Header 参数即可。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">loadURLWithHTTPHeaders</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">final</span> String url = <span class="string">"http://cpacm.net"</span>;</span><br><span class="line">    WebView webView = <span class="keyword">new</span> WebView(getActivity());</span><br><span class="line">    Map&lt;String,String&gt; extraHeaders = <span class="keyword">new</span> HashMap&lt;String, String&gt;();</span><br><span class="line">    extraHeaders.put(<span class="string">"Referer"</span>, <span class="string">"http://www.google.com"</span>);</span><br><span class="line">    webView.loadUrl(url, extraHeaders);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="设置-WebView-的-User-Agent"><a href="#设置-WebView-的-User-Agent" class="headerlink" title="设置 WebView 的 User-Agent"></a>设置 WebView 的 User-Agent</h3><p>不要试图在 Header 里面去修改，而是在 WebSettings 修改</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">webView.getSettings().setUserAgentString(<span class="string">"Mozilla/5.0 (Windows NT 10.0; WOW64; rv:50.0) Gecko/20100101 Firefox/50.0"</span>);</span><br></pre></td></tr></table></figure>
+
+<h3 id="如何设置-WebView-的缓存"><a href="#如何设置-WebView-的缓存" class="headerlink" title="如何设置 WebView 的缓存"></a>如何设置 WebView 的缓存</h3><p>当需要本地缓存网页的时候就需要打开 WebViewSettings 的缓存开关,这样子当下次进到该页面无网络的情况下也能打开页面。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">WebSettings settings = webView.getSettings();</span><br><span class="line">settings.setAppCacheEnabled(<span class="keyword">true</span>); <span class="comment">//启用应用缓存</span></span><br><span class="line">settings.setDomStorageEnabled(<span class="keyword">true</span>); <span class="comment">//启用或禁用DOM缓存。</span></span><br><span class="line">settings.setDatabaseEnabled(<span class="keyword">true</span>); <span class="comment">//启用或禁用DOM缓存。</span></span><br><span class="line"><span class="keyword">if</span> (SystemUtil.isNetworkConnected()) &#123; <span class="comment">//判断是否联网</span></span><br><span class="line">    settings.setCacheMode(WebSettings.LOAD_DEFAULT); <span class="comment">//默认的缓存使用模式</span></span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    settings.setCacheMode(WebSettings.LOAD_CACHE_ONLY); <span class="comment">//不从网络加载数据，只从缓存加载数据。</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="无法下载文件？"><a href="#无法下载文件？" class="headerlink" title="无法下载文件？"></a>无法下载文件？</h3><p>在自己写的 WebView 下是无法直接下载文件，需要自己监听下载事件并对下载的动作进行处理。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* 当下载文件时打开系统自带的浏览器进行下载，当然也可以对捕获到的 url 进行处理在应用内下载。</span></span><br><span class="line"><span class="comment">**/</span></span><br><span class="line">webView.setDownloadListener(<span class="keyword">new</span> FileDownLoadListener());</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">FileDownLoadListener</span> <span class="keyword">implements</span> <span class="title">DownloadListener</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onDownloadStart</span><span class="params">(String url, String userAgent, String contentDisposition, String mimetype, <span class="keyword">long</span> contentLength)</span> </span>&#123;</span><br><span class="line">        Uri uri = Uri.parse(url);</span><br><span class="line">        Intent intent = <span class="keyword">new</span> Intent(Intent.ACTION_VIEW, uri);</span><br><span class="line">        startActivity(intent);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="无法打开文件选择器？"><a href="#无法打开文件选择器？" class="headerlink" title="无法打开文件选择器？"></a>无法打开文件选择器？</h3><p>通过重写 <code>WebChromeClient</code> 来实现点击 <code>&lt;input type=&#39;file&#39;&gt;</code> 来打开系统文件选择器。</p>
+<p><strong>一个完整的Activity示例</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MainActivity</span> <span class="keyword">extends</span> <span class="title">AppCompatActivity</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** Android 5.0以下版本的文件选择回调 */</span></span><br><span class="line">    <span class="keyword">protected</span> ValueCallback&lt;Uri&gt; mFileUploadCallbackFirst;</span><br><span class="line">    <span class="comment">/** Android 5.0及以上版本的文件选择回调 */</span></span><br><span class="line">    <span class="keyword">protected</span> ValueCallback&lt;Uri[]&gt; mFileUploadCallbackSecond;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> REQUEST_CODE_FILE_PICKER = <span class="number">51426</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">protected</span> String mUploadableFileTypes = <span class="string">"image/*"</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> WebView mWebView;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line">        setContentView(R.layout.activity_main);</span><br><span class="line"></span><br><span class="line">        initWebView();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">initWebView</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        mWebView = (WebView) findViewById(R.id.my_webview);</span><br><span class="line"></span><br><span class="line">        mWebView.loadUrl(<span class="string">"file:///android_asset/index.html"</span>);</span><br><span class="line">        mWebView.setWebChromeClient(<span class="keyword">new</span> OpenFileChromeClient());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">OpenFileChromeClient</span> <span class="keyword">extends</span> <span class="title">WebChromeClient</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//  Android 2.2 (API level 8)到Android 2.3 (API level 10)版本选择文件时会触发该隐藏方法</span></span><br><span class="line">        <span class="meta">@SuppressWarnings</span>(<span class="string">"unused"</span>)</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">openFileChooser</span><span class="params">(ValueCallback&lt;Uri&gt; uploadMsg)</span> </span>&#123;</span><br><span class="line">            openFileChooser(uploadMsg, <span class="keyword">null</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Android 3.0 (API level 11)到 Android 4.0 (API level 15))版本选择文件时会触发，该方法为隐藏方法</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">openFileChooser</span><span class="params">(ValueCallback&lt;Uri&gt; uploadMsg, String acceptType)</span> </span>&#123;</span><br><span class="line">            openFileChooser(uploadMsg, acceptType, <span class="keyword">null</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Android 4.1 (API level 16) -- Android 4.3 (API level 18)版本选择文件时会触发，该方法为隐藏方法</span></span><br><span class="line">        <span class="meta">@SuppressWarnings</span>(<span class="string">"unused"</span>)</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">openFileChooser</span><span class="params">(ValueCallback&lt;Uri&gt; uploadMsg, String acceptType, String capture)</span> </span>&#123;</span><br><span class="line">            openFileInput(uploadMsg, <span class="keyword">null</span>, <span class="keyword">false</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Android 5.0 (API level 21)以上版本会触发该方法，该方法为公开方法</span></span><br><span class="line">        <span class="meta">@SuppressWarnings</span>(<span class="string">"all"</span>)</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onShowFileChooser</span><span class="params">(WebView webView, ValueCallback&lt;Uri[]&gt; filePathCallback, WebChromeClient.FileChooserParams fileChooserParams)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">if</span> (Build.VERSION.SDK_INT &gt;= <span class="number">21</span>) &#123;</span><br><span class="line">                <span class="keyword">final</span> <span class="keyword">boolean</span> allowMultiple = fileChooserParams.getMode() == FileChooserParams.MODE_OPEN_MULTIPLE;<span class="comment">//是否支持多选</span></span><br><span class="line">                openFileInput(<span class="keyword">null</span>, filePathCallback, allowMultiple);</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@SuppressLint</span>(<span class="string">"NewApi"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">openFileInput</span><span class="params">(<span class="keyword">final</span> ValueCallback&lt;Uri&gt; fileUploadCallbackFirst, <span class="keyword">final</span> ValueCallback&lt;Uri[]&gt; fileUploadCallbackSecond, <span class="keyword">final</span> <span class="keyword">boolean</span> allowMultiple)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//Android 5.0以下版本</span></span><br><span class="line">        <span class="keyword">if</span> (mFileUploadCallbackFirst != <span class="keyword">null</span>) &#123;</span><br><span class="line">            mFileUploadCallbackFirst.onReceiveValue(<span class="keyword">null</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        mFileUploadCallbackFirst = fileUploadCallbackFirst;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//Android 5.0及以上版本</span></span><br><span class="line">        <span class="keyword">if</span> (mFileUploadCallbackSecond != <span class="keyword">null</span>) &#123;</span><br><span class="line">            mFileUploadCallbackSecond.onReceiveValue(<span class="keyword">null</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        mFileUploadCallbackSecond = fileUploadCallbackSecond;</span><br><span class="line"></span><br><span class="line">        Intent i = <span class="keyword">new</span> Intent(Intent.ACTION_GET_CONTENT);</span><br><span class="line">        i.addCategory(Intent.CATEGORY_OPENABLE);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (allowMultiple) &#123;</span><br><span class="line">            <span class="keyword">if</span> (Build.VERSION.SDK_INT &gt;= <span class="number">18</span>) &#123;</span><br><span class="line">                i.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, <span class="keyword">true</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        i.setType(mUploadableFileTypes);</span><br><span class="line"></span><br><span class="line">        startActivityForResult(Intent.createChooser(i, <span class="string">"选择文件"</span>), REQUEST_CODE_FILE_PICKER);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onActivityResult</span><span class="params">(<span class="keyword">final</span> <span class="keyword">int</span> requestCode, <span class="keyword">final</span> <span class="keyword">int</span> resultCode, <span class="keyword">final</span> Intent intent)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (requestCode == REQUEST_CODE_FILE_PICKER) &#123;</span><br><span class="line">            <span class="keyword">if</span> (resultCode == Activity.RESULT_OK) &#123;</span><br><span class="line">                <span class="keyword">if</span> (intent != <span class="keyword">null</span>) &#123;</span><br><span class="line">                    <span class="comment">//Android 5.0以下版本</span></span><br><span class="line">                    <span class="keyword">if</span> (mFileUploadCallbackFirst != <span class="keyword">null</span>) &#123;</span><br><span class="line">                        mFileUploadCallbackFirst.onReceiveValue(intent.getData());</span><br><span class="line">                        mFileUploadCallbackFirst = <span class="keyword">null</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="keyword">else</span> <span class="keyword">if</span> (mFileUploadCallbackSecond != <span class="keyword">null</span>) &#123;<span class="comment">//Android 5.0及以上版本</span></span><br><span class="line">                        Uri[] dataUris = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line">                        <span class="keyword">try</span> &#123;</span><br><span class="line">                            <span class="keyword">if</span> (intent.getDataString() != <span class="keyword">null</span>) &#123;</span><br><span class="line">                                dataUris = <span class="keyword">new</span> Uri[] &#123; Uri.parse(intent.getDataString()) &#125;;</span><br><span class="line">                            &#125;</span><br><span class="line">                            <span class="keyword">else</span> &#123;</span><br><span class="line">                                <span class="keyword">if</span> (Build.VERSION.SDK_INT &gt;= <span class="number">16</span>) &#123;</span><br><span class="line">                                    <span class="keyword">if</span> (intent.getClipData() != <span class="keyword">null</span>) &#123;</span><br><span class="line">                                        <span class="keyword">final</span> <span class="keyword">int</span> numSelectedFiles = intent.getClipData().getItemCount();</span><br><span class="line"></span><br><span class="line">                                        dataUris = <span class="keyword">new</span> Uri[numSelectedFiles];</span><br><span class="line"></span><br><span class="line">                                        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; numSelectedFiles; i++) &#123;</span><br><span class="line">                                            dataUris[i] = intent.getClipData().getItemAt(i).getUri();</span><br><span class="line">                                        &#125;</span><br><span class="line">                                    &#125;</span><br><span class="line">                                &#125;</span><br><span class="line">                            &#125;</span><br><span class="line">                        &#125;</span><br><span class="line">                        <span class="keyword">catch</span> (Exception ignored) &#123; &#125;</span><br><span class="line">                        mFileUploadCallbackSecond.onReceiveValue(dataUris);</span><br><span class="line">                        mFileUploadCallbackSecond = <span class="keyword">null</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="comment">//这里mFileUploadCallbackFirst跟mFileUploadCallbackSecond在不同系统版本下分别持有了</span></span><br><span class="line">                <span class="comment">//WebView对象，在用户取消文件选择器的情况下，需给onReceiveValue传null返回值</span></span><br><span class="line">                <span class="comment">//否则WebView在未收到返回值的情况下，无法进行任何操作，文件选择器会失效</span></span><br><span class="line">                <span class="keyword">if</span> (mFileUploadCallbackFirst != <span class="keyword">null</span>) &#123;</span><br><span class="line">                    mFileUploadCallbackFirst.onReceiveValue(<span class="keyword">null</span>);</span><br><span class="line">                    mFileUploadCallbackFirst = <span class="keyword">null</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">else</span> <span class="keyword">if</span> (mFileUploadCallbackSecond != <span class="keyword">null</span>) &#123;</span><br><span class="line">                    mFileUploadCallbackSecond.onReceiveValue(<span class="keyword">null</span>);</span><br><span class="line">                    mFileUploadCallbackSecond = <span class="keyword">null</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="怎么为-WebView-的加载添加进度条"><a href="#怎么为-WebView-的加载添加进度条" class="headerlink" title="怎么为 WebView 的加载添加进度条"></a>怎么为 WebView 的加载添加进度条</h3><p>这里的 <code>onPageFinished()</code> 有个问题，不能在这里监听页面是否加载完毕（我自己测试的时候，好像在重定向和加载完 iframes 时都会调用这个方法）。<br>把页面加载完毕的判断放在 <code>onProgressChanged()</code> 里可能会更为准确。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">webView.setWebChromeClient(<span class="keyword">new</span> WebChromeClient() &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onProgressChanged</span><span class="params">(WebView view, <span class="keyword">int</span> position)</span> </span>&#123;</span><br><span class="line">        progressBar.setProgress(position);</span><br><span class="line">        <span class="keyword">if</span> (position == <span class="number">100</span>) &#123;</span><br><span class="line">            progressBar.setVisibility(View.GONE);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">super</span>.onProgressChanged(view, position);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">webView.setWebViewClient(<span class="keyword">new</span> WebViewClient()&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onPageStarted</span><span class="params">(WebView view, String url, Bitmap favicon)</span> </span>&#123;</span><br><span class="line">        progressBar.setVisibility(View.VISIBLE);</span><br><span class="line">        <span class="keyword">super</span>.onPageStarted(view, url, favicon);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="怎样对页面进行-Js-注入？"><a href="#怎样对页面进行-Js-注入？" class="headerlink" title="怎样对页面进行 Js 注入？"></a>怎样对页面进行 Js 注入？</h3><p>首先你要在 WebView 开启 JavaScript,然后搭建桥梁</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">WebSettings webSettings = webView.getSettings();</span><br><span class="line">webSettings.setJavaScriptEnabled(<span class="keyword">true</span>);</span><br><span class="line">webView.addJavascriptInterface(<span class="keyword">new</span> WebAppBridge(<span class="keyword">new</span> WebAppBridge.OauthLoginImpl() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">getResult</span><span class="params">(String s)</span> </span>&#123;</span><br><span class="line">                <span class="comment">//TODO</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;),</span><br><span class="line">        <span class="string">"oauth"</span>);</span><br><span class="line">webView.loadUrl(<span class="string">"javascript:"</span> + getAssetsJs(<span class="string">"autologin.js"</span>));</span><br><span class="line">webView.loadUrl(<span class="string">"javascript:adduplistener()"</span>);</span><br></pre></td></tr></table></figure>
+
+<p>WebAppBridge的代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">WebAppBridge</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> OauthLoginImpl oauthLogin;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">WebAppBridge</span><span class="params">(OauthLoginImpl oauthLogin)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.oauthLogin = oauthLogin;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@JavascriptInterface</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">getResult</span><span class="params">(String str)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (oauthLogin != <span class="keyword">null</span>)</span><br><span class="line">            oauthLogin.getResult(str);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">OauthLoginImpl</span> </span>&#123;</span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">getResult</span><span class="params">(String s)</span></span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>简单的说就是向网页注入一段 js, 在这段 js 里面设置回调到java中的方法 <code>getResult()</code>，由 WebAppBridge.getResult 来回收。<br>其中js的核心代码为</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">oauth.getResult(str);</span><br></pre></td></tr></table></figure>
+
+<p>其中 oauth 这个名称要与 <code>webView.addJavascriptInterface()</code>方法的第二个参数一样。</p>
+<p>具体的代码可以参考这个项目中写的 js 注入逻辑 <a href="https://github.com/cpacm/MoeMusic/blob/master/app/src/main/java/com/cpacm/moemusic/ui/widgets/dialogs/OauthDialog.java" target="_blank" rel="noopener">OauthDialog</a></p>
+<h3 id="如何手动添加-Cookie"><a href="#如何手动添加-Cookie" class="headerlink" title="如何手动添加 Cookie"></a>如何手动添加 Cookie</h3><p>需要获得 CookieManager 的对象并将 cookie 设置进去。<br><strong>从服务器的返回头中取出 cookie 根据Http请求的客户端不同，获取 cookie 的方式也不同，请自行获取。</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 将cookie设置到 WebView</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> url 要加载的 url</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> cookie 要同步的 cookie</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">syncCookie</span><span class="params">(String url,String cookie)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (Build.VERSION.SDK_INT &lt; Build.VERSION_CODES.LOLLIPOP) &#123;</span><br><span class="line">        CookieSyncManager.createInstance(context);</span><br><span class="line">    &#125;</span><br><span class="line">    CookieManager cookieManager = CookieManager.getInstance();</span><br><span class="line">    cookieManager.setAcceptCookie(<span class="keyword">true</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * cookie 设置形式</span></span><br><span class="line"><span class="comment">     * cookieManager.setCookie(url, "key=value;" + "domain=[your domain];path=/;")</span></span><br><span class="line"><span class="comment">    **/</span></span><br><span class="line">    cookieManager.setCookie(url, cookie);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>删除 Cookie 的方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 这个两个在 API level 21 被抛弃</span></span><br><span class="line"><span class="comment"> * CookieManager.getInstance().removeSessionCookie();</span></span><br><span class="line"><span class="comment"> * CookieManager.getInstance().removeAllCookie();</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * 推荐使用这两个， level 21 新加的</span></span><br><span class="line"><span class="comment"> * CookieManager.getInstance().removeSessionCookies();</span></span><br><span class="line"><span class="comment"> * CookieManager.getInstance().removeAllCookies();</span></span><br><span class="line"><span class="comment">**/</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">removeCookies</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    CookieManager cookieManager = CookieManager.getInstance();</span><br><span class="line">    cookieManager.removeAllCookie();</span><br><span class="line">    <span class="keyword">if</span> (Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.LOLLIPOP) &#123;</span><br><span class="line">        cookieManager.flush();</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        CookieSyncManager.createInstance(Application.getInstance());</span><br><span class="line">        CookieSyncManager.getInstance().sync();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="如何使-HTML5-video-在-WebView-全屏显示"><a href="#如何使-HTML5-video-在-WebView-全屏显示" class="headerlink" title="如何使 HTML5 video 在 WebView 全屏显示"></a>如何使 HTML5 video 在 WebView 全屏显示</h3><p>当网页全屏播放视频时会调用 <code>WebChromeClient.onShowCustomView()</code> 方法，所以可以通过将 video 播放的视图全屏达到目的。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onShowCustomView</span><span class="params">(View view, CustomViewCallback callback)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (view <span class="keyword">instanceof</span> FrameLayout &amp;&amp; fullScreenView != <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="comment">// A video wants to be shown</span></span><br><span class="line">        <span class="keyword">this</span>.videoViewContainer = (FrameLayout) view;</span><br><span class="line">        <span class="keyword">this</span>.videoViewCallback = callback;</span><br><span class="line">        fullScreenView.addView(videoViewContainer, <span class="keyword">new</span> ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));</span><br><span class="line">        fullScreenView.setVisibility(View.VISIBLE);</span><br><span class="line">        isVideoFullscreen = <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onHideCustomView</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (isVideoFullscreen &amp;&amp; fullScreenView != <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="comment">// Hide the video view, remove it, and show the non-video view</span></span><br><span class="line">        fullScreenView.setVisibility(View.INVISIBLE);</span><br><span class="line">        fullScreenView.removeView(videoViewContainer);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Call back (only in API level &lt;19, because in API level 19+ with chromium webview it crashes)</span></span><br><span class="line">        <span class="keyword">if</span> (videoViewCallback != <span class="keyword">null</span> &amp;&amp; !videoViewCallback.getClass().getName().contains(<span class="string">".chromium."</span>)) &#123;</span><br><span class="line">            videoViewCallback.onCustomViewHidden();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        isVideoFullscreen = <span class="keyword">false</span>;</span><br><span class="line">        videoViewContainer = <span class="keyword">null</span>;</span><br><span class="line">        videoViewCallback = <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>但是很多的手机版本在网页视频播放时是不会调用这个方法的，所以这个方法局限性很大。</p>
+<h3 id="Android5-0上-WebView中Http和Https混合问题"><a href="#Android5-0上-WebView中Http和Https混合问题" class="headerlink" title="Android5.0上 WebView中Http和Https混合问题"></a>Android5.0上 WebView中Http和Https混合问题</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * MIXED_CONTENT_ALWAYS_ALLOW：允许从任何来源加载内容，即使起源是不安全的；</span></span><br><span class="line"><span class="comment"> * MIXED_CONTENT_NEVER_ALLOW：不允许Https加载Http的内容，即不允许从安全的起源去加载一个不安全的资源；</span></span><br><span class="line"><span class="comment"> * MIXED_CONTENT_COMPATIBILITY_MODE：当涉及到混合式内容时，WebView 会尝试去兼容最新Web浏览器的风格。</span></span><br><span class="line"><span class="comment"> **/</span></span><br><span class="line"><span class="keyword">if</span> (Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.LOLLIPOP) &#123;</span><br><span class="line">     webView.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="如何避免-WebView-的内存泄露问题"><a href="#如何避免-WebView-的内存泄露问题" class="headerlink" title="如何避免 WebView 的内存泄露问题"></a>如何避免 WebView 的内存泄露问题</h3><ol>
+<li>可以将 Webview 的 Activity 新起一个进程，结束的时候直接System.exit(0);退出当前进程；</li>
+<li>不在xml中定义 WebView，而是在代码中创建，使用 getApplicationgContext() 作为传递的 Conetext；</li>
+<li>在 Activity 销毁的时候，将 WebView 置空<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onDestroy</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (webView != <span class="keyword">null</span>) &#123;</span><br><span class="line">        webView.loadDataWithBaseURL(<span class="keyword">null</span>, <span class="string">""</span>, <span class="string">"text/html"</span>, <span class="string">"utf-8"</span>, <span class="keyword">null</span>);</span><br><span class="line">        webView.clearHistory();</span><br><span class="line">        ((ViewGroup) webView.getParent()).removeView(webView);</span><br><span class="line">        webView.destroy();</span><br><span class="line">        webView = <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">super</span>.onDestroy();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>如果你踩到了 WebView 上的坑，请先默哀一分钟，然后努力找找解决方法吧，总会有人体验过你的悲剧，也会有人重蹈你的覆辙。<br>当然 WebView 里肯定不止我上面列出来的这些问题，如果你有更多的 WebView 问题解决方案欢迎评论交流。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag">#Android</a>
+          
+            <a href="/tags/开发系列/" rel="tag">#开发系列</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/02/10/MySQL基础知识/" rel="next" title="MySQL基础知识">
+                <i class="fa fa-chevron-left"></i> MySQL基础知识
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/02/19/Android开发日记（十五）——音乐播放器要点/" rel="prev" title="Android开发日记（十四）—— 音乐播放器要点">
+                Android开发日记（十四）—— 音乐播放器要点 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/02/10/Android开发日记（十四）——带你解决 WebView 里的常见问题/" data-title="Android开发日记（十四）——带你解决 WebView 里的常见问题" data-url="http://www.cpacm.net/2017/02/10/Android开发日记（十四）——带你解决 WebView 里的常见问题/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/img/author.jpg" alt="cpacm">
+          <p class="site-author-name" itemprop="name">cpacm</p>
+          <p class="site-description motion-element" itemprop="description">请不要忘记，那给你带来感动的，名为二次元的理想乡。</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">52</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/cpacm" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/u/3053253821" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.cnblogs.com/cpacm/" target="_blank" title="博客园">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  博客园
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用了-WebView-还是跳转到了系统自带的浏览器？"><span class="nav-number">1.</span> <span class="nav-text">使用了 WebView 还是跳转到了系统自带的浏览器？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取网页的标题和图标"><span class="nav-number">2.</span> <span class="nav-text">获取网页的标题和图标</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#返回键实现网页的后退键"><span class="nav-number">3.</span> <span class="nav-text">返回键实现网页的后退键</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#设置-WebView-的-header"><span class="nav-number">4.</span> <span class="nav-text">设置 WebView 的 header</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#设置-WebView-的-User-Agent"><span class="nav-number">5.</span> <span class="nav-text">设置 WebView 的 User-Agent</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如何设置-WebView-的缓存"><span class="nav-number">6.</span> <span class="nav-text">如何设置 WebView 的缓存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#无法下载文件？"><span class="nav-number">7.</span> <span class="nav-text">无法下载文件？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#无法打开文件选择器？"><span class="nav-number">8.</span> <span class="nav-text">无法打开文件选择器？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#怎么为-WebView-的加载添加进度条"><span class="nav-number">9.</span> <span class="nav-text">怎么为 WebView 的加载添加进度条</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#怎样对页面进行-Js-注入？"><span class="nav-number">10.</span> <span class="nav-text">怎样对页面进行 Js 注入？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如何手动添加-Cookie"><span class="nav-number">11.</span> <span class="nav-text">如何手动添加 Cookie</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如何使-HTML5-video-在-WebView-全屏显示"><span class="nav-number">12.</span> <span class="nav-text">如何使 HTML5 video 在 WebView 全屏显示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Android5-0上-WebView中Http和Https混合问题"><span class="nav-number">13.</span> <span class="nav-text">Android5.0上 WebView中Http和Https混合问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如何避免-WebView-的内存泄露问题"><span class="nav-number">14.</span> <span class="nav-text">如何避免 WebView 的内存泄露问题</span></a></li></ol><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number"></span> <span class="nav-text">总结</span></a></li></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">cpacm</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"cpacm"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("2fmsJHBmgPTnmd1bc7R9GcVX-gzGzoHsz", "CBUSqxdc9PSLibNV3TzlhpWg");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+</body>
+</html>

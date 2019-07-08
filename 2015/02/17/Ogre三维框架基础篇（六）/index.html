@@ -1,0 +1,820 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="ogre,">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1">
+
+
+
+
+
+
+<meta name="description" content="Ogre三维框架基础篇 —— 在Ogre中使用CEGUI">
+<meta name="keywords" content="ogre">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ogre三维框架基础篇（六）">
+<meta property="og:url" content="http://www.cpacm.net/2015/02/17/Ogre三维框架基础篇（六）/index.html">
+<meta property="og:site_name" content="cpacm">
+<meta property="og:description" content="Ogre三维框架基础篇 —— 在Ogre中使用CEGUI">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://7xi4up.com1.z0.glb.clouddn.com/ogre_6_Ogre_CEGUI_Result.jpg">
+<meta property="og:updated_time" content="2016-11-29T14:01:48.335Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Ogre三维框架基础篇（六）">
+<meta name="twitter:description" content="Ogre三维框架基础篇 —— 在Ogre中使用CEGUI">
+<meta name="twitter:image" content="http://7xi4up.com1.z0.glb.clouddn.com/ogre_6_Ogre_CEGUI_Result.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> Ogre三维框架基础篇（六） | cpacm </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?400b16383d4e24e7e0c1604aa14354a4";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">cpacm</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">动漫中毒者，技术宅</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Ogre三维框架基础篇（六）
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2015-02-17T00:46:39+08:00" content="2015-02-17">
+              2015-02-17
+            </time>
+          </span>
+
+          
+            <span class="post-category">
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/开源-框架/" itemprop="url" rel="index">
+                    <span itemprop="name">开源&框架</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2015/02/17/Ogre三维框架基础篇（六）/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/02/17/Ogre三维框架基础篇（六）/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2015/02/17/Ogre三维框架基础篇（六）/" class="leancloud_visitors" data-flag-title="Ogre三维框架基础篇（六）">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="准备CEGUI"><a href="#准备CEGUI" class="headerlink" title="准备CEGUI"></a>准备CEGUI</h2><p>没有配置好CEGUI可以回到上一篇文章中重新配置。配置成功后将<strong>TutorialApplication</strong>初始化。</p>
+<h3 id="TutorialApplication-h"><a href="#TutorialApplication-h" class="headerlink" title="TutorialApplication.h"></a>TutorialApplication.h</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"BaseApplication.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;CEGUI/CEGUI.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;CEGUI/RendererModules/Ogre/Renderer.h&gt; //from 0.8 it's just Ogre/Renderer.h</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TutorialApplication</span> :</span> <span class="keyword">public</span> BaseApplication</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    TutorialApplication(<span class="keyword">void</span>);</span><br><span class="line">    <span class="keyword">virtual</span> ~TutorialApplication(<span class="keyword">void</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">	CEGUI::OgreRenderer* mRenderer;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">createScene</span><span class="params">(<span class="keyword">void</span>)</span></span>;</span><br><span class="line">	<span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">createFrameListener</span><span class="params">(<span class="keyword">void</span>)</span></span>;</span><br><span class="line"> </span><br><span class="line">    <span class="comment">// Ogre::FrameListener</span></span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">bool</span> <span class="title">frameRenderingQueued</span><span class="params">(<span class="keyword">const</span> Ogre::FrameEvent&amp; evt)</span></span>;</span><br><span class="line"> </span><br><span class="line">    <span class="comment">// OIS::KeyListener</span></span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">bool</span> <span class="title">keyPressed</span><span class="params">( <span class="keyword">const</span> OIS::KeyEvent &amp;arg )</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">bool</span> <span class="title">keyReleased</span><span class="params">( <span class="keyword">const</span> OIS::KeyEvent &amp;arg )</span></span>;</span><br><span class="line">    <span class="comment">// OIS::MouseListener</span></span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">bool</span> <span class="title">mouseMoved</span><span class="params">( <span class="keyword">const</span> OIS::MouseEvent &amp;arg )</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">bool</span> <span class="title">mousePressed</span><span class="params">( <span class="keyword">const</span> OIS::MouseEvent &amp;arg, OIS::MouseButtonID id )</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">bool</span> <span class="title">mouseReleased</span><span class="params">( <span class="keyword">const</span> OIS::MouseEvent &amp;arg, OIS::MouseButtonID id )</span></span>;</span><br><span class="line"> </span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">quit</span><span class="params">(<span class="keyword">const</span> CEGUI::EventArgs &amp;e)</span></span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="TutorialApplication-cpp"><a href="#TutorialApplication-cpp" class="headerlink" title="TutorialApplication.cpp"></a>TutorialApplication.cpp</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"TutorialApplication.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">//-------------------------------------------------------------------------------------</span></span><br><span class="line">TutorialApplication::TutorialApplication(<span class="keyword">void</span>)</span><br><span class="line">&#123;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//-------------------------------------------------------------------------------------</span></span><br><span class="line">TutorialApplication::~TutorialApplication(<span class="keyword">void</span>)</span><br><span class="line">&#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//-------------------------------------------------------------------------------------</span></span><br><span class="line"><span class="keyword">void</span> TutorialApplication::createScene(<span class="keyword">void</span>)</span><br><span class="line">&#123;</span><br><span class="line">	</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> TutorialApplication::createFrameListener(<span class="keyword">void</span>)</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//-------------------------------------------------------------------------------------</span></span><br><span class="line"><span class="keyword">bool</span> TutorialApplication::frameRenderingQueued(<span class="keyword">const</span> Ogre::FrameEvent&amp; evt)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//-------------------------------------------------------------------------------------</span></span><br><span class="line"><span class="keyword">bool</span> TutorialApplication::keyPressed( <span class="keyword">const</span> OIS::KeyEvent &amp;arg )</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//-------------------------------------------------------------------------------------</span></span><br><span class="line"><span class="keyword">bool</span> TutorialApplication::keyReleased( <span class="keyword">const</span> OIS::KeyEvent &amp;arg )</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//-------------------------------------------------------------------------------------</span></span><br><span class="line"><span class="keyword">bool</span> TutorialApplication::mouseMoved( <span class="keyword">const</span> OIS::MouseEvent &amp;arg )</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//-------------------------------------------------------------------------------------</span></span><br><span class="line"><span class="keyword">bool</span> TutorialApplication::mousePressed( <span class="keyword">const</span> OIS::MouseEvent &amp;arg, OIS::MouseButtonID id )</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//-------------------------------------------------------------------------------------</span></span><br><span class="line"><span class="keyword">bool</span> TutorialApplication::mouseReleased( <span class="keyword">const</span> OIS::MouseEvent &amp;arg, OIS::MouseButtonID id )</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//-------------------------------------------------------------------------------------</span></span><br><span class="line"><span class="keyword">bool</span> TutorialApplication::quit(<span class="keyword">const</span> CEGUI::EventArgs &amp;e)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">if</span> OGRE_PLATFORM == OGRE_PLATFORM_WIN32</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> WIN32_LEAN_AND_MEAN</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"windows.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> __cplusplus</span></span><br><span class="line"><span class="keyword">extern</span> <span class="string">"C"</span> &#123;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">if</span> OGRE_PLATFORM == OGRE_PLATFORM_WIN32</span></span><br><span class="line">	<span class="function">INT WINAPI <span class="title">WinMain</span><span class="params">( HINSTANCE hInst, HINSTANCE, LPSTR strCmdLine, INT )</span></span></span><br><span class="line"><span class="function"><span class="meta">#<span class="meta-keyword">else</span></span></span></span><br><span class="line"><span class="function">	<span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> *argv[])</span></span></span><br><span class="line"><span class="function"><span class="meta">#<span class="meta-keyword">endif</span></span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="comment">// Create application object</span></span><br><span class="line">		TutorialApplication app;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			app.go();</span><br><span class="line">		&#125; <span class="keyword">catch</span>( Ogre::Exception&amp; e ) &#123;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">if</span> OGRE_PLATFORM == OGRE_PLATFORM_WIN32</span></span><br><span class="line">			MessageBox( <span class="literal">NULL</span>, e.getFullDescription().c_str(), <span class="string">"An exception has occured!"</span>, MB_OK | MB_ICONERROR | MB_TASKMODAL);</span><br><span class="line"><span class="meta">#<span class="meta-keyword">else</span></span></span><br><span class="line">			<span class="built_in">std</span>::<span class="built_in">cerr</span> &lt;&lt; <span class="string">"An exception has occured: "</span> &lt;&lt;</span><br><span class="line">				e.getFullDescription().c_str() &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> __cplusplus</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+
+<h2 id="初始化CEGUI"><a href="#初始化CEGUI" class="headerlink" title="初始化CEGUI"></a>初始化CEGUI</h2><p>在<code>createScene()</code>方法中加入</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//CEGUI的主要渲染器，bootstrapSystem()方法会初始化CEGUI中重要的几个管理器，如OgreRenderer，System，OgreResourceProvider，OgreImageCodec</span></span><br><span class="line">mRenderer = &amp;CEGUI::OgreRenderer::bootstrapSystem();</span><br><span class="line"><span class="comment">//读取资源文件</span></span><br><span class="line">CEGUI::ImageManager::setImagesetDefaultResourceGroup(<span class="string">"Imagesets"</span>);</span><br><span class="line">CEGUI::Font::setDefaultResourceGroup(<span class="string">"Fonts"</span>);</span><br><span class="line">CEGUI::Scheme::setDefaultResourceGroup(<span class="string">"Schemes"</span>);</span><br><span class="line">CEGUI::WidgetLookManager::setDefaultResourceGroup(<span class="string">"LookNFeel"</span>);</span><br><span class="line">CEGUI::WindowManager::setDefaultResourceGroup(<span class="string">"Layouts"</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//选择UI皮肤</span></span><br><span class="line">CEGUI::SchemeManager::getSingleton().createFromFile(<span class="string">"TaharezLook.scheme"</span>);</span><br><span class="line"><span class="comment">//设置鼠标</span></span><br><span class="line">CEGUI::System::getSingleton().getDefaultGUIContext().getMouseCursor().setDefaultImage(<span class="string">"TaharezLook/MouseArrow"</span>);</span><br></pre></td></tr></table></figure>
+
+<h2 id="移除SDKTrays"><a href="#移除SDKTrays" class="headerlink" title="移除SDKTrays"></a>移除SDKTrays</h2><p>通过重写<strong>createFrameListener()</strong>和<strong>frameRenderingQueued()</strong>移除SDKTrays。（Ogre的logo部分）</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> TutorialApplication::createFrameListener(<span class="keyword">void</span>)</span><br><span class="line">&#123;</span><br><span class="line">	Ogre::LogManager::getSingletonPtr()-&gt;logMessage(<span class="string">"*** Initializing OIS ***"</span>);</span><br><span class="line">	OIS::ParamList pl;</span><br><span class="line">	<span class="keyword">size_t</span> windowHnd = <span class="number">0</span>;</span><br><span class="line">	<span class="built_in">std</span>::<span class="built_in">ostringstream</span> windowHndStr;</span><br><span class="line"></span><br><span class="line">	mWindow-&gt;getCustomAttribute(<span class="string">"WINDOW"</span>, &amp;windowHnd);</span><br><span class="line">	windowHndStr &lt;&lt; windowHnd;</span><br><span class="line">	pl.insert(<span class="built_in">std</span>::make_pair(<span class="built_in">std</span>::<span class="built_in">string</span>(<span class="string">"WINDOW"</span>), windowHndStr.str()));</span><br><span class="line"></span><br><span class="line">	mInputManager = OIS::InputManager::createInputSystem( pl );</span><br><span class="line"></span><br><span class="line">	mKeyboard = <span class="keyword">static_cast</span>&lt;OIS::Keyboard*&gt;(mInputManager-&gt;createInputObject( OIS::OISKeyboard, <span class="literal">true</span> ));</span><br><span class="line">	mMouse = <span class="keyword">static_cast</span>&lt;OIS::Mouse*&gt;(mInputManager-&gt;createInputObject( OIS::OISMouse, <span class="literal">true</span> ));</span><br><span class="line"></span><br><span class="line">	mMouse-&gt;setEventCallback(<span class="keyword">this</span>);</span><br><span class="line">	mKeyboard-&gt;setEventCallback(<span class="keyword">this</span>);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//Set initial mouse clipping size</span></span><br><span class="line">	windowResized(mWindow);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//Register as a Window listener</span></span><br><span class="line">	Ogre::WindowEventUtilities::addWindowEventListener(mWindow, <span class="keyword">this</span>);</span><br><span class="line"></span><br><span class="line">	mRoot-&gt;addFrameListener(<span class="keyword">this</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//-------------------------------------------------------------------------------------</span></span><br><span class="line"><span class="keyword">bool</span> TutorialApplication::frameRenderingQueued(<span class="keyword">const</span> Ogre::FrameEvent&amp; evt)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">if</span>(mWindow-&gt;isClosed())</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span>(mShutDown)</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//Need to capture/update each device</span></span><br><span class="line">	mKeyboard-&gt;capture();</span><br><span class="line">	mMouse-&gt;capture();</span><br><span class="line"></span><br><span class="line">	<span class="comment">//Need to inject timestamps to CEGUI System.</span></span><br><span class="line">	CEGUI::System::getSingleton().injectTimePulse(evt.timeSinceLastFrame);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="注入输入事件——键盘和鼠标"><a href="#注入输入事件——键盘和鼠标" class="headerlink" title="注入输入事件——键盘和鼠标"></a>注入输入事件——键盘和鼠标</h2><p>CEGUI不会自己处理输入，它不读取鼠标的移动和键盘的输入。相反地，它依赖用户把按键鼠标事件注入到系统，换句话说必须要人为的将其放到事件响应的方法中。CEGUI一般以缓冲模式注入到系统中。</p>
+<h3 id="注入键盘响应事件中"><a href="#注入键盘响应事件中" class="headerlink" title="注入键盘响应事件中"></a>注入键盘响应事件中</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//-------------------------------------------------------------------------------------</span></span><br><span class="line"><span class="keyword">bool</span> TutorialApplication::keyPressed( <span class="keyword">const</span> OIS::KeyEvent &amp;arg )</span><br><span class="line">&#123;</span><br><span class="line">	<span class="comment">//UI上下文</span></span><br><span class="line">	CEGUI::GUIContext&amp; context = CEGUI::System::getSingleton().getDefaultGUIContext();</span><br><span class="line">	<span class="comment">//注入按键按下的事件</span></span><br><span class="line">	context.injectKeyDown((CEGUI::Key::Scan)arg.key);</span><br><span class="line">	<span class="comment">//注入获取按下Unicode的事件</span></span><br><span class="line">	context.injectChar((CEGUI::Key::Scan)arg.text);</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//-------------------------------------------------------------------------------------</span></span><br><span class="line"><span class="keyword">bool</span> TutorialApplication::keyReleased( <span class="keyword">const</span> OIS::KeyEvent &amp;arg )</span><br><span class="line">&#123;</span><br><span class="line">	<span class="comment">//注入按键松开的事件</span></span><br><span class="line">	CEGUI::System::getSingleton().getDefaultGUIContext().injectKeyUp((CEGUI::Key::Scan)arg.key);</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="注入鼠标响应事件中"><a href="#注入鼠标响应事件中" class="headerlink" title="注入鼠标响应事件中"></a>注入鼠标响应事件中</h3><p>鼠标主要有三个响应类型，左键，中键以及右键，所以添加一个根据OIS反馈鼠标的响应类型的函数，把OIS的按钮ID转换为CEGUI的按钮ID</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">CEGUI::<span class="function">MouseButton <span class="title">convertButton</span><span class="params">(OIS::MouseButtonID buttonID)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">switch</span> (buttonID)</span><br><span class="line">	&#123;</span><br><span class="line">	<span class="keyword">case</span> OIS::MB_Left:</span><br><span class="line">		<span class="keyword">return</span> CEGUI::LeftButton;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">case</span> OIS::MB_Right:</span><br><span class="line">		<span class="keyword">return</span> CEGUI::RightButton;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">case</span> OIS::MB_Middle:</span><br><span class="line">		<span class="keyword">return</span> CEGUI::MiddleButton;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">default</span>:</span><br><span class="line">		<span class="keyword">return</span> CEGUI::LeftButton;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>鼠标移动，按下和松开的响应事件</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//-------------------------------------------------------------------------------------</span></span><br><span class="line"><span class="keyword">bool</span> TutorialApplication::mouseMoved( <span class="keyword">const</span> OIS::MouseEvent &amp;arg )</span><br><span class="line">&#123;</span><br><span class="line">	CEGUI::System &amp;sys = CEGUI::System::getSingleton();</span><br><span class="line">	<span class="comment">//参数分别为x,y的移动距离</span></span><br><span class="line">	sys.getDefaultGUIContext().injectMouseMove(arg.state.X.rel, arg.state.Y.rel);</span><br><span class="line">	<span class="comment">// 滚轮</span></span><br><span class="line">	<span class="keyword">if</span> (arg.state.Z.rel)</span><br><span class="line">		<span class="comment">//滚轮滚过的角度</span></span><br><span class="line">		sys.getDefaultGUIContext().injectMouseWheelChange(arg.state.Z.rel / <span class="number">120.0f</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//-------------------------------------------------------------------------------------</span></span><br><span class="line"><span class="keyword">bool</span> TutorialApplication::mousePressed( <span class="keyword">const</span> OIS::MouseEvent &amp;arg, OIS::MouseButtonID id )</span><br><span class="line">&#123;</span><br><span class="line">	<span class="comment">//注入鼠标按下的事件，参数为鼠标的响应类型</span></span><br><span class="line">	CEGUI::System::getSingleton().getDefaultGUIContext().injectMouseButtonDown(convertButton(id));</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//-------------------------------------------------------------------------------------</span></span><br><span class="line"><span class="keyword">bool</span> TutorialApplication::mouseReleased( <span class="keyword">const</span> OIS::MouseEvent &amp;arg, OIS::MouseButtonID id )</span><br><span class="line">&#123;</span><br><span class="line">	<span class="comment">//注入鼠标松开的事件，参数为鼠标的响应类型</span></span><br><span class="line">	CEGUI::System::getSingleton().getDefaultGUIContext().injectMouseButtonUp(convertButton(id));</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="窗口、表单、组件-Windows-Sheets-and-Widgets"><a href="#窗口、表单、组件-Windows-Sheets-and-Widgets" class="headerlink" title="窗口、表单、组件(Windows, Sheets, and Widgets)"></a>窗口、表单、组件(Windows, Sheets, and Widgets)</h2><h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><p>CEGUI与其它多数GUI系统有所不同。在CEGUI里，所有能显示出来的东西都是CEGUI::Window类的一个子类，而且一个window可以有任意数量的子window。这样会导致一些奇怪的事情发生。你能在一个按钮里面放置另外一个按钮，虽然实际上不会这么干。我提这些的原因是，当你正寻找放在应用程序里的某个特殊的小部件时，它们都被称作Windows，而且可以通过访问Windows的函数来访问。<br>CEGUI最常用的用法是，你不必在代码里创建每一个单独的对象。而你可以通过一个像<code>CEGUI Layout Editor</code>这样的编辑器，来为你的程序创建一个GUI布局。根据你的喜好，放置你的窗口、按钮以及其它部件到屏幕上之后，编辑器会把布局保存到一个文本文件里。你就可以之后加载这个布局到GUI sheet里面（它也是CEGUI::Window的一个子类）。<br>最后，要知道CEGUI包含大量的小部件供你的程序使用。我们在这里不去涉及，所以如果你决定使用CEGUI，最好还是去它们的网站了解更多的信息。</p>
+<h3 id="载入表单"><a href="#载入表单" class="headerlink" title="载入表单"></a>载入表单</h3><p>在CEGUI里载入一个表单(sheet)是非常容易的事。WindowManager类提供了一个”loadWindowLayout”函数来加载表单，并把它放入CEGUI::Window对象。然后你可以通过CEGUI::System::setGUISheet来显示它。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 本次示例程序中不需要添加</span></span><br><span class="line">CEGUI::Window *guiRoot = CEGUI::WindowManager::getSingleton().loadLayoutFromFile(<span class="string">"TextDemo.layout"</span>); </span><br><span class="line">CEGUI::System::getSingleton().getDefaultGUIContext().setRootWindow(guiRoot);</span><br></pre></td></tr></table></figure>
+
+<h3 id="手动创建部件"><a href="#手动创建部件" class="headerlink" title="手动创建部件"></a>手动创建部件</h3><p>一个可以响应的退出按钮</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//创建CEGUI窗口</span></span><br><span class="line"><span class="comment">//-----------------------------------------------</span></span><br><span class="line"><span class="comment">//获取窗口管理器</span></span><br><span class="line">CEGUI::WindowManager &amp;wmgr = CEGUI::WindowManager::getSingleton();</span><br><span class="line"><span class="comment">//创建一个默认窗口（DefaultWindow），名字为"CEGUIDemo/Sheet"</span></span><br><span class="line">CEGUI::Window *sheet = wmgr.createWindow(<span class="string">"DefaultWindow"</span>, <span class="string">"CEGUIDemo/Sheet"</span>);</span><br><span class="line"><span class="comment">//创建按钮（样式在TaharezLook文件的Button节点中），名称为"CEGUIDemo/QuitButton"</span></span><br><span class="line">CEGUI::Window *quit = wmgr.createWindow(<span class="string">"TaharezLook/Button"</span>, <span class="string">"CEGUIDemo/QuitButton"</span>);</span><br><span class="line"><span class="comment">//设置文字</span></span><br><span class="line">quit-&gt;setText(<span class="string">"Quit"</span>);</span><br><span class="line"><span class="comment">//设置大小</span></span><br><span class="line">quit-&gt;setSize(CEGUI::USize(CEGUI::UDim(<span class="number">0.15</span>, <span class="number">0</span>), CEGUI::UDim(<span class="number">0.05</span>, <span class="number">0</span>)));</span><br><span class="line"><span class="comment">//为按钮绑定事件，参数分别为：点击响应，响应的事件</span></span><br><span class="line">quit-&gt;subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&amp;TutorialApplication::quit, <span class="keyword">this</span>));</span><br><span class="line"><span class="comment">//将按钮放置在默认窗口上</span></span><br><span class="line">sheet-&gt;addChild(quit);</span><br><span class="line"><span class="comment">//设置默认窗口为全局窗口</span></span><br><span class="line">CEGUI::System::getSingleton().getDefaultGUIContext().setRootWindow(sheet);</span><br></pre></td></tr></table></figure>
+
+<p><code>quit()</code>方法</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//-------------------------------------------------------------------------------------</span></span><br><span class="line"><span class="keyword">bool</span> TutorialApplication::quit(<span class="keyword">const</span> CEGUI::EventArgs &amp;e)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="comment">//关闭窗口</span></span><br><span class="line">	mShutDown = <span class="literal">true</span>;</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="渲染到纹理"><a href="#渲染到纹理" class="headerlink" title="渲染到纹理"></a>渲染到纹理</h2><p>用CEGUI创建一个纹理窗口的渲染器。这可以让我们能够创建一个可以直接渲染到CEGUI部件的视口。</p>
+<h3 id="创建场景"><a href="#创建场景" class="headerlink" title="创建场景"></a>创建场景</h3><p>首先创建一个能让我们看见的场景（createScene()方法中）</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//创建模型</span></span><br><span class="line">	mSceneMgr-&gt;setAmbientLight(Ogre::ColourValue(<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>));</span><br><span class="line">	mSceneMgr-&gt;setSkyDome(<span class="literal">true</span>, <span class="string">"Examples/CloudySky"</span>, <span class="number">5</span>, <span class="number">8</span>);</span><br><span class="line">	Ogre::Entity* ogreHead = mSceneMgr-&gt;createEntity(<span class="string">"Head"</span>, <span class="string">"ogrehead.mesh"</span>);</span><br><span class="line">	Ogre::SceneNode* headNode = mSceneMgr-&gt;getRootSceneNode()-&gt;createChildSceneNode(Ogre::Vector3(<span class="number">0</span>, <span class="number">0</span>, <span class="number">-300</span>));</span><br><span class="line">	headNode-&gt;attachObject(ogreHead);</span><br></pre></td></tr></table></figure>
+
+<h3 id="创建纹理"><a href="#创建纹理" class="headerlink" title="创建纹理"></a>创建纹理</h3><p><strong>RenderSystem对象</strong>提供了一种渲染到纹理的功能。我们用<code>RenderSystem::createRenderTexture</code>函数创建一个纹理。在这个程序里，我们创建一个512 x 512的纹理</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Ogre::TexturePtr tex = mRoot-&gt;getTextureManager()-&gt;createManual(</span><br><span class="line">	<span class="string">"RTT"</span>,</span><br><span class="line">	Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,</span><br><span class="line">	Ogre::TEX_TYPE_2D,</span><br><span class="line">	<span class="number">512</span>,</span><br><span class="line">	<span class="number">512</span>,</span><br><span class="line">	<span class="number">0</span>,</span><br><span class="line">	Ogre::PF_R8G8B8,</span><br><span class="line">	Ogre::TU_RENDERTARGET);</span><br><span class="line">Ogre::RenderTexture *rtex = tex-&gt;getBuffer()-&gt;getRenderTarget();</span><br></pre></td></tr></table></figure>
+
+<h3 id="创建视口"><a href="#创建视口" class="headerlink" title="创建视口"></a>创建视口</h3><p>接下来创建一个摄像机和一个视口，以便察看创建的场景。注意，要关闭Overlays，否则你会看见CEGUI与Ogre在小窗口里面重叠在一起。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">   Ogre::Camera *cam = mSceneMgr-&gt;createCamera(<span class="string">"RTTCam"</span>);</span><br><span class="line">cam-&gt;setPosition(<span class="number">100</span>, <span class="number">-100</span>, <span class="number">-400</span>);</span><br><span class="line">cam-&gt;lookAt(<span class="number">0</span>, <span class="number">0</span>, <span class="number">-300</span>);</span><br><span class="line"><span class="comment">//在材质上添加一个视口</span></span><br><span class="line">Ogre::Viewport *v = rtex-&gt;addViewport(cam);</span><br><span class="line"><span class="comment">//关掉透视</span></span><br><span class="line">v-&gt;setOverlaysEnabled(<span class="literal">false</span>);</span><br><span class="line">v-&gt;setClearEveryFrame(<span class="literal">true</span>);</span><br><span class="line">v-&gt;setBackgroundColour(Ogre::ColourValue::Black);</span><br><span class="line">CEGUI::Texture &amp;guiTex = mRenderer-&gt;createTexture(<span class="string">"textname"</span>, tex);</span><br></pre></td></tr></table></figure>
+
+<h3 id="创建图像部件"><a href="#创建图像部件" class="headerlink" title="创建图像部件"></a>创建图像部件</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//CEGUI的图像</span></span><br><span class="line">    <span class="comment">//图像显示区域的大小</span></span><br><span class="line">	<span class="keyword">const</span> CEGUI::<span class="function">Rectf <span class="title">rect</span><span class="params">(CEGUI::Vector2f(<span class="number">0.0f</span>, <span class="number">0.0f</span>), guiTex.getOriginalDataSize())</span></span>;</span><br><span class="line">	<span class="comment">//创建图像部件</span></span><br><span class="line">	CEGUI::BasicImage* image = (CEGUI::BasicImage*)( &amp;CEGUI::ImageManager::getSingleton().create(<span class="string">"BasicImage"</span>, <span class="string">"RTTImage"</span>));</span><br><span class="line">	<span class="comment">//设置部件的材质</span></span><br><span class="line">	image-&gt;setTexture(&amp;guiTex);</span><br><span class="line">	<span class="comment">//设置区域</span></span><br><span class="line">	image-&gt;setArea(rect);</span><br><span class="line">	<span class="comment">//设置缩放</span></span><br><span class="line">	image-&gt;setAutoScaled(CEGUI::ASM_Both);</span><br></pre></td></tr></table></figure>
+
+<h3 id="显示图像"><a href="#显示图像" class="headerlink" title="显示图像"></a>显示图像</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//添加窗口显示图像</span></span><br><span class="line">CEGUI::Window *si = CEGUI::WindowManager::getSingleton().createWindow(<span class="string">"TaharezLook/StaticImage"</span>, <span class="string">"RTTWindow"</span>);</span><br><span class="line"><span class="comment">//si-&gt;setSize(CEGUI::UVector2(CEGUI::UDim(0.5f, 0),</span></span><br><span class="line">si-&gt;setSize(CEGUI::USize(CEGUI::UDim(<span class="number">0.5f</span>, <span class="number">0</span>),</span><br><span class="line">	CEGUI::UDim(<span class="number">0.4f</span>, <span class="number">0</span>)));</span><br><span class="line">si-&gt;setPosition(CEGUI::UVector2(CEGUI::UDim(<span class="number">0.5f</span>, <span class="number">0</span>),</span><br><span class="line">	CEGUI::UDim(<span class="number">0.0f</span>, <span class="number">0</span>)));</span><br><span class="line"><span class="comment">//设置要显示的图像</span></span><br><span class="line">si-&gt;setProperty(<span class="string">"Image"</span>, <span class="string">"RTTImage"</span>);</span><br><span class="line"><span class="comment">//将窗口添加到表单中</span></span><br><span class="line">sheet-&gt;addChild(si);</span><br></pre></td></tr></table></figure>
+
+<h2 id="运行结果"><a href="#运行结果" class="headerlink" title="运行结果"></a>运行结果</h2><p><img src="http://7xi4up.com1.z0.glb.clouddn.com/ogre_6_Ogre_CEGUI_Result.jpg" alt="Ogre+CEGUI"></p>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>CEGUI具有强大的功能，同时也能够简单上手，给我们开发Ogre提供了很大的便利。<br><embed src="http://www.xiami.com/widget/0_1770128803/singlePlayer.swf" type="application/x-shockwave-flash" width="257" height="33" wmode="transparent"><br>参考文章：<a href="http://www.ogre3d.org/tikiwiki/tiki-index.php?page=Basic+Tutorial+7&structure=Tutorials" target="_blank" rel="noopener">Ogre基础教程7</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ogre/" rel="tag">#ogre</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/02/16/Ogre三维框架基础篇（五）/" rel="next" title="Ogre三维框架基础篇（五）">
+                <i class="fa fa-chevron-left"></i> Ogre三维框架基础篇（五）
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/03/20/Android开发日记（一）——开发工具Android-Studio/" rel="prev" title="Android开发日记（一）——开发工具Android Studio">
+                Android开发日记（一）——开发工具Android Studio <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2015/02/17/Ogre三维框架基础篇（六）/" data-title="Ogre三维框架基础篇（六）" data-url="http://www.cpacm.net/2015/02/17/Ogre三维框架基础篇（六）/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/img/author.jpg" alt="cpacm">
+          <p class="site-author-name" itemprop="name">cpacm</p>
+          <p class="site-description motion-element" itemprop="description">请不要忘记，那给你带来感动的，名为二次元的理想乡。</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">52</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/cpacm" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/u/3053253821" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.cnblogs.com/cpacm/" target="_blank" title="博客园">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  博客园
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#准备CEGUI"><span class="nav-number">1.</span> <span class="nav-text">准备CEGUI</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#TutorialApplication-h"><span class="nav-number">1.1.</span> <span class="nav-text">TutorialApplication.h</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TutorialApplication-cpp"><span class="nav-number">1.2.</span> <span class="nav-text">TutorialApplication.cpp</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#初始化CEGUI"><span class="nav-number">2.</span> <span class="nav-text">初始化CEGUI</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#移除SDKTrays"><span class="nav-number">3.</span> <span class="nav-text">移除SDKTrays</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#注入输入事件——键盘和鼠标"><span class="nav-number">4.</span> <span class="nav-text">注入输入事件——键盘和鼠标</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#注入键盘响应事件中"><span class="nav-number">4.1.</span> <span class="nav-text">注入键盘响应事件中</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#注入鼠标响应事件中"><span class="nav-number">4.2.</span> <span class="nav-text">注入鼠标响应事件中</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#窗口、表单、组件-Windows-Sheets-and-Widgets"><span class="nav-number">5.</span> <span class="nav-text">窗口、表单、组件(Windows, Sheets, and Widgets)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#介绍"><span class="nav-number">5.1.</span> <span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#载入表单"><span class="nav-number">5.2.</span> <span class="nav-text">载入表单</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#手动创建部件"><span class="nav-number">5.3.</span> <span class="nav-text">手动创建部件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#渲染到纹理"><span class="nav-number">6.</span> <span class="nav-text">渲染到纹理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建场景"><span class="nav-number">6.1.</span> <span class="nav-text">创建场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建纹理"><span class="nav-number">6.2.</span> <span class="nav-text">创建纹理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建视口"><span class="nav-number">6.3.</span> <span class="nav-text">创建视口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建图像部件"><span class="nav-number">6.4.</span> <span class="nav-text">创建图像部件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#显示图像"><span class="nav-number">6.5.</span> <span class="nav-text">显示图像</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#运行结果"><span class="nav-number">7.</span> <span class="nav-text">运行结果</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结语"><span class="nav-number">8.</span> <span class="nav-text">结语</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">cpacm</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"cpacm"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("2fmsJHBmgPTnmd1bc7R9GcVX-gzGzoHsz", "CBUSqxdc9PSLibNV3TzlhpWg");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+</body>
+</html>

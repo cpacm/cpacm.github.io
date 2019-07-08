@@ -1,0 +1,811 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="jcenter,">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1">
+
+
+
+
+
+
+<meta name="description" content="我们可以通过使用 jcenter 来上传自己写的库。 Jcenter 是 [bintray.com](www.bintray.com) 所使用的 Maven 仓库。与 Maven Central 相比，jcenter 的速度更快，包含的库更多，UI界面更友好，更容易使用，同时 bintray 还支持将 jcenter 上传到 Maven Central 的功能。">
+<meta name="keywords" content="jcenter">
+<meta property="og:type" content="article">
+<meta property="og:title" content="将你的代码上传 Bintray 仓库">
+<meta property="og:url" content="http://www.cpacm.net/2016/06/01/将你的代码上传 Bintray 仓库/index.html">
+<meta property="og:site_name" content="cpacm">
+<meta property="og:description" content="我们可以通过使用 jcenter 来上传自己写的库。 Jcenter 是 [bintray.com](www.bintray.com) 所使用的 Maven 仓库。与 Maven Central 相比，jcenter 的速度更快，包含的库更多，UI界面更友好，更容易使用，同时 bintray 还支持将 jcenter 上传到 Maven Central 的功能。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://7xi4up.com1.z0.glb.clouddn.com/bintray.png">
+<meta property="og:image" content="http://7xi4up.com1.z0.glb.clouddn.com/bintray%20login.png">
+<meta property="og:image" content="http://7xi4up.com1.z0.glb.clouddn.com/maven.png">
+<meta property="og:image" content="http://7xi4up.com1.z0.glb.clouddn.com/package.png">
+<meta property="og:image" content="http://7xi4up.com1.z0.glb.clouddn.com/simpleslider.png">
+<meta property="og:image" content="http://7xi4up.com1.z0.glb.clouddn.com/vcs.png">
+<meta property="og:image" content="http://7xi4up.com1.z0.glb.clouddn.com/api%20key.png">
+<meta property="og:image" content="http://7xi4up.com1.z0.glb.clouddn.com/jcenter.png">
+<meta property="og:updated_time" content="2016-05-31T17:33:50.699Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="将你的代码上传 Bintray 仓库">
+<meta name="twitter:description" content="我们可以通过使用 jcenter 来上传自己写的库。 Jcenter 是 [bintray.com](www.bintray.com) 所使用的 Maven 仓库。与 Maven Central 相比，jcenter 的速度更快，包含的库更多，UI界面更友好，更容易使用，同时 bintray 还支持将 jcenter 上传到 Maven Central 的功能。">
+<meta name="twitter:image" content="http://7xi4up.com1.z0.glb.clouddn.com/bintray.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> 将你的代码上传 Bintray 仓库 | cpacm </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?400b16383d4e24e7e0c1604aa14354a4";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">cpacm</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">动漫中毒者，技术宅</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                将你的代码上传 Bintray 仓库
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-06-01T01:22:07+08:00" content="2016-06-01">
+              2016-06-01
+            </time>
+          </span>
+
+          
+            <span class="post-category">
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/编程/" itemprop="url" rel="index">
+                    <span itemprop="name">编程</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/06/01/将你的代码上传 Bintray 仓库/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/06/01/将你的代码上传 Bintray 仓库/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/06/01/将你的代码上传 Bintray 仓库/" class="leancloud_visitors" data-flag-title="将你的代码上传 Bintray 仓库">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>在 Android Studio 中，我们通常可以利用 gradle 来导入别人写的第三方库，通常可以简单得使用一句话就能搞定整个导包过程，比如：</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">compile</span> <span class="string">'net.cpacm.moneytext:moneyview:1.0.0'</span></span><br></pre></td></tr></table></figure>
+
+<p>在这个过程中，Android Studio 会从 Maven 仓库服务器中下载所对应的包。现在比较通用的两个服务器分别为 Jcenter 和 Maven Central。本文主要讲的就是Jcenter了，Android Studio 默认使用的服务器仓库。</p>
+<h3 id="Jcenter"><a href="#Jcenter" class="headerlink" title="Jcenter"></a>Jcenter</h3><p>Jcenter 是 <a href="www.bintray.com">bintray.com</a> 所使用的 Maven 仓库。与 Maven Central 相比，jcenter 的速度更快，包含的库更多，UI界面更友好，更容易使用，同时 bintray 还支持将 jcenter 上传到 Maven Central 的功能。 </p>
+<p><img src="http://7xi4up.com1.z0.glb.clouddn.com/bintray.png" alt="bintray"></p>
+<h3 id="语法规则"><a href="#语法规则" class="headerlink" title="语法规则"></a>语法规则</h3><p>以前使用过 Maven 的可能会比较清楚，导入的语句如何指向仓库中唯一存在的库。</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">compile</span> <span class="string">'net.cpacm.simpleslider:library:1.0.0'</span></span><br><span class="line"><span class="keyword">compile</span> <span class="string">'GROUP_ID:ARTIFACT_ID:VERSION'</span></span><br></pre></td></tr></table></figure>
+
+<p>其中<br><code>GROUP_ID</code> 是指包所在的组，比如我包放在 <strong>net.cpacm.simpleslider</strong> 中， 那么我的 <code>GROUP_ID</code> 就是 <strong>net.cpacm.simpleslider</strong>。<br><code>ARTIFACT_ID</code> 是指工程名字，一般在android中都为<strong>library</strong>。<br><code>VERSION</code> 代表使用的包的版本。</p>
+<h2 id="Bintray-使用"><a href="#Bintray-使用" class="headerlink" title="Bintray 使用"></a>Bintray 使用</h2><p><code>请科学上网</code></p>
+<p>bintray 支持 <a href="www.github.com">github</a> 和 <a href="plus.google.com">google+</a> 第三方直接登录。<br> <img src="http://7xi4up.com1.z0.glb.clouddn.com/bintray%20login.png" alt="login"><br>登录后进入 Maven 仓库建立要使用的包，同时填入相应的对应信息。<br><img src="http://7xi4up.com1.z0.glb.clouddn.com/maven.png" alt="maven"><br><img src="http://7xi4up.com1.z0.glb.clouddn.com/package.png" alt="package"><br><img src="http://7xi4up.com1.z0.glb.clouddn.com/simpleslider.png" alt="message"><br><img src="http://7xi4up.com1.z0.glb.clouddn.com/vcs.png" alt="message"></p>
+<h2 id="Gradle-配置"><a href="#Gradle-配置" class="headerlink" title="Gradle 配置"></a>Gradle 配置</h2><p>首先确保你要上传的第三方包是一个 library，作为一个项目的 module 存在。</p>
+<h3 id="project-gradle"><a href="#project-gradle" class="headerlink" title="project gradle"></a>project gradle</h3><p>在 project gradle 中加入需要的依赖包</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">buildscript</span> &#123;</span><br><span class="line">    <span class="keyword">repositories</span> &#123;</span><br><span class="line">        jcenter()</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">dependencies</span> &#123;</span><br><span class="line">        <span class="keyword">classpath</span> <span class="string">'com.android.tools.build:gradle:2.1.0'</span></span><br><span class="line">        <span class="keyword">classpath</span> <span class="string">'com.github.dcendents:android-maven-gradle-plugin:1.3'</span></span><br><span class="line">        <span class="keyword">classpath</span> <span class="string">"com.jfrog.bintray.gradle:gradle-bintray-plugin:1.5"</span></span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">allprojects</span> &#123;</span><br><span class="line">    <span class="keyword">repositories</span> &#123;</span><br><span class="line">        jcenter()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">task</span> clean(type: <span class="keyword">Delete</span>) &#123;</span><br><span class="line">    <span class="keyword">delete</span> rootProject.buildDir</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="local-properties"><a href="#local-properties" class="headerlink" title="local.properties"></a>local.properties</h3><p>在项目的 local.properties 文件里面加入 <strong>api-key</strong></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">bintray.user=YOUR_BINTRAY_USERNAME</span><br><span class="line">bintray.apikey=YOUR_BINTRAY_API_KEY</span><br></pre></td></tr></table></figure>
+
+<p>在 bintray 网站的个人信息编辑页可以找到。<br><img src="http://7xi4up.com1.z0.glb.clouddn.com/api%20key.png" alt="api key"><br>对了，记得不要把 <code>local.properties</code> 传到 github网站上导致个人信息的泄露。</p>
+<h3 id="library-gradle"><a href="#library-gradle" class="headerlink" title="library gradle"></a>library gradle</h3><p>修改 library 的 gradle 信息</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br></pre></td><td class="code"><pre><span class="line">apply plugin: <span class="string">'com.android.library'</span></span><br><span class="line"><span class="comment">// add plugin</span></span><br><span class="line">apply plugin: <span class="string">'com.github.dcendents.android-maven'</span></span><br><span class="line">apply plugin: <span class="string">'com.jfrog.bintray'</span></span><br><span class="line"></span><br><span class="line">version = <span class="string">'1.0.0'</span></span><br><span class="line"></span><br><span class="line">android &#123;</span><br><span class="line">    compileSdkVersion <span class="number">23</span></span><br><span class="line">    buildToolsVersion <span class="string">"23.0.2"</span></span><br><span class="line"></span><br><span class="line">    defaultConfig &#123;</span><br><span class="line">        minSdkVersion <span class="number">11</span></span><br><span class="line">        targetSdkVersion <span class="number">23</span></span><br><span class="line">        versionCode <span class="number">1</span></span><br><span class="line">        versionName <span class="string">"1.0.0"</span></span><br><span class="line">    &#125;</span><br><span class="line">    buildTypes &#123;</span><br><span class="line">        release &#123;</span><br><span class="line">            minifyEnabled <span class="keyword">false</span></span><br><span class="line">            proguardFiles getDefaultProguardFile(<span class="string">'proguard-android.txt'</span>), <span class="string">'proguard-rules.pro'</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">dependencies</span> &#123;</span><br><span class="line">    <span class="keyword">compile</span> <span class="keyword">fileTree</span>(dir: <span class="string">'libs'</span>, <span class="keyword">include</span>: [<span class="string">'*.jar'</span>])</span><br><span class="line">    testCompile <span class="string">'junit:junit:4.12'</span></span><br><span class="line">    <span class="keyword">compile</span> <span class="string">'com.android.support:appcompat-v7:23.1.1'</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">task</span> sourcesJar(type: Jar) &#123;</span><br><span class="line">    <span class="keyword">from</span> android.<span class="keyword">sourceSets</span>.main.java.srcDirs</span><br><span class="line">    classifier = <span class="string">'sources'</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">task</span> javadoc(type: Javadoc) &#123;</span><br><span class="line">    <span class="keyword">source</span> = android.<span class="keyword">sourceSets</span>.main.java.srcDirs</span><br><span class="line">    <span class="keyword">classpath</span> += <span class="keyword">project</span>.files(android.getBootClasspath().<span class="keyword">join</span>(<span class="keyword">File</span>.pathSeparator))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">task</span> javadocJar(type: Jar, dependsOn: javadoc) &#123;</span><br><span class="line">    classifier = <span class="string">'javadoc'</span></span><br><span class="line">    <span class="keyword">from</span> javadoc.<span class="keyword">destinationDir</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">artifacts</span> &#123;</span><br><span class="line">    archives javadocJar</span><br><span class="line">    archives sourcesJar</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">group</span> = <span class="string">'net.cpacm.simpleslider'</span></span><br><span class="line">install &#123;</span><br><span class="line">    <span class="keyword">repositories</span>.mavenInstaller &#123;</span><br><span class="line">        pom.<span class="keyword">project</span> &#123;</span><br><span class="line">            packaging <span class="string">'aar'</span></span><br><span class="line">            groupId <span class="string">'net.cpacm.simpleslider'</span> <span class="comment">//自己定义的组名</span></span><br><span class="line">            artifactId <span class="string">'library'</span> </span><br><span class="line"></span><br><span class="line">            name <span class="string">'simpleslider'</span></span><br><span class="line">            <span class="keyword">description</span> <span class="string">'A simple slider allows you to easily use.'</span></span><br><span class="line">            url <span class="string">'https://github.com/cpacm/SimpleSlider'</span></span><br><span class="line">            inceptionYear <span class="string">'2016'</span></span><br><span class="line"></span><br><span class="line">            licenses &#123;</span><br><span class="line">                license &#123;</span><br><span class="line">                    name <span class="string">'The Apache Software License, Version 2.0'</span></span><br><span class="line">                    url <span class="string">'http://www.apache.org/licenses/LICENSE-2.0.txt'</span></span><br><span class="line">                    distribution <span class="string">'repo'</span></span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            scm &#123;</span><br><span class="line">                connection <span class="string">'https://github.com/cpacm/SimpleSlider.git'</span></span><br><span class="line">                url <span class="string">'https://github.com/cpacm/SimpleSlider'</span></span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line">            developers &#123;</span><br><span class="line">                developer &#123;</span><br><span class="line">                    name <span class="string">'cpacm'</span></span><br><span class="line">                    email <span class="string">'shenliming@gmail.com'</span></span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Bintray</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//获取local.propertes的信息</span></span><br><span class="line">Properties properties = <span class="keyword">new</span> Properties()</span><br><span class="line">properties.load(<span class="keyword">project</span>.rootProject.<span class="keyword">file</span>(<span class="string">'local.properties'</span>).newDataInputStream()) </span><br><span class="line"></span><br><span class="line">bintray &#123;</span><br><span class="line">    user = properties.getProperty(<span class="string">"bintray.user"</span>)</span><br><span class="line">    key = properties.getProperty(<span class="string">"bintray.apikey"</span>)</span><br><span class="line">    publish = <span class="keyword">true</span></span><br><span class="line">    <span class="keyword">configurations</span> = [<span class="string">'archives'</span>]</span><br><span class="line">    pkg &#123;</span><br><span class="line">        <span class="comment">//填入 bintray 上对应的 package 信息</span></span><br><span class="line">        repo = <span class="string">'maven'</span></span><br><span class="line">        name = <span class="string">'SimpleSlider'</span></span><br><span class="line">        vcsUrl = <span class="string">'https://github.com/cpacm/SimpleSlider.git'</span></span><br><span class="line">        websiteUrl = <span class="string">'https://github.com/cpacm/SimpleSlider'</span></span><br><span class="line">        licenses = [<span class="string">'Apache-2.0'</span>]</span><br><span class="line">        issueTrackerUrl = <span class="string">'https://github.com/cpacm/SimpleSlider/issues'</span></span><br><span class="line">        publicDownloadNumbers = <span class="keyword">true</span></span><br><span class="line">        version &#123;</span><br><span class="line">            name = <span class="string">'1.0.0'</span></span><br><span class="line">            desc = <span class="string">'simple slider release'</span></span><br><span class="line">            vcsTag = <span class="string">'1.0.0'</span></span><br><span class="line">            attributes = [<span class="string">'gradle-plugin'</span>: <span class="string">'com.use.less:com.use.less.gradle:gradle-useless-plugin'</span>]</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">tasks.withType(JavaCompile) &#123;</span><br><span class="line">    <span class="keyword">options</span>.encoding = <span class="string">"UTF-8"</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">task</span> findConventions &lt;&lt; &#123;</span><br><span class="line">    <span class="keyword">println</span> <span class="keyword">project</span>.getConvention()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="安装和上传"><a href="#安装和上传" class="headerlink" title="安装和上传"></a>安装和上传</h3><p>在Android Studio Terminal窗口中运行命令</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">gradlew install</span><br><span class="line">gradlew bintrayUpload</span><br></pre></td></tr></table></figure>
+
+<p>至此已经打包上传结束，可以回到 bintray 网站看看结果。<br><img src="http://7xi4up.com1.z0.glb.clouddn.com/jcenter.png" alt="jcenter"></p>
+<h3 id="添加到Jcenter"><a href="#添加到Jcenter" class="headerlink" title="添加到Jcenter"></a>添加到Jcenter</h3><p>点击上图的 <strong>Add to jcenter</strong> 按钮，向管理员申请添加到 jcenter 仓库，一般等个几小时就能通过。<br>最后在 <a href="https://jcenter.bintray.com" target="_blank" rel="noopener">https://jcenter.bintray.com</a> 找到自己的库就表示成功了。  </p>
+<hr>
+<h2 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h2><p>（1）<a href="http://inthecheesefactory.com/blog/how-to-upload-library-to-jcenter-maven-central-as-dependency/en" target="_blank" rel="noopener">http://inthecheesefactory.com/blog/how-to-upload-library-to-jcenter-maven-central-as-dependency/en</a>  </p>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/jcenter/" rel="tag">#jcenter</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/01/22/开源项目：一款用于显示金钱文字的TextView/" rel="next" title="开源项目：一款用于显示金钱文字的TextView">
+                <i class="fa fa-chevron-left"></i> 开源项目：一款用于显示金钱文字的TextView
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/06/03/开源项目：一个高度自由的轻量化Slider/" rel="prev" title="开源项目：一个高度自由的轻量化Slider">
+                开源项目：一个高度自由的轻量化Slider <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/06/01/将你的代码上传 Bintray 仓库/" data-title="将你的代码上传 Bintray 仓库" data-url="http://www.cpacm.net/2016/06/01/将你的代码上传 Bintray 仓库/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/img/author.jpg" alt="cpacm">
+          <p class="site-author-name" itemprop="name">cpacm</p>
+          <p class="site-description motion-element" itemprop="description">请不要忘记，那给你带来感动的，名为二次元的理想乡。</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">52</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/cpacm" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/u/3053253821" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.cnblogs.com/cpacm/" target="_blank" title="博客园">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  博客园
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Jcenter"><span class="nav-number">1.1.</span> <span class="nav-text">Jcenter</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#语法规则"><span class="nav-number">1.2.</span> <span class="nav-text">语法规则</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Bintray-使用"><span class="nav-number">2.</span> <span class="nav-text">Bintray 使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Gradle-配置"><span class="nav-number">3.</span> <span class="nav-text">Gradle 配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#project-gradle"><span class="nav-number">3.1.</span> <span class="nav-text">project gradle</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#local-properties"><span class="nav-number">3.2.</span> <span class="nav-text">local.properties</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#library-gradle"><span class="nav-number">3.3.</span> <span class="nav-text">library gradle</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装和上传"><span class="nav-number">3.4.</span> <span class="nav-text">安装和上传</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#添加到Jcenter"><span class="nav-number">3.5.</span> <span class="nav-text">添加到Jcenter</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考文章"><span class="nav-number">4.</span> <span class="nav-text">参考文章</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">cpacm</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"cpacm"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("2fmsJHBmgPTnmd1bc7R9GcVX-gzGzoHsz", "CBUSqxdc9PSLibNV3TzlhpWg");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+</body>
+</html>

@@ -1,0 +1,843 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="Android,高级进阶,">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1">
+
+
+
+
+
+
+<meta name="description" content="如今在大部分的Android应用中都大抵使用OkHttp3作为网络请求的框架，无论是纯使用okhttp进行请求还是在Retrofit2中都能看到okhttp的影子。先简单介绍一下OkHtto的特点。">
+<meta name="keywords" content="Android,高级进阶">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OkHttp3的网络编程">
+<meta property="og:url" content="http://www.cpacm.net/2018/06/11/Android进阶之路-OkHttp3网络编程/index.html">
+<meta property="og:site_name" content="cpacm">
+<meta property="og:description" content="如今在大部分的Android应用中都大抵使用OkHttp3作为网络请求的框架，无论是纯使用okhttp进行请求还是在Retrofit2中都能看到okhttp的影子。先简单介绍一下OkHtto的特点。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/1315506-10e49a8770cec26b.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/700">
+<meta property="og:updated_time" content="2018-09-26T16:14:41.631Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="OkHttp3的网络编程">
+<meta name="twitter:description" content="如今在大部分的Android应用中都大抵使用OkHttp3作为网络请求的框架，无论是纯使用okhttp进行请求还是在Retrofit2中都能看到okhttp的影子。先简单介绍一下OkHtto的特点。">
+<meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/1315506-10e49a8770cec26b.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/700">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> OkHttp3的网络编程 | cpacm </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?400b16383d4e24e7e0c1604aa14354a4";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">cpacm</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">动漫中毒者，技术宅</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                OkHttp3的网络编程
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2018-06-11T18:14:10+08:00" content="2018-06-11">
+              2018-06-11
+            </time>
+          </span>
+
+          
+            <span class="post-category">
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2018/06/11/Android进阶之路-OkHttp3网络编程/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/06/11/Android进阶之路-OkHttp3网络编程/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2018/06/11/Android进阶之路-OkHttp3网络编程/" class="leancloud_visitors" data-flag-title="OkHttp3的网络编程">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="OkHttp3的网络编程"><a href="#OkHttp3的网络编程" class="headerlink" title="OkHttp3的网络编程"></a>OkHttp3的网络编程</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>如今在大部分的Android应用中都大抵使用OkHttp3作为网络请求的框架，无论是纯使用okhttp进行请求还是在Retrofit2中都能看到okhttp的影子。先简单介绍一下OkHtto的特点：</p>
+<ol>
+<li>HTTP/2 支持所有的请求能够在同一个host下复用同一个Socket;</li>
+<li>连接池降低了请求的延长（非 HTTP/2）；</li>
+<li>支持 GZIP 传输压缩；</li>
+<li>响应缓存避免重复的请求;</li>
+</ol>
+<p>除此以外，当OkHttp在访问一个IP地址失败时会自动尝试下一个IP(前提是你有配置多个ip地址)，还处理了代理服务器问题和SSL握手失败问题。</p>
+<p>简单使用：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">OkHttpClient client = <span class="keyword">new</span> OkHttpClient();</span><br><span class="line"></span><br><span class="line"><span class="function">String <span class="title">run</span><span class="params">(String url)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">  Request request = <span class="keyword">new</span> Request.Builder()</span><br><span class="line">      .url(url)</span><br><span class="line">      .post(body)</span><br><span class="line">      .build();</span><br><span class="line"></span><br><span class="line">  Response response = client.newCall(request).execute();</span><br><span class="line">  <span class="keyword">return</span> response.body().string();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>详情介绍请见官方教程：<a href="http://square.github.io/okhttp/" target="_blank" rel="noopener">OkHttp</a></p>
+<p>上面的一切都可以从源代码中可以看到如何实现，现在我们就进入代码阅读。</p>
+<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>Okhttp不同于 <code>Volley</code> 那样是基于<code>HttpURLConnection</code>和<code>HttpClient</code>基础上实现的一套机制而是自己通过TCP实现的完整一套网络机制，以便更高效的完成Http请求。</p>
+<h3 id="OKHttpClient"><a href="#OKHttpClient" class="headerlink" title="OKHttpClient"></a>OKHttpClient</h3><p>一切从 <code>OkHttpClient</code> 开始，<code>OkHttpClient</code> 通过 Builder 传入或初始化整个框架所需要的参数和配置，比如请求分发器<code>Dispatcher</code>，拦截器<code>Interceptor</code>等，这些参数和配置都可以借由 <code>OkHttpClient</code> 这个角色被子模块快速的调用，比如 dispatcher,call,cache等等。同时 <code>OkHttpClient</code> 也负责将 Request 转化成实际请求Call方便<code>Dispatcher</code>进行分发。</p>
+<h3 id="Dispatcher"><a href="#Dispatcher" class="headerlink" title="Dispatcher"></a>Dispatcher</h3><p>如在最上面的代码所示，在发起请求时需要一个Request对象来封装每次的请求参数，而这个Request对象会在 <code>OkHttpClient</code> 中转换为真正的请求对象Call并将其放入Dispatcher中进行分发，以同步或者异步的方式。</p>
+<h4 id="同步"><a href="#同步" class="headerlink" title="同步"></a>同步</h4><p><code>Dispatcher</code> 会在同步执行任务队列中 <code>runningSyncCalls</code> 记录当前被执行过得任务Call，同时在当前线程中去执行Call的<code>getResponseWithInterceptorChain()</code>方法，直接获取当前的返回数据Response，完成后会将call从 <code>runningSyncCalls</code> 队列中移除。</p>
+<blockquote>
+<p>getResponseWithInterceptorChain 方法中包含着之后要说的拦截器和链式调用机制。</p>
+</blockquote>
+<h4 id="异步"><a href="#异步" class="headerlink" title="异步"></a>异步</h4><p>在异步中 <code>Dispatcher</code> 又维护了两个队列，<code>runningAsyncCalls</code>和<code>readyAsyncCalls</code>,前者为正在请求的队列，后者是当请求队列超过一定大小后的准备队列。<br>Dispatcher内部实现了懒加载无边界限制的线程池方式，同时该线程池采用了 SynchronousQueue这种阻塞队列。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> ExecutorService <span class="title">executorService</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (executorService == <span class="keyword">null</span>) &#123;</span><br><span class="line">      executorService = <span class="keyword">new</span> ThreadPoolExecutor(<span class="number">0</span>, Integer.MAX_VALUE, <span class="number">60</span>, TimeUnit.SECONDS,</span><br><span class="line">          <span class="keyword">new</span> SynchronousQueue&lt;Runnable&gt;(), Util.threadFactory(<span class="string">"OkHttp Dispatcher"</span>, <span class="keyword">false</span>));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> executorService;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这种方式能够快速的传递元素，适用于高频繁请求的场景。<br>异步执行是通过 <code>Call.enqueue(Callback responseCallback)</code>来执行，在 <code>Dispatcher</code> 中添加一个封装了Callback的Call的匿名内部类Runnable来执行当前的Call。这里的call在调用会转换成其内部类<code>AsyncCall</code>,AsyncCall的execute方法最后还是会回调到Call的 getResponseWithInterceptorChain方法来完成请求，同时将返回数据或者状态通过Callback来完成。</p>
+<h3 id="Interceptor拦截链"><a href="#Interceptor拦截链" class="headerlink" title="Interceptor拦截链"></a>Interceptor拦截链</h3><p>通过 <code>Dispatcher</code> 已经知道了OkHttp是怎样分发请求的，那么下一步也就是最重要的是OkHttp是怎么完成请求的。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Response <span class="title">getResponseWithInterceptorChain</span><span class="params">()</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">    <span class="comment">// Build a full stack of interceptors.</span></span><br><span class="line">    List&lt;Interceptor&gt; interceptors = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    interceptors.addAll(client.interceptors());</span><br><span class="line">    interceptors.add(retryAndFollowUpInterceptor);</span><br><span class="line">    interceptors.add(<span class="keyword">new</span> BridgeInterceptor(client.cookieJar()));</span><br><span class="line">    interceptors.add(<span class="keyword">new</span> CacheInterceptor(client.internalCache()));</span><br><span class="line">    interceptors.add(<span class="keyword">new</span> ConnectInterceptor(client));</span><br><span class="line">    <span class="keyword">if</span> (!forWebSocket) &#123;</span><br><span class="line">      interceptors.addAll(client.networkInterceptors());</span><br><span class="line">    &#125;</span><br><span class="line">    interceptors.add(<span class="keyword">new</span> CallServerInterceptor(forWebSocket));</span><br><span class="line"></span><br><span class="line">    Interceptor.Chain chain = <span class="keyword">new</span> RealInterceptorChain(interceptors, <span class="keyword">null</span>, <span class="keyword">null</span>, <span class="keyword">null</span>, <span class="number">0</span>,</span><br><span class="line">        originalRequest, <span class="keyword">this</span>, eventListener, client.connectTimeoutMillis(),</span><br><span class="line">        client.readTimeoutMillis(), client.writeTimeoutMillis());</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> chain.proceed(originalRequest);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>OkHttp3对HTTP请求是通过Interceptor链来处理的。拦截器接口中有 <code>intercept(Chain chain)</code> 方法，同时返回Response，主要功能是针对Request和Response的切面处理。<br><img src="https://upload-images.jianshu.io/upload_images/1315506-10e49a8770cec26b.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/700" alt="拦截器流程"><br>在<code>RealInterceptorChain</code>的初始化中传入了整个拦截器列表，而在<code>RealInterceptorChain</code>中维护了拦截器运行的迭代数，保证每次在拦截器中的<code>intercept(Chain chain)</code>中调用 <code>chain.proceed()</code>都能顺序的执行下一个拦截器。</p>
+<h4 id="用户自定义-Interceptor"><a href="#用户自定义-Interceptor" class="headerlink" title="用户自定义 Interceptor"></a>用户自定义 Interceptor</h4><p>用户自定义的<code>Interceptor</code>分为应用<code>Interceptor</code>和网络<code>NetworkInterceptor</code>，其实两者并没有什么本质的区别，只不过所处的位置不同。</p>
+<p>应用<code>Interceptor</code>位于拦截链的首位，不会担心响应和重定向之间的中间响应，通常只调用一次，即使HTTP响应式通过缓存提供的。<br>而网络<code>NetworkInterceptor</code>位于 <code>ConnectInterceptor</code>与<code>CallServerInterceptor</code>之间，可以在数据传递到网络时即时观测，能够在重定向和重试中操作中间响应。</p>
+<h4 id="RetryAndFollowUpInterceptor"><a href="#RetryAndFollowUpInterceptor" class="headerlink" title="RetryAndFollowUpInterceptor"></a>RetryAndFollowUpInterceptor</h4><p><code>RetryAndFollowUpInterceptor</code> 首先创建了<code>StreamAllocation</code>对象，借由 <code>RealInterceptorChain</code>将其传递给后面执行的Interceptor。之后便是重要的两部分，连接失败重试（Retry）和继续发起请求（Follow up）两部分。</p>
+<p>在后面的拦截器的请求失败，会抛出两种异常</p>
+<ul>
+<li><p>RouteException<br>这个异常发生在 Request 请求还没有发出去前，就是打开 Socket 连接失败。这个异常是 OkHttp 自定义的异常，是一个包裹类，包裹住了建联失败中发生的各种 Exception 主要发生 <code>ConnectInterceptor</code>建立连接环节，比如连接超时抛出的 <code>SocketTimeoutException</code>，包裹在 <code>RouteException</code> 中</p>
+</li>
+<li><p>IOException<br>这个异常发生在 Request 请求发出并且读取 Response 响应的过程中，TCP 已经连接，或者 TLS 已经成功握手后，连接资源准备完毕。主要发生在 <code>CallServerInterceptor</code> 中，通过建立好的通道，发送请求并且读取响应的环节。比如读取超时抛出的 <code>SocketTimeoutException</code></p>
+</li>
+</ul>
+<p>那么针对以上的异常，OkHttp 使用 recover 方法判断是否可以重试。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Report and attempt to recover from a failure to communicate with a server. Returns true if</span></span><br><span class="line"><span class="comment"> * &#123;<span class="doctag">@code</span> e&#125; is recoverable, or false if the failure is permanent. Requests with a body can only</span></span><br><span class="line"><span class="comment"> * be recovered if the body is buffered or if the failure occurred before the request has been</span></span><br><span class="line"><span class="comment"> * sent.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">boolean</span> <span class="title">recover</span><span class="params">(IOException e, <span class="keyword">boolean</span> requestSendStarted, Request userRequest)</span> </span>&#123;</span><br><span class="line">  streamAllocation.streamFailed(e);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// The application layer has forbidden retries.</span></span><br><span class="line">  <span class="keyword">if</span> (!client.retryOnConnectionFailure()) <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// We can't send the request body again.</span></span><br><span class="line">  <span class="keyword">if</span> (requestSendStarted &amp;&amp; userRequest.body() <span class="keyword">instanceof</span> UnrepeatableRequestBody) <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// This exception is fatal.</span></span><br><span class="line">  <span class="keyword">if</span> (!isRecoverable(e, requestSendStarted)) <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// No more routes to attempt.</span></span><br><span class="line">  <span class="keyword">if</span> (!streamAllocation.hasMoreRoutes()) <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// For failure recovery, use the same route selector with a new connection.</span></span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>简单的描述一下四个条件：</p>
+<ul>
+<li>在 OkHttpClient是否配置了<code>retryOnConnectionFailure(true)</code></li>
+<li>不是建立连接阶段发生的异常，同时请求的内容不是可重复发送</li>
+<li>使用 <code>isRecoverable</code> 过滤不可恢复异常，如 <code>ProtocolException</code>,<code>InterruptedIOException</code>,<code>CertificateException</code>和<code>SSLPeerUnverifiedException</code>。</li>
+<li>已经没有其他的路由可以使用。<code>RouteSelector</code> 封装了选择可用路由进行连接的策略。</li>
+</ul>
+<p>如果连接成功，即获得了 Response 响应，但不一定是 200 OK，还有一些其他情况。比如 3xx 重定向，401 未授权等，这些响应码是允许我们再次发起请求的。比如重定向，获取目标地址后，再次发起请求。又比如 401 未授权，可以在 Request 中新增头部 “Authorization” 授权信息再次发起请求等。这时候就需要 <code>followUpRequest</code>对response的响应码进行判断，来确定是否支持再次发起请求。</p>
+<ul>
+<li>未授权（407的代理为授权，401的未授权）—— 在请求中添加 “Proxy-Authorization” 和 “Authorization”</li>
+<li>重定向 （307和308 —— 要求为get和head请求方式）（300，301，302，303） —— 拿到重定向的URL重建Request</li>
+<li>超时 （408 客户端超时） —— 部分服务器会因为客户端请求时间太长而返回 408，此时如果请求体没有实现标记接口 UnrepeatableRequestBody， OkHttp 会再把之前的请求没有修改重新发出</li>
+</ul>
+<h4 id="BridgeInterceptor"><a href="#BridgeInterceptor" class="headerlink" title="BridgeInterceptor"></a>BridgeInterceptor</h4><p><code>BridgeInterceptor</code> 用来添加 http 的header,主要修改目标为 request。主要内容：</p>
+<ul>
+<li>在header中添加一些常用的字段，如 Content-Type,Content-Length或Transfer-Encoding,Host,Connection,Accept_Encoding,Cookie，User-Agent等<br>。</li>
+<li>通过 <code>CookieJar</code> 读取 request 上的cookie</li>
+<li>gzip压缩，同时对response响应数据进行gzip解压。</li>
+</ul>
+<h4 id="CacheInterceptor"><a href="#CacheInterceptor" class="headerlink" title="CacheInterceptor"></a>CacheInterceptor</h4><p><code>CacheInterceptor</code> 用于处理http缓存，若缓存中有所需请求的响应则后续Interceptor不再执行。<br>1、如果在初始化OkhttpClient的时候配置缓存，则从缓存中取caceResponse<br>2、将当前请求request和caceResponse 构建一个CacheStrategy对象<br>3、<code>CacheStrategy</code> 这个策略对象将根据相关规则来决定caceResponse和Request是否有效，如果无效则分别将caceResponse和request设置为null<br>4、经过 <code>CacheStrategy</code> 的处理(步骤3），如果request和caceResponse都置空，直接返回一个状态码为504，且body为<code>Util.EMPTY_RESPONSE</code>的空Respone对象<br>5、经过CacheStrategy的处理(步骤3），resquest 为null而cacheResponse不为null，则直接返回cacheResponse对象<br>6、执行下一个拦截器发起网路请求，<br>7、如果服务器资源没有过期（状态码304）且存在缓存，则返回缓存<br>8、将网络返回的最新的资源（networkResponse）缓存到本地，然后返回networkResponse. </p>
+<h4 id="ConnectInterceptor"><a href="#ConnectInterceptor" class="headerlink" title="ConnectInterceptor"></a>ConnectInterceptor</h4><p><code>ConnectInterceptor</code> 的主要职责是建立与服务器之间的连接，但这个事情它主要是委托给 <code>StreamAllocation</code> 来完成的。如我们前面看到的，<code>StreamAllocation</code>对象是在 <code>RetryAndFollowUpInterceptor</code>中分配的。<br><code>ConnectInterceptor</code> 通过 <code>StreamAllocation</code> 创建了 <code>HttpStream</code>对象和<code>RealConnection</code>对象，随后便调用了<code>realChain.proceed()</code>，向连接中写入HTTP请求，并从服务器读回响应。</p>
+<h4 id="CallServerInterceptor"><a href="#CallServerInterceptor" class="headerlink" title="CallServerInterceptor"></a>CallServerInterceptor</h4><p><code>CallServerInterceptor</code> 首先将http请求头部发给服务器，如果http请求有body的话，会再将body发送给服务器，继而通过httpStream.finishRequest()结束http请求的发送。随后便是从连接中读取服务器返回的http响应，并构造Response。如果请求的header或服务器响应的header中，Connection值为close，<code>CallServerInterceptor</code>还会关闭连接。</p>
+<p>最后便是返回Response。</p>
+<h3 id="代理路由与网络请求"><a href="#代理路由与网络请求" class="headerlink" title="代理路由与网络请求"></a>代理路由与网络请求</h3><p>在理顺了OkHttp的请求框架之后，剩下的就是最基础也是最重要的部分——okhttp是如何处理代理和路由的以及怎么建立TCP连接。这一块可能需要从计算机网络部分开始讲起，所以暂且放着等日后复习完计算机网络基础再来补充（其实就是觉得细节太多自己把捏不住）</p>
+<p>可以先参考一下几篇文章:</p>
+<p><a href="https://www.jianshu.com/p/5c98999bc34f" target="_blank" rel="noopener">OkHttp3中的代理与路由</a><br><a href="https://www.jianshu.com/p/a85ef3ace894" target="_blank" rel="noopener">OKHttp全解析系列（七） – OKHttp中的Route和RouteSelector</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag">#Android</a>
+          
+            <a href="/tags/高级进阶/" rel="tag">#高级进阶</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/06/11/Android进阶之路——强大的Glide图片处理框架/" rel="next" title="强大的Glide图片处理框架">
+                <i class="fa fa-chevron-left"></i> 强大的Glide图片处理框架
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/07/17/嵌入 ViewPager 的视频播放器/" rel="prev" title="Android开发日记（二十一）—— 嵌入 ViewPager 的视频播放器">
+                Android开发日记（二十一）—— 嵌入 ViewPager 的视频播放器 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2018/06/11/Android进阶之路-OkHttp3网络编程/" data-title="OkHttp3的网络编程" data-url="http://www.cpacm.net/2018/06/11/Android进阶之路-OkHttp3网络编程/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/img/author.jpg" alt="cpacm">
+          <p class="site-author-name" itemprop="name">cpacm</p>
+          <p class="site-description motion-element" itemprop="description">请不要忘记，那给你带来感动的，名为二次元的理想乡。</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">52</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/cpacm" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/u/3053253821" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.cnblogs.com/cpacm/" target="_blank" title="博客园">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  博客园
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#OkHttp3的网络编程"><span class="nav-number">1.</span> <span class="nav-text">OkHttp3的网络编程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#原理"><span class="nav-number">1.2.</span> <span class="nav-text">原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#OKHttpClient"><span class="nav-number">1.2.1.</span> <span class="nav-text">OKHttpClient</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dispatcher"><span class="nav-number">1.2.2.</span> <span class="nav-text">Dispatcher</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#同步"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">同步</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#异步"><span class="nav-number">1.2.2.2.</span> <span class="nav-text">异步</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Interceptor拦截链"><span class="nav-number">1.2.3.</span> <span class="nav-text">Interceptor拦截链</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#用户自定义-Interceptor"><span class="nav-number">1.2.3.1.</span> <span class="nav-text">用户自定义 Interceptor</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#RetryAndFollowUpInterceptor"><span class="nav-number">1.2.3.2.</span> <span class="nav-text">RetryAndFollowUpInterceptor</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#BridgeInterceptor"><span class="nav-number">1.2.3.3.</span> <span class="nav-text">BridgeInterceptor</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CacheInterceptor"><span class="nav-number">1.2.3.4.</span> <span class="nav-text">CacheInterceptor</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ConnectInterceptor"><span class="nav-number">1.2.3.5.</span> <span class="nav-text">ConnectInterceptor</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CallServerInterceptor"><span class="nav-number">1.2.3.6.</span> <span class="nav-text">CallServerInterceptor</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代理路由与网络请求"><span class="nav-number">1.2.4.</span> <span class="nav-text">代理路由与网络请求</span></a></li></ol></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">cpacm</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"cpacm"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("2fmsJHBmgPTnmd1bc7R9GcVX-gzGzoHsz", "CBUSqxdc9PSLibNV3TzlhpWg");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+</body>
+</html>

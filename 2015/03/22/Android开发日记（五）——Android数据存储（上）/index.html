@@ -1,0 +1,840 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="Android,开发系列,">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1">
+
+
+
+
+
+
+<meta name="description" content="数据和程序是应用构成的两个核心要素，数据存储永远是应用开发中最重要的主题之一，也是开发平台必须提供的基础功能。不光是在Android平台上，在其他的平台上，数据的存储永远是不可缺少的一块。Android的数据存储是构建在Linux的文件系统上，它充分利用Linux的账号系统来限定应用对数据的访问，部署了一套安全和灵活并重的数据存储解决方案。Android的文件框架，以及各种数据存储手段，具体包括：">
+<meta name="keywords" content="Android,开发系列">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android开发日记（五）——Android数据存储（上）">
+<meta property="og:url" content="http://www.cpacm.net/2015/03/22/Android开发日记（五）——Android数据存储（上）/index.html">
+<meta property="og:site_name" content="cpacm">
+<meta property="og:description" content="数据和程序是应用构成的两个核心要素，数据存储永远是应用开发中最重要的主题之一，也是开发平台必须提供的基础功能。不光是在Android平台上，在其他的平台上，数据的存储永远是不可缺少的一块。Android的数据存储是构建在Linux的文件系统上，它充分利用Linux的账号系统来限定应用对数据的访问，部署了一套安全和灵活并重的数据存储解决方案。Android的文件框架，以及各种数据存储手段，具体包括：">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://7xi4up.com1.z0.glb.clouddn.com/android_5_Data_SDCard%E6%97%A5%E5%BF%971.png">
+<meta property="og:image" content="http://7xi4up.com1.z0.glb.clouddn.com/android_5_Data_SDCard%E6%97%A5%E5%BF%972.png">
+<meta property="og:image" content="http://7xi4up.com1.z0.glb.clouddn.com/android_5_Data_Result.png">
+<meta property="og:image" content="http://7xi4up.com1.z0.glb.clouddn.com/android_5_%E6%8C%89%E9%92%AE%E5%B8%83%E5%B1%80.png">
+<meta property="og:updated_time" content="2015-12-24T19:12:37.885Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android开发日记（五）——Android数据存储（上）">
+<meta name="twitter:description" content="数据和程序是应用构成的两个核心要素，数据存储永远是应用开发中最重要的主题之一，也是开发平台必须提供的基础功能。不光是在Android平台上，在其他的平台上，数据的存储永远是不可缺少的一块。Android的数据存储是构建在Linux的文件系统上，它充分利用Linux的账号系统来限定应用对数据的访问，部署了一套安全和灵活并重的数据存储解决方案。Android的文件框架，以及各种数据存储手段，具体包括：">
+<meta name="twitter:image" content="http://7xi4up.com1.z0.glb.clouddn.com/android_5_Data_SDCard%E6%97%A5%E5%BF%971.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> Android开发日记（五）——Android数据存储（上） | cpacm </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?400b16383d4e24e7e0c1604aa14354a4";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">cpacm</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">动漫中毒者，技术宅</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Android开发日记（五）——Android数据存储（上）
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2015-03-22T20:50:16+08:00" content="2015-03-22">
+              2015-03-22
+            </time>
+          </span>
+
+          
+            <span class="post-category">
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2015/03/22/Android开发日记（五）——Android数据存储（上）/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/03/22/Android开发日记（五）——Android数据存储（上）/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2015/03/22/Android开发日记（五）——Android数据存储（上）/" class="leancloud_visitors" data-flag-title="Android开发日记（五）——Android数据存储（上）">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><em>本系列原本写于博客园，现移植到自己的博客上并重新编辑。</em>  </p>
+<h1 id="Android数据存储（上）"><a href="#Android数据存储（上）" class="headerlink" title="Android数据存储（上）"></a>Android数据存储（上）</h1><p>数据和程序是应用构成的两个核心要素，数据存储永远是应用开发中最重要的主题之一，也是开发平台必须提供的基础功能。不光是在Android平台上，在其他的平台上，数据的存储永远是不可缺少的一块。Android的数据存储是构建在<code>Linux</code>的文件系统上，它充分利用<code>Linux</code>的账号系统来限定应用对数据的访问，部署了一套安全和灵活并重的数据存储解决方案。Android的文件框架，以及各种数据存储手段，具体包括：<strong>Android的文件系统操作</strong>，<strong>设置文件的使用</strong>，<strong>数据库的使用</strong>，<strong>数据源组件的使用</strong>以及<strong>云端数据的存储</strong>。</p>
+<h2 id="一、Android的文件系统"><a href="#一、Android的文件系统" class="headerlink" title="一、Android的文件系统"></a>一、Android的文件系统</h2><h3 id="Android系统文件目录"><a href="#Android系统文件目录" class="headerlink" title="Android系统文件目录"></a>Android系统文件目录</h3><p>包括：  </p>
+<blockquote>
+<ol>
+<li>system —— 系统目录，放置在Android运行所需的核心库</li>
+<li>data —— 应用目录，放置着运行在Android上的应用及其数据</li>
+<li>sdcard —— 扩展存储卡目录，用来存放共享的数据</li>
+<li>mnt —— 记录Android挂载的外部存储信息</li>
+</ol>
+</blockquote>
+<h3 id="Android的应用数据存储机制"><a href="#Android的应用数据存储机制" class="headerlink" title="Android的应用数据存储机制"></a>Android的应用数据存储机制</h3><p>在Android中，第三方应用及其数据，都存放在data目录下。其中，应用安装包会被存放到<code>/data/app/</code>目录下，每个安装包的文件名都形如：应用包名.apk，以避免重复。<br>比如包名为<code>com.test.sample</code>的应用，其应用数据的目录为<code>/data/data/com.test.sample/</code>。对应的数据库文件存储在<code>/data/data/com.test.sample/database/</code>目录下，设置文件存储在<code>/data/data/com.test.sample/shared_prefs/</code>，自定义的应用数据文件存储在目录<code>/data/data/com.test.sample/files/</code>下，等等。<br>不仅如此，Android还会为每个应用创建一个账号，只有通过本应用的账号才有权限去运行该应用的安装包文件，读写应用数据目录下的文件（当然root权限除外啊~），从而保证了该应用数据不会再被其他应用获取或破坏。</p>
+<h3 id="Android的文件操作"><a href="#Android的文件操作" class="headerlink" title="Android的文件操作"></a>Android的文件操作</h3><p>从应用数据目录下可以看出，数据文件可以分成两类，一类是放置在扩展存储器中的文件，即/sdcard/目录下的文件，它们可以被各个应用共享；而另一类则是放在该应用数据目录下文件，它们仅能被各个应用独享，不能被其他应用读写。<br>** （1）扩展存储器中的文件读写方式跟标准的java文件处理无异。**<br>我们可以新建一个FileUtil的工具类来帮助我们处理文件的I/O操作，首先我们先判断SD卡的状态，看看SD卡是否可用，还有多少可用容量等。新建一个FileUtil的Class,加入方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// =================get SDCard information===================</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">isSdcardAvailable</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        String status = Environment.getExternalStorageState();</span><br><span class="line">        <span class="comment">//Environment.MEDIA_MOUNTED表示SD卡正常挂载</span></span><br><span class="line">        <span class="keyword">if</span> (status.equals(Environment.MEDIA_MOUNTED)) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">long</span> <span class="title">getSDAllSizeKB</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">//sd卡的位置</span></span><br><span class="line">        File path = Environment.getExternalStorageDirectory();</span><br><span class="line">        <span class="comment">//StatFs获取的都是以block为单位的</span></span><br><span class="line">        StatFs sf = <span class="keyword">new</span> StatFs(path.getPath());</span><br><span class="line">        <span class="comment">// 得到单个block的大小</span></span><br><span class="line">        <span class="keyword">long</span> blockSize = sf.getBlockSize();</span><br><span class="line">        <span class="comment">// 获取所有数据块数</span></span><br><span class="line">        <span class="keyword">long</span> allBlocks = sf.getBlockCount();</span><br><span class="line">        <span class="comment">// 返回SD卡大小</span></span><br><span class="line">        <span class="keyword">return</span> (allBlocks * blockSize) / <span class="number">1024</span>; <span class="comment">// KB</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * free size for normal application</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">long</span> <span class="title">getSDAvalibleSizeKB</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        File path = Environment.getExternalStorageDirectory();</span><br><span class="line">        StatFs sf = <span class="keyword">new</span> StatFs(path.getPath());</span><br><span class="line">        <span class="keyword">long</span> blockSize = sf.getBlockSize();</span><br><span class="line">        <span class="keyword">long</span> avaliableSize = sf.getAvailableBlocks();</span><br><span class="line">        <span class="keyword">return</span> (avaliableSize * blockSize) / <span class="number">1024</span>;<span class="comment">// KB</span></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>Environment.getExternalStorageDirectory()</code>表示获取扩展存储器的目录。（建议使用此方法动态获取，因为sdcard这个目录路径是可配置的）<br><code>StatFs.getBlockSize</code>在API18后变为<code>StatFs.getBlockSizeLong</code>,其他类似的getBlock方法也一样，关于StatFs,详情可以看<a href="http://blog.csdn.net/pang3510726681/article/details/6969557" target="_blank" rel="noopener">这篇博文</a><br>然后在activity中的button1加入事件</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">case</span> R.id.button1: &#123;</span><br><span class="line">            Log.d(<span class="string">"TEST"</span>, <span class="string">"sdcard?"</span>+FileUtil.isSdcardAvailable());</span><br><span class="line">            Log.d(<span class="string">"TEST"</span>, <span class="string">"全部容量"</span>+(<span class="keyword">float</span>)FileUtil.getSDAllSizeKB()/<span class="number">1024</span>/<span class="number">1024</span>);</span><br><span class="line">            Log.d(<span class="string">"TEST"</span>, <span class="string">"可用容量"</span>+(<span class="keyword">float</span>)FileUtil.getSDAvalibleSizeKB()/<span class="number">1024</span>/<span class="number">1024</span>);</span><br><span class="line">            Toast.makeText(<span class="keyword">this</span>, <span class="string">"status"</span>, Toast.LENGTH_SHORT).show();</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+
+<p>运行结果如下<br><img src="http://7xi4up.com1.z0.glb.clouddn.com/android_5_Data_SDCard%E6%97%A5%E5%BF%971.png" alt="Data_SDCard日志"><br>我们来判断某个文件夹是否存在在SD卡中以及创建一个文件夹</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> director 文件夹名称</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">isFileExist</span><span class="params">(String director)</span> </span>&#123;</span><br><span class="line">        File file = <span class="keyword">new</span> File(Environment.getExternalStorageDirectory()</span><br><span class="line">                + File.separator + director);</span><br><span class="line">        <span class="keyword">return</span> file.exists();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * create multiple director</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> path</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">createFile</span><span class="params">(String director)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (isFileExist(director)) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            File file = <span class="keyword">new</span> File(Environment.getExternalStorageDirectory()</span><br><span class="line">                    + File.separator + director);</span><br><span class="line">            <span class="keyword">if</span> (!file.mkdirs()) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>其中<code>File.separator</code>是表示分隔符，在不同操作系统下是不同的，如windows就是代表”/“，而在Linux下却是代表”&quot;。所以介意使用File.separator来代替分隔符。File.mkdirs()表示创建一个文件夹，且可附带创建父目录，而mkdir()不行，详情的File大家可以查看官方文档，或者看看<a href="http://blog.csdn.net/ahjxly/article/details/9982855" target="_blank" rel="noopener">这篇博文</a><br>然后在activity中的button2加入响应事件</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">case</span> R.id.button2: &#123;</span><br><span class="line">            Log.d(<span class="string">"TEST"</span>, <span class="string">"example文件夹存在?"</span>+FileUtil.isFileExist(<span class="string">"example"</span>));</span><br><span class="line">            Log.d(<span class="string">"TEST"</span>, <span class="string">"创建forexample文件夹"</span>+FileUtil.createFile(<span class="string">"forexample"</span>));</span><br><span class="line">            Toast.makeText(<span class="keyword">this</span>, <span class="string">"IsFile"</span>, Toast.LENGTH_SHORT).show();</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+
+<p>运行后可以看到<br><img src="http://7xi4up.com1.z0.glb.clouddn.com/android_5_Data_SDCard%E6%97%A5%E5%BF%972.png" alt="Data_SDCard日志"><br>我们会发现在手机的sdcard目录下新建了一个forexample的文件夹。<br>最后我们来实现文件的读和写<br>    <strong>写</strong>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">     * </span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> director</span></span><br><span class="line"><span class="comment">     *            (you don't need to begin with</span></span><br><span class="line"><span class="comment">     *            Environment.getExternalStorageDirectory()+File.separator)</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> fileName</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> content</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> encoding</span></span><br><span class="line"><span class="comment">     *            (UTF-8...)</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> isAppend</span></span><br><span class="line"><span class="comment">     *            : Context.MODE_APPEND</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> File <span class="title">writeToSDCardFile</span><span class="params">(String directory, String fileName,</span></span></span><br><span class="line"><span class="function"><span class="params">            String content, String encoding, <span class="keyword">boolean</span> isAppend)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// mobile SD card path +path</span></span><br><span class="line">        File file = <span class="keyword">null</span>;</span><br><span class="line">        OutputStream os = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (!createFile(directory)) &#123;</span><br><span class="line">                <span class="keyword">return</span> file;</span><br><span class="line">            &#125;</span><br><span class="line">            file = <span class="keyword">new</span> File(Environment.getExternalStorageDirectory()</span><br><span class="line">                    + File.separator + directory + File.separator + fileName);</span><br><span class="line">            os = <span class="keyword">new</span> FileOutputStream(file, isAppend);</span><br><span class="line">            <span class="keyword">if</span> (encoding.equals(<span class="string">""</span>)) &#123;</span><br><span class="line">                os.write(content.getBytes());</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                os.write(content.getBytes(encoding));</span><br><span class="line">            &#125;</span><br><span class="line">            os.flush();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            Log.e(<span class="string">"FileUtil"</span>, <span class="string">"writeToSDCardFile:"</span> + e.getMessage());</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                <span class="keyword">if</span> (os != <span class="keyword">null</span>) &#123;</span><br><span class="line">                    os.close();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> file;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * write data from inputstream to SDCard</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> File <span class="title">writeToSDCardFromInput</span><span class="params">(String directory, String fileName,</span></span></span><br><span class="line"><span class="function"><span class="params">            InputStream input)</span> </span>&#123;</span><br><span class="line">        File file = <span class="keyword">null</span>;</span><br><span class="line">        OutputStream os = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (createFile(directory)) &#123;</span><br><span class="line">                <span class="keyword">return</span> file;</span><br><span class="line">            &#125;</span><br><span class="line">            file = <span class="keyword">new</span> File(Environment.getExternalStorageDirectory()</span><br><span class="line">                    + File.separator + directory + File.separator + fileName);</span><br><span class="line">            os = <span class="keyword">new</span> FileOutputStream(file);</span><br><span class="line">            <span class="keyword">byte</span>[] data = <span class="keyword">new</span> <span class="keyword">byte</span>[bufferd];</span><br><span class="line">            <span class="keyword">int</span> length = -<span class="number">1</span>;</span><br><span class="line">            <span class="keyword">while</span> ((length = input.read(data)) != -<span class="number">1</span>) &#123;</span><br><span class="line">                os.write(data, <span class="number">0</span>, length);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// clear cache</span></span><br><span class="line">            os.flush();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            Log.e(<span class="string">"FileUtil"</span>, <span class="string">""</span> + e.getMessage());</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                os.close();</span><br><span class="line">            &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> file;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>从上面可以看到有两种写入的方法，一种是将字符串直接写入，另一种是将数据流写到文件中。还有一点要提的是file的默认目录就是sdcard的目录，所以开头不必每次都要加sdcard的目录路径。<br><code>FileOutputStream(file, isAppend)</code>两个参数，左边是File文件，而右边是一个boolean值，为true时，数据将会接在原来文件的后面写入，而false是则会覆盖。<br><strong>读</strong>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">ReadFromSDCardFile</span><span class="params">(String directory,String fileName)</span></span>&#123;</span><br><span class="line">        String res=<span class="string">""</span>; </span><br><span class="line">        File file = <span class="keyword">null</span>;</span><br><span class="line">        file = <span class="keyword">new</span> File(Environment.getExternalStorageDirectory()</span><br><span class="line">                + File.separator + directory + File.separator + fileName);</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            FileInputStream fis = <span class="keyword">new</span> FileInputStream(file);</span><br><span class="line">            <span class="keyword">int</span> length = fis.available();</span><br><span class="line">            <span class="keyword">byte</span> [] buffer = <span class="keyword">new</span> <span class="keyword">byte</span>[length]; </span><br><span class="line">            fis.read(buffer);</span><br><span class="line">            <span class="comment">//将字节按照编码格式转成字符串</span></span><br><span class="line">            res = EncodingUtils.getString(buffer, <span class="string">"UTF-8"</span>);</span><br><span class="line">            fis.close();</span><br><span class="line">            <span class="keyword">return</span> res;</span><br><span class="line">        &#125;<span class="keyword">catch</span> (FileNotFoundException  e) &#123;</span><br><span class="line">            <span class="comment">// TODO Auto-generated catch block</span></span><br><span class="line">            Log.d(<span class="string">"TEST"</span>, <span class="string">"FileNotFound"</span>);</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;<span class="keyword">catch</span> (Exception  e) &#123;</span><br><span class="line">            Log.d(<span class="string">"TEST"</span>, <span class="string">"Can Not Open File"</span>);</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;     </span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>编码默认是UTF-8，若是想要改变的话，将其作为参数传入就行。<br>Activity中在按钮中加入响应</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">case</span> R.id.button3: &#123;</span><br><span class="line">            FileUtil.writeToSDCardFile(<span class="string">"forexample"</span>, <span class="string">"test.txt"</span>,   </span><br><span class="line">                    editText.getText().toString(), <span class="string">"UTF-8"</span>, <span class="keyword">true</span>);</span><br><span class="line">            Toast.makeText(<span class="keyword">this</span>, <span class="string">"WriteFile"</span>, Toast.LENGTH_SHORT).show();</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125; </span><br><span class="line">        <span class="keyword">case</span> R.id.button4: &#123;</span><br><span class="line">            textView.setText(FileUtil.ReadFromSDCardFile(<span class="string">"forexample"</span>, <span class="string">"test.txt"</span>));</span><br><span class="line">            Toast.makeText(<span class="keyword">this</span>, <span class="string">"ReadFile"</span>, Toast.LENGTH_SHORT).show();</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+
+<p>在文字编辑框上写入“我是cpacm”，先点击writefile按钮，再点击ReadFile，得到运行结果<br><img src="http://7xi4up.com1.z0.glb.clouddn.com/android_5_Data_Result.png" alt="结果图"><br>同时在根目录下的forexample文件夹里会找到test.txt，里面有着“我是cpacm”的一行字。到此，文件的读写成功。<br><strong>（2）放在该应用数据目录下的文件读写</strong><br>存储在应用目录下的私有数据目录，通常不会通过File类的方式直接读写，而是利用一些封装过的类或函数来操作。一般可以通过Context.openFileOutput来执行。<br>在Activity加入两个方法，分别为文件的读和写</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">writeFile</span><span class="params">(String fileName,String writestr)</span></span>&#123; </span><br><span class="line">    <span class="keyword">try</span>&#123; </span><br><span class="line">            FileOutputStream fout =openFileOutput(fileName,MODE_PRIVATE); </span><br><span class="line">            <span class="keyword">byte</span> [] bytes = writestr.getBytes(); </span><br><span class="line">            fout.write(bytes); </span><br><span class="line">            fout.close(); </span><br><span class="line">          &#125; </span><br><span class="line">            <span class="keyword">catch</span>(Exception e)&#123; </span><br><span class="line">            e.printStackTrace(); </span><br><span class="line">           &#125; </span><br><span class="line">    &#125; </span><br><span class="line"></span><br><span class="line">    <span class="comment">//读数据</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">readFile</span><span class="params">(String fileName)</span></span>&#123; </span><br><span class="line">  String res=<span class="string">""</span>; </span><br><span class="line">  <span class="keyword">try</span>&#123; </span><br><span class="line">         FileInputStream fin = openFileInput(fileName); </span><br><span class="line">         <span class="keyword">int</span> length = fin.available(); </span><br><span class="line">         <span class="keyword">byte</span> [] buffer = <span class="keyword">new</span> <span class="keyword">byte</span>[length]; </span><br><span class="line">         fin.read(buffer);     </span><br><span class="line">         res = EncodingUtils.getString(buffer, <span class="string">"UTF-8"</span>); </span><br><span class="line">         fin.close();     </span><br><span class="line">     &#125; </span><br><span class="line">     <span class="keyword">catch</span>(Exception e)&#123; </span><br><span class="line">         e.printStackTrace(); </span><br><span class="line">     &#125; </span><br><span class="line">     <span class="keyword">return</span> res; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>同时在按钮的响应中加入</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">case</span> R.id.button5: &#123;</span><br><span class="line">            writeFile(<span class="string">"test2.txt"</span>,editText.getText().toString());</span><br><span class="line">            Toast.makeText(<span class="keyword">this</span>, <span class="string">"WritePrivateFile"</span>, Toast.LENGTH_SHORT).show();</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125; </span><br><span class="line">        <span class="keyword">case</span> R.id.button6: &#123;</span><br><span class="line">            textView.setText(readFile(<span class="string">"test2.txt"</span>));</span><br><span class="line">            Toast.makeText(<span class="keyword">this</span>, <span class="string">"ReadPrivateFile"</span>, Toast.LENGTH_SHORT).show();</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+
+<p>效果图跟上张一样。</p>
+<p>最后不要忘记在配置文件中声明权限</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">uses-permission</span> <span class="attr">android:name</span>=<span class="string">"android.permission.WRITE_EXTERNAL_STORAGE"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">uses-permission</span> <span class="attr">android:name</span>=<span class="string">"android.permission.MOUNT_UNMOUNT_FILESYSTEMS"</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="二、Android设置文件的使用"><a href="#二、Android设置文件的使用" class="headerlink" title="二、Android设置文件的使用"></a>二、Android设置文件的使用</h2><p>用户在使用应用时，常常会有一些个人偏好。为了满足不同用户的需求，应用通常会提供对应的设置项（Preference），让用户根据自己的喜好选择。这些设置信息会存储在本地并进行结构化地展示，使用户可以编辑。</p>
+<h3 id="设置文件的存储和使用"><a href="#设置文件的存储和使用" class="headerlink" title="设置文件的存储和使用"></a>设置文件的存储和使用</h3><p>Android应用的设置数据，可以通过android.content.SharedPreferences类来表示。它提供了一组数据读取的接口，可以从设置文件中读取给定键值的整形数，布尔型数等数据。<br>首先是获取SharedPreferences</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> SharedPreferences userInfo;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//在界面组件或服务组件中调用，构造应用默认的设置文件，默认文件名字为_preferences.xml</span></span><br><span class="line"><span class="comment">//userInfo = PreferenceManager.getDefaultSharedPreferences(this);  </span></span><br><span class="line"><span class="comment">//或获取指定名字的SharedPreferences对象  参数分别为存储的文件名和存储模式。</span></span><br><span class="line">userInfo = getSharedPreferences(<span class="string">"preferences"</span>, Activity.MODE_PRIVATE); </span><br><span class="line"></span><br><span class="line"><span class="comment">//读取数据，如果无法找到则会使用默认值</span></span><br><span class="line">String username = userInfo.getString(<span class="string">"name"</span>, <span class="string">"未定义姓名"</span>);  </span><br><span class="line">String msg = userInfo.getString(<span class="string">"msg"</span>, <span class="string">"未定义信息"</span>);</span><br><span class="line"><span class="comment">//显示文本</span></span><br><span class="line">textView.setText(username+<span class="string">","</span>+msg);</span><br></pre></td></tr></table></figure>
+
+<p>两种获取方式，默认或者指定一个文件<br>接下来加入响应按钮</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">case</span> R.id.button7: &#123;</span><br><span class="line">    <span class="comment">//获得SharedPreferences的编辑器</span></span><br><span class="line">    SharedPreferences.Editor editor = userInfo.edit();</span><br><span class="line">    <span class="comment">//将信息存入相应的键值中</span></span><br><span class="line">    editor.putString(<span class="string">"name"</span>, editText.getText().toString()).commit();</span><br><span class="line">    Toast.makeText(<span class="keyword">this</span>, <span class="string">"SetName"</span>, Toast.LENGTH_SHORT).show();</span><br><span class="line">    <span class="keyword">break</span>;</span><br><span class="line">&#125; </span><br><span class="line"><span class="keyword">case</span> R.id.button8: &#123;</span><br><span class="line">    <span class="comment">//获得SharedPreferences的编辑器</span></span><br><span class="line">    SharedPreferences.Editor editor = userInfo.edit();</span><br><span class="line">    <span class="comment">//将信息存入相应的键值中ss</span></span><br><span class="line">    editor.putString(<span class="string">"msg"</span>, editText.getText().toString()).commit();</span><br><span class="line">    Toast.makeText(<span class="keyword">this</span>, <span class="string">"SetMessage"</span>, Toast.LENGTH_SHORT).show();</span><br><span class="line">    <span class="keyword">break</span>;</span><br><span class="line">&#125; </span><br><span class="line"><span class="keyword">case</span> R.id.button9: &#123;</span><br><span class="line">    <span class="comment">//获得SharedPreferences文件</span></span><br><span class="line">    userInfo = getSharedPreferences(<span class="string">"preferences"</span>, Activity.MODE_PRIVATE);</span><br><span class="line">    String username = userInfo.getString(<span class="string">"name"</span>, <span class="string">"未定义姓名"</span>);  </span><br><span class="line">    String msg = userInfo.getString(<span class="string">"msg"</span>, <span class="string">"未定义信息"</span>);</span><br><span class="line">    textView.setText(username+<span class="string">","</span>+msg);</span><br><span class="line">    Toast.makeText(<span class="keyword">this</span>, <span class="string">"ShowMsg"</span>, Toast.LENGTH_SHORT).show();</span><br><span class="line">    <span class="keyword">break</span>;</span><br><span class="line">&#125; </span><br><span class="line"><span class="keyword">case</span> R.id.button10: &#123;</span><br><span class="line">    <span class="comment">//输出XML文件</span></span><br><span class="line">    textView.setText(print());</span><br><span class="line">    Toast.makeText(<span class="keyword">this</span>, <span class="string">"ShowXML"</span>, Toast.LENGTH_SHORT).show();</span><br><span class="line">    <span class="keyword">break</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>按钮7,8可以设置信息，按钮9则从SharedPreferences文件中读取信息并显示在文字框中。按钮10会显示这个XML文件中的所有信息。<br><img src="http://7xi4up.com1.z0.glb.clouddn.com/android_5_%E6%8C%89%E9%92%AE%E5%B8%83%E5%B1%80.png" alt="按钮布局"><br><strong>访问其他应用中的Preference</strong>(在SecondApp中访问FirstApp的数据)，前提条件是：FirstApp的preference创建时指定了Context.MODE_WORLD_READABLE或者Context.MODE_WORLD_WRITEABLE权限。<br>如：在<code>&lt;package name&gt;</code>为<code>com.first.app</code>的应用使用下面语句创建了<code>preference(&quot;first_app_perferences&quot;)</code>。<br>Java代码:<figure class="highlight java"><figcaption><span>getSharedPreferences("first_app_perferences", Context.MODE_WORLD_READABLE)```;  </span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">在SecondApp中要访问FirstApp应用中的preference，首先需要创建FirstApp应用的Context，然后通过Context 访问preference ，访问preference时会在应用所在包下的shared_prefs目录找到preference</span><br><span class="line">```java</span><br><span class="line">    Context firstAppContext = createPackageContext(<span class="string">"com.first.app"</span>, Context.CONTEXT_IGNORE_SECURITY);   </span><br><span class="line">    SharedPreferences sharedPreferences = firstAppContext.getSharedPreferences(<span class="string">"first_app_perferences"</span>,  Context.MODE_WORLD_READABLE);   </span><br><span class="line">    String name = sharedPreferences.getString(<span class="string">"name"</span>, <span class="string">""</span>);  </span><br><span class="line">    <span class="keyword">int</span> age = sharedPreferences.getInt(<span class="string">"age"</span>, <span class="number">0</span>);</span><br></pre></td></tr></table></figure></p>
+<p>如果不通过创建Context访问FirstApp应用的preference，可以以读取xml文件方式直接访问FirstApp应用的preference对应的xml文件，<br>如： </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">File xmlFile = <span class="keyword">new</span> File(“/data/data/&lt;<span class="keyword">package</span> name&gt;/shared_prefs/first_app_perferences.xml”);<span class="comment">//&lt;package name&gt;应替换成应用的包名: com.first.app</span></span><br></pre></td></tr></table></figure>
+
+<p>设置界面组件<br>有一类特殊的Preference对象：android.preference.PreferenceGroup。它是容器型的Preference对象，负责管理一组相关联的Preference对象。设置项编辑的界面组件，通常派生自android.preference.PreferenceActivity类。它可以将一个定制好的设置树转换成对应的控件呈现出来。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PreferencesDemo</span> <span class="keyword">extends</span> <span class="title">PreferenceActivity</span></span>&#123;</span><br><span class="line">     <span class="meta">@Override</span></span><br><span class="line">     <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savadInstanceState)</span></span>&#123;</span><br><span class="line">         <span class="keyword">super</span>.onCreate(savadInstanceState);</span><br><span class="line">         <span class="keyword">this</span>.addPreferencesFromResource(R.xml.preference);</span><br><span class="line">     &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>其中，R.xml.preference表示描述设置信息的资源文件。放在XML资源目录下。<br>详细可以参考Android的配置界面<a href="http://www.cnblogs.com/zhangdongzi/archive/2012/01/05/2313519.html" target="_blank" rel="noopener">PreferenceActivity</a></p>
+<p>资源下载：<a href="https://github.com/cpacm/android_learn/tree/master/DataDemo" target="_blank" rel="noopener">DataDemo</a><br>参考文章<br>（1）<a href="http://blog.csdn.net/zuolongsnail/article/details/6556703" target="_blank" rel="noopener">Android中的SharedPreferences存储数据方式</a><br>（2）<a href="http://www.open-open.com/lib/view/open1330957864280.html" target="_blank" rel="noopener">Android - 文件操作小结</a><br><embed src="http://www.xiami.com/widget/0_1772625006/singlePlayer.swf" type="application/x-shockwave-flash" width="257" height="33" wmode="transparent"><br>限于篇幅，这篇文章就到此结束，这篇主要讲了如何在Android中读写文件，包括SDCard中和应用内部的文件。以及如何使用设置文件。在下一篇我会讲解Android内部自带的数据库使用及操作。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag">#Android</a>
+          
+            <a href="/tags/开发系列/" rel="tag">#开发系列</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/03/22/Android开发日记（四）——Android四大组件之Broadcast-Receiver/" rel="next" title="Android开发日记（四）——Android四大组件之Broadcast Receiver">
+                <i class="fa fa-chevron-left"></i> Android开发日记（四）——Android四大组件之Broadcast Receiver
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/03/22/Android开发日记（六）——Android数据存储（下）/" rel="prev" title="Android开发日记（六）——Android数据存储（下）">
+                Android开发日记（六）——Android数据存储（下） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2015/03/22/Android开发日记（五）——Android数据存储（上）/" data-title="Android开发日记（五）——Android数据存储（上）" data-url="http://www.cpacm.net/2015/03/22/Android开发日记（五）——Android数据存储（上）/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/img/author.jpg" alt="cpacm">
+          <p class="site-author-name" itemprop="name">cpacm</p>
+          <p class="site-description motion-element" itemprop="description">请不要忘记，那给你带来感动的，名为二次元的理想乡。</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">52</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/cpacm" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/u/3053253821" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.cnblogs.com/cpacm/" target="_blank" title="博客园">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  博客园
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Android数据存储（上）"><span class="nav-number">1.</span> <span class="nav-text">Android数据存储（上）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、Android的文件系统"><span class="nav-number">1.1.</span> <span class="nav-text">一、Android的文件系统</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Android系统文件目录"><span class="nav-number">1.1.1.</span> <span class="nav-text">Android系统文件目录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Android的应用数据存储机制"><span class="nav-number">1.1.2.</span> <span class="nav-text">Android的应用数据存储机制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Android的文件操作"><span class="nav-number">1.1.3.</span> <span class="nav-text">Android的文件操作</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、Android设置文件的使用"><span class="nav-number">1.2.</span> <span class="nav-text">二、Android设置文件的使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#设置文件的存储和使用"><span class="nav-number">1.2.1.</span> <span class="nav-text">设置文件的存储和使用</span></a></li></ol></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">cpacm</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"cpacm"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("2fmsJHBmgPTnmd1bc7R9GcVX-gzGzoHsz", "CBUSqxdc9PSLibNV3TzlhpWg");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+</body>
+</html>

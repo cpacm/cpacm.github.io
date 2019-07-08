@@ -1,0 +1,831 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="ogre,">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1">
+
+
+
+
+
+
+<meta name="description" content="Ogre三维框架基础篇 —— 场景结点，摄像头，光源，阴影">
+<meta name="keywords" content="ogre">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ogre三维框架基础篇（一）">
+<meta property="og:url" content="http://www.cpacm.net/2015/02/08/Ogre三维框架基础篇（一）/index.html">
+<meta property="og:site_name" content="cpacm">
+<meta property="og:description" content="Ogre三维框架基础篇 —— 场景结点，摄像头，光源，阴影">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://7xi4up.com1.z0.glb.clouddn.com/ogre_2_Ogre_SceneManager.png">
+<meta property="og:image" content="http://7xi4up.com1.z0.glb.clouddn.com/ogre_2_Ogre_SceneResult.png">
+<meta property="og:image" content="http://7xi4up.com1.z0.glb.clouddn.com/ogre_2_Ogre_XYZ%E8%BD%B4.png">
+<meta property="og:image" content="http://7xi4up.com1.z0.glb.clouddn.com/ogre_2_Ogre_%E6%97%8B%E8%BD%AC.png">
+<meta property="og:image" content="http://7xi4up.com1.z0.glb.clouddn.com/ogre_2_Ogre_plane.png">
+<meta property="og:image" content="http://7xi4up.com1.z0.glb.clouddn.com/ogre_2_Ogre_LightResult.png">
+<meta property="og:updated_time" content="2016-11-29T14:01:07.977Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Ogre三维框架基础篇（一）">
+<meta name="twitter:description" content="Ogre三维框架基础篇 —— 场景结点，摄像头，光源，阴影">
+<meta name="twitter:image" content="http://7xi4up.com1.z0.glb.clouddn.com/ogre_2_Ogre_SceneManager.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> Ogre三维框架基础篇（一） | cpacm </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?400b16383d4e24e7e0c1604aa14354a4";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">cpacm</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">动漫中毒者，技术宅</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Ogre三维框架基础篇（一）
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2015-02-08T20:01:24+08:00" content="2015-02-08">
+              2015-02-08
+            </time>
+          </span>
+
+          
+            <span class="post-category">
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/开源-框架/" itemprop="url" rel="index">
+                    <span itemprop="name">开源&框架</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2015/02/08/Ogre三维框架基础篇（一）/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/02/08/Ogre三维框架基础篇（一）/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2015/02/08/Ogre三维框架基础篇（一）/" class="leancloud_visitors" data-flag-title="Ogre三维框架基础篇（一）">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="Ogre场景示例"><a href="#Ogre场景示例" class="headerlink" title="Ogre场景示例"></a>Ogre场景示例</h2><h3 id="SceneManager"><a href="#SceneManager" class="headerlink" title="SceneManager"></a>SceneManager</h3><p>在写代码前要先明白一些概念。首先是<strong>SceneManager</strong>，我称之为场景管理器。它是管理所有出现在屏幕上的东西，比如模型，比如光源，比如摄像头。场景管理器也有不同的类型，具体的类型可以查看这里<a href="http://www.ogre3d.org/tikiwiki/tiki-index.php?page=SceneManagersFAQ" target="_blank" rel="noopener">SceneManagers FAQ</a> .<br><img src="http://7xi4up.com1.z0.glb.clouddn.com/ogre_2_Ogre_SceneManager.png" alt="SceneManager">  </p>
+<h3 id="SceneNode"><a href="#SceneNode" class="headerlink" title="SceneNode"></a>SceneNode</h3><p><strong>SceneNode</strong>保存着与之相连的模型信息，一个模型只有与<strong>SceneNode</strong>绑定后才能被渲染出来。相对的，<strong>SceneNode</strong>没有对象与之绑定的话也是无法在屏幕上渲染出来的。<strong>SceneNode</strong>携带一些比如位置，缩放，旋转等信息用于对绑定对象进行简单的处理。<br><strong>SceneNode</strong>作为一个节点存在在整个节点树中，所有节点组成一棵庞大的树，我们可以不断向树里面添加节点。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mSceneMgr-&gt;getRootSceneNode()<span class="comment">//获得根节点</span></span><br><span class="line">mSceneMgr-&gt;getRootSceneNode()-&gt;createChildSceneNode(<span class="string">"Node"</span>);<span class="comment">//在根节点上生成一个新的子节点，并赋予姓名“Node”.</span></span><br></pre></td></tr></table></figure>
+
+<p>还有一点是节点与其父节点关系是相对的。<br>比如说现在RootNode坐标为（0,0,0），Node1作为RootNode的子节点坐标为（0,0,0），Node2作为Node1的子节点坐标为（10,20,30）。现在将Node1的坐标改为（10,10,10），则Node2的坐标也会相应的变为（20,30,40）。  </p>
+<h3 id="场景代码"><a href="#场景代码" class="headerlink" title="场景代码"></a>场景代码</h3><p>在createScene方法中加入以下代码</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//创建视图-------------------------------------------------------------------------------------</span></span><br><span class="line"><span class="keyword">void</span> TutorialApplication::createScene(<span class="keyword">void</span>)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="comment">// create your scene here :)</span></span><br><span class="line">	<span class="comment">// Set the scene's ambient light 设置环境光源的亮度 默认为0不可见，故一定要加上这句</span></span><br><span class="line">	mSceneMgr-&gt;setAmbientLight(Ogre::ColourValue(<span class="number">0.5f</span>, <span class="number">0.5f</span>, <span class="number">0.5f</span>));</span><br><span class="line">	<span class="comment">//移动摄像头的位置</span></span><br><span class="line">	mCamera-&gt;setPosition(<span class="number">0</span>, <span class="number">47</span>, <span class="number">222</span>);</span><br><span class="line">	<span class="comment">//生成模型</span></span><br><span class="line">	Ogre::Entity* ogreEntity = mSceneMgr-&gt;createEntity(<span class="string">"MyEntity"</span>, <span class="string">"ogrehead.mesh"</span>);</span><br><span class="line">	<span class="comment">//创建子场景结点并加入结点树中</span></span><br><span class="line">	Ogre::SceneNode* node = mSceneMgr-&gt;getRootSceneNode()-&gt;createChildSceneNode(<span class="string">"Node1"</span>);</span><br><span class="line">	<span class="comment">//设置结点位置</span></span><br><span class="line">	<span class="comment">//node-&gt;setPosition(10,0,0);</span></span><br><span class="line">	<span class="comment">//将模型与场景结点绑定使其可见</span></span><br><span class="line">	node-&gt;attachObject(ogreEntity);</span><br><span class="line">	<span class="comment">//建立点光源，位置为20,80,50</span></span><br><span class="line">	Ogre::Light* light = mSceneMgr-&gt;createLight(<span class="string">"MainLight"</span>);</span><br><span class="line">	light-&gt;setPosition(<span class="number">20.0f</span>, <span class="number">80.0f</span>, <span class="number">50.0f</span>);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//现在建立第二个模型，使用构造函数直接指定坐标</span></span><br><span class="line">	Ogre::Entity* ogreEntity2 = mSceneMgr-&gt;createEntity(<span class="string">"SecondEntity"</span>,<span class="string">"ogrehead.mesh"</span>);</span><br><span class="line">	Ogre::SceneNode* node2 = mSceneMgr-&gt;getRootSceneNode()-&gt;createChildSceneNode(<span class="string">"Node2"</span>,Ogre::Vector3(<span class="number">84</span>,<span class="number">48</span>,<span class="number">0</span>));</span><br><span class="line">	node2-&gt;attachObject(ogreEntity2);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//建立第三个模型，用于缩放</span></span><br><span class="line">	Ogre::Entity* ogreEntity3 = mSceneMgr-&gt;createEntity(<span class="string">"ogrehead.mesh"</span>);</span><br><span class="line">	Ogre::SceneNode* ogreNode3 = mSceneMgr-&gt;getRootSceneNode()-&gt;createChildSceneNode();</span><br><span class="line">	ogreNode3-&gt;setPosition(<span class="number">0</span>, <span class="number">104</span>, <span class="number">0</span>);</span><br><span class="line">	ogreNode3-&gt;setScale(<span class="number">2</span>, <span class="number">1.2</span>, <span class="number">1</span>); <span class="comment">//x轴上放大为普通的两倍，y轴1.2倍，z轴不变</span></span><br><span class="line">	ogreNode3-&gt;attachObject(ogreEntity3);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//建立第四个模型，用于旋转</span></span><br><span class="line">	Ogre::Entity* ogreEntity4 = mSceneMgr-&gt;createEntity(<span class="string">"ogrehead.mesh"</span>);</span><br><span class="line">	Ogre::SceneNode* ogreNode4 = mSceneMgr-&gt;getRootSceneNode()-&gt;createChildSceneNode();</span><br><span class="line">	ogreNode4-&gt;setPosition(<span class="number">-84</span>, <span class="number">48</span>, <span class="number">0</span>);</span><br><span class="line">	<span class="comment">//基于正方向，顺时针</span></span><br><span class="line">	ogreNode4-&gt;roll(Ogre::Degree(<span class="number">-90</span>));<span class="comment">//逆时针90度</span></span><br><span class="line">	ogreNode4-&gt;attachObject(ogreEntity4);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://7xi4up.com1.z0.glb.clouddn.com/ogre_2_Ogre_SceneResult.png" alt="运行截图"></p>
+<h3 id="XYZ坐标-amp-缩放"><a href="#XYZ坐标-amp-缩放" class="headerlink" title="XYZ坐标&amp;缩放"></a>XYZ坐标&amp;缩放</h3><p><img src="http://7xi4up.com1.z0.glb.clouddn.com/ogre_2_Ogre_XYZ%E8%BD%B4.png" alt="XYZ坐标"><br>如图所示，基本上所有的三维编程都是基于这个标准设定三维空间。</p>
+<h3 id="旋转"><a href="#旋转" class="headerlink" title="旋转"></a>旋转</h3><p><img src="http://7xi4up.com1.z0.glb.clouddn.com/ogre_2_Ogre_%E6%97%8B%E8%BD%AC.png" alt="旋转"><br>想象自己作为原点，向各轴正方向看去，以顺时针为正方向，逆时针为负方向。</p>
+<p>###文件配置<br><code>plugins.cfg</code>是加载插件的配置文件。<br><code>resources.cfg</code>是加载资源文件的配置文件。<br><code>ogre.cfg</code>是整个Ogre系统的配置文件。<br>它们存在于<code>../bin/debug or release</code> 文件夹下。<br>详细的内容在<a href="http://www.ogre3d.org/tikiwiki/tiki-index.php?page=Basic+Tutorial+1&structure=Tutorials" target="_blank" rel="noopener">官方WIKI</a>上。  </p>
+<h2 id="Ogre的显示"><a href="#Ogre的显示" class="headerlink" title="Ogre的显示"></a>Ogre的显示</h2><h3 id="Camera——Ogre摄像头"><a href="#Camera——Ogre摄像头" class="headerlink" title="Camera——Ogre摄像头"></a>Camera——Ogre摄像头</h3><p>在<code>BaseApplication</code>中的<code>createCamera()</code>就是创建摄像头，现在我们在<code>TutorialApplication</code>类中重写<code>createCamera()</code>方法。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//TutorialApplication.h中加入</span></span><br><span class="line"><span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">createCamera</span><span class="params">()</span></span>;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//TutorialApplication.cpp中加入</span></span><br><span class="line"><span class="keyword">void</span> TutorialApplication::createCamera()</span><br><span class="line">&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>createCamera</strong>中的代码,其中<a href="www.ogre3d.org/tikiwiki/tiki-index.php?page=SdkCameraMan">SDKCameraMan</a>用于控制摄像头</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//创建摄像头--------------------</span></span><br><span class="line"><span class="keyword">void</span> TutorialApplication::createCamera(<span class="keyword">void</span>)&#123;</span><br><span class="line">	<span class="comment">//创建一个名为“PlayerCam”的摄像头</span></span><br><span class="line">	mCamera = mSceneMgr-&gt;createCamera(<span class="string">"PlayerCam"</span>);</span><br><span class="line">	<span class="comment">//设定摄像头位置</span></span><br><span class="line">	mCamera-&gt;setPosition(Ogre::Vector3(<span class="number">0</span>, <span class="number">300</span>, <span class="number">500</span>));</span><br><span class="line">	<span class="comment">//摄像头朝向</span></span><br><span class="line">	mCamera-&gt;lookAt(Ogre::Vector3(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>));</span><br><span class="line">	<span class="comment">//盲区为5，即是说在5单位里面的mesh都将不会被渲染</span></span><br><span class="line">	mCamera-&gt;setNearClipDistance(<span class="number">5</span>);</span><br><span class="line">	<span class="comment">//SDKCameraMan是一个摄像头控制器</span></span><br><span class="line">	mCameraMan = <span class="keyword">new</span> OgreBites::SdkCameraMan(mCamera);</span><br><span class="line">	<span class="comment">//以上这些变量都是在BaseApplication中定义，同样也在其析构函数中释放变量的内存</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Viewports——视图监视器"><a href="#Viewports——视图监视器" class="headerlink" title="Viewports——视图监视器"></a>Viewports——视图监视器</h3><p>Viewports是用于处理多摄像头时的情况。可用于分屏和迷你地图。一个Viewport是对一个Camera所拍摄到的场景的反映，所以一个Viewport只能绑定一个Camera。而一个Camera所拍摄到的场景可以通过多个Viewport反映到不同的区域，所以一个Camera则可以绑定多个Viewport。一个Camera同时只可以拍摄一个场景，所以一个Camera只可以绑定一个场景。一个场景可以由多个观察者去观察，所以它可以绑定多个Camera。<br>我们打个比方吧，将一个酒店大厅作为一个Scene,它同时被多台监视器监控，那么监视器就是camera，在监控室中，每个监视器反馈到不同的屏幕上，如此一个屏幕就作为一个Viewport，而整个监控室就相当于整个程序的窗口。<br>同样重写<code>BaseApplication</code>中的<code>createViewports()</code>方法</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//TutorialApplication.h中加入</span></span><br><span class="line"><span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">createViewports</span><span class="params">()</span></span>;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//TutorialApplication.cpp中加入</span></span><br><span class="line"><span class="keyword">void</span> TutorialApplication::createViewports()</span><br><span class="line">&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在<code>createViewports</code>中添加代码</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//创建可视区域--------------</span></span><br><span class="line"><span class="keyword">void</span> TutorialApplication::createViewports(<span class="keyword">void</span>)&#123;</span><br><span class="line">	<span class="comment">//一个视图监视器，将其与一个摄像机绑定</span></span><br><span class="line">	Ogre::Viewport* vp = mWindow-&gt;addViewport(mCamera);</span><br><span class="line">	<span class="comment">//设置背景颜色为黑</span></span><br><span class="line">	vp-&gt;setBackgroundColour(Ogre::ColourValue(<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>));</span><br><span class="line"></span><br><span class="line">	<span class="comment">//窗口的纵横比，使其与Camera的宽高比相同</span></span><br><span class="line">	mCamera-&gt;setAspectRatio(</span><br><span class="line">		Ogre::Real(vp-&gt;getActualWidth()) / Ogre::Real(vp-&gt;getActualHeight()));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="创建一个Plane模型"><a href="#创建一个Plane模型" class="headerlink" title="创建一个Plane模型"></a>创建一个Plane模型</h3><p>我们现在要做的是不通过导入mesh数据凭空建一个模型，当然是一个最简单的模型——平面模型，并加上材质贴图。<br>首先，新建一个Plane实例</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Ogre::<span class="function">Plane <span class="title">plane</span><span class="params">(Ogre::Vector3::UNIT_Y, <span class="number">0</span>)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://7xi4up.com1.z0.glb.clouddn.com/ogre_2_Ogre_plane.png" alt="Plane朝向"><br>然后通过<code>MeshManager</code>来建立一个平面模型。<a href="http://www.ogre3d.org/docs/api/1.9/class_ogre_1_1_mesh_manager.html" target="_blank" rel="noopener">MeshManager</a>是管理所有mesh资源的一个类。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Ogre::MeshManager::getSingleton().createPlane(</span><br><span class="line">  <span class="string">"ground"</span>,</span><br><span class="line">  Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,</span><br><span class="line">  plane, </span><br><span class="line">  <span class="number">1500</span>, <span class="number">1500</span>, <span class="number">20</span>, <span class="number">20</span>, </span><br><span class="line">  <span class="literal">true</span>, </span><br><span class="line">  <span class="number">1</span>, <span class="number">5</span>, <span class="number">5</span>, </span><br><span class="line">  Ogre::Vector3::UNIT_Z);</span><br></pre></td></tr></table></figure>
+
+<p>其中各个参数的含义</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">	OgreMeshManager.h 中定义：</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">	Mesh * Ogre::MeshManager::createPlane ( </span></span><br><span class="line"><span class="comment">	const String &amp; name, // 平面模型的名称 　　</span></span><br><span class="line"><span class="comment">	const Plane &amp; plane, // 所使用的平面定义的名称 　　</span></span><br><span class="line"><span class="comment">	Real width, // 平面宽度 (X 方向) 　　</span></span><br><span class="line"><span class="comment">	Real height, // 平面高度 (Y 方向) 　　</span></span><br><span class="line"><span class="comment">	int xsegments = 1, // X 方向分割数目 　　</span></span><br><span class="line"><span class="comment">	int ysegments = 1, // Y 方向分割数目 　　</span></span><br><span class="line"><span class="comment">	bool normals = true, // 是否创建垂直于平面的法线 　　</span></span><br><span class="line"><span class="comment">	int numTexCoordSets = 1, // 纹理坐标集的数目(也就是多层纹理的层数) 　　</span></span><br><span class="line"><span class="comment">	Real uTile = 1.0f, // U 方向纹理铺嵌行数 　　</span></span><br><span class="line"><span class="comment">	Real vTile = 1.0f, // V 方向纹理铺嵌行数 　　</span></span><br><span class="line"><span class="comment">	const Vector3 &amp; upVector = Vector3::UNIT_Y, 　　// 上方向法线，指示平面的正面朝向 　　</span></span><br><span class="line"><span class="comment">	HardwareBuffer::Usage vertexBufferUsage = HardwareBuffer::HBU_STATIC_WRITE_ONLY,  // 顶点缓存用途 　　</span></span><br><span class="line"><span class="comment">	HardwareBuffer::Usage indexBufferUsage = HardwareBuffer::HBU_STATIC_WRITE_ONLY, 　　// 索引缓存用途 　　</span></span><br><span class="line"><span class="comment">	bool vertexShadowBuffer = true, // 顶点阴影缓存 　　</span></span><br><span class="line"><span class="comment">	bool indexShadowBuffer = true // 索引阴影缓存 　</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">	)</span></span><br><span class="line"><span class="comment">	*/</span></span><br></pre></td></tr></table></figure>
+
+<p>最后通过mSceneMgr来调用</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//设置平面模型的材质</span></span><br><span class="line">groundEntity-&gt;setMaterialName(<span class="string">"Examples/Rockwall"</span>);</span><br><span class="line">Ogre::Entity* groundEntity = mSceneMgr-&gt;createEntity(<span class="string">"ground"</span>);</span><br><span class="line">mSceneMgr-&gt;getRootSceneNode()-&gt;createChildSceneNode()-&gt;attachObject(groundEntity);</span><br></pre></td></tr></table></figure>
+
+<h3 id="灯光-amp-投影"><a href="#灯光-amp-投影" class="headerlink" title="灯光&amp;投影"></a>灯光&amp;投影</h3><p>灯光在Ogre中可以分为三种类型</p>
+<blockquote>
+<p>Ogre::Light::LT_POINT - 点光源，类似于电灯泡<br>Ogre::Light::LT_SPOTLIGHT - 投射光源，类似于手电筒<br>Ogre::Light::LT_DIRECTIONAL - 平行光源，类似与太阳光  </p>
+</blockquote>
+<p>三种类型光源的调用代码  </p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//阴影投射技术</span></span><br><span class="line">	mSceneMgr-&gt;setShadowTechnique(Ogre::SHADOWTYPE_STENCIL_ADDITIVE);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//光柱</span></span><br><span class="line">	Ogre::Light* spotLight = mSceneMgr-&gt;createLight(<span class="string">"SpotLight"</span>);</span><br><span class="line">	<span class="comment">//漫反射</span></span><br><span class="line">	spotLight-&gt;setDiffuseColour(<span class="number">0</span>, <span class="number">0</span>, <span class="number">1.0</span>);</span><br><span class="line">	<span class="comment">//镜面反射</span></span><br><span class="line">	spotLight-&gt;setSpecularColour(<span class="number">0</span>, <span class="number">0</span>, <span class="number">1.0</span>);</span><br><span class="line">	<span class="comment">//设置光源的类型为光柱（类似手电筒的投射光）</span></span><br><span class="line">	spotLight-&gt;setType(Ogre::Light::LT_SPOTLIGHT);</span><br><span class="line">	<span class="comment">//灯光投射方向，此处为x,y轴45度方向处。</span></span><br><span class="line">	spotLight-&gt;setDirection(<span class="number">-1</span>, <span class="number">-1</span>, <span class="number">0</span>);</span><br><span class="line">	<span class="comment">//灯光位置</span></span><br><span class="line">	spotLight-&gt;setPosition(Ogre::Vector3(<span class="number">200</span>, <span class="number">200</span>, <span class="number">0</span>));</span><br><span class="line"></span><br><span class="line">	Ogre::Light* directionalLight = mSceneMgr-&gt;createLight(<span class="string">"DirectionalLight"</span>);</span><br><span class="line">	<span class="comment">//设置灯光类型为平行光</span></span><br><span class="line">	directionalLight-&gt;setType(Ogre::Light::LT_DIRECTIONAL);</span><br><span class="line">	directionalLight-&gt;setDiffuseColour(Ogre::ColourValue(<span class="number">.4</span>, <span class="number">0</span>, <span class="number">0</span>));</span><br><span class="line">	directionalLight-&gt;setSpecularColour(Ogre::ColourValue(<span class="number">.4</span>, <span class="number">0</span>, <span class="number">0</span>));</span><br><span class="line">	directionalLight-&gt;setDirection(Ogre::Vector3(<span class="number">0</span>, <span class="number">-1</span>, <span class="number">1</span>));</span><br><span class="line"></span><br><span class="line">	Ogre::Light* pointLight = mSceneMgr-&gt;createLight(<span class="string">"PointLight"</span>);</span><br><span class="line">	<span class="comment">//设置灯光类型为点光源</span></span><br><span class="line">	pointLight-&gt;setType(Ogre::Light::LT_POINT);</span><br><span class="line">	pointLight-&gt;setDiffuseColour(<span class="number">.3</span>, <span class="number">.3</span>, <span class="number">.3</span>);</span><br><span class="line">	pointLight-&gt;setSpecularColour(<span class="number">.3</span>, <span class="number">.3</span>, <span class="number">.3</span>);</span><br><span class="line">	pointLight-&gt;setPosition(Ogre::Vector3(<span class="number">0</span>, <span class="number">150</span>, <span class="number">250</span>));</span><br></pre></td></tr></table></figure>
+
+<h3 id="运行结果"><a href="#运行结果" class="headerlink" title="运行结果"></a>运行结果</h3><p>在<code>createScene()</code>中的完整代码如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//创建视图-------------------------------------------------------------------------------------</span></span><br><span class="line"><span class="keyword">void</span> TutorialApplication::createScene(<span class="keyword">void</span>)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="comment">// create your scene here :)</span></span><br><span class="line">	Ogre::Entity* ninjaEntity = mSceneMgr-&gt;createEntity(<span class="string">"ninja.mesh"</span>);</span><br><span class="line">	<span class="comment">//打开实物投影</span></span><br><span class="line">	ninjaEntity-&gt;setCastShadows(<span class="literal">true</span>);</span><br><span class="line">	mSceneMgr-&gt;getRootSceneNode()-&gt;createChildSceneNode()-&gt;attachObject(ninjaEntity);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//一个平台实例，y轴为0,铺满x和z轴</span></span><br><span class="line">	Ogre::<span class="function">Plane <span class="title">plane</span><span class="params">(Ogre::Vector3::UNIT_Y, <span class="number">0</span>)</span></span>;</span><br><span class="line">	<span class="comment">//Mesh管理器，用于mesh模型资源的管理器</span></span><br><span class="line">	<span class="comment">//createPlane方法用于建立一个平面</span></span><br><span class="line">	Ogre::MeshManager::getSingleton().createPlane(</span><br><span class="line">		<span class="string">"ground"</span>,</span><br><span class="line">		Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,</span><br><span class="line">		plane, </span><br><span class="line">		<span class="number">1500</span>, <span class="number">1500</span>, <span class="number">20</span>, <span class="number">20</span>, </span><br><span class="line">		<span class="literal">true</span>, </span><br><span class="line">		<span class="number">1</span>, <span class="number">5</span>, <span class="number">5</span>, </span><br><span class="line">		Ogre::Vector3::UNIT_Z);</span><br><span class="line"></span><br><span class="line">	Ogre::Entity* groundEntity = mSceneMgr-&gt;createEntity(<span class="string">"ground"</span>);</span><br><span class="line">	mSceneMgr-&gt;getRootSceneNode()-&gt;createChildSceneNode()-&gt;attachObject(groundEntity);</span><br><span class="line">	groundEntity-&gt;setCastShadows(<span class="literal">false</span>);</span><br><span class="line">	<span class="comment">//设置平面模型的材质</span></span><br><span class="line">	groundEntity-&gt;setMaterialName(<span class="string">"Examples/Rockwall"</span>);</span><br><span class="line"></span><br><span class="line">	mSceneMgr-&gt;setAmbientLight(Ogre::ColourValue(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>));</span><br><span class="line"></span><br><span class="line">	<span class="comment">//阴影投射技术</span></span><br><span class="line">	mSceneMgr-&gt;setShadowTechnique(Ogre::SHADOWTYPE_STENCIL_ADDITIVE);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//光柱</span></span><br><span class="line">	Ogre::Light* spotLight = mSceneMgr-&gt;createLight(<span class="string">"SpotLight"</span>);</span><br><span class="line">	<span class="comment">//漫反射</span></span><br><span class="line">	spotLight-&gt;setDiffuseColour(<span class="number">0</span>, <span class="number">0</span>, <span class="number">1.0</span>);</span><br><span class="line">	<span class="comment">//镜面反射</span></span><br><span class="line">	spotLight-&gt;setSpecularColour(<span class="number">0</span>, <span class="number">0</span>, <span class="number">1.0</span>);</span><br><span class="line">	<span class="comment">//设置光源的类型为光柱（类似手电筒的投射光）</span></span><br><span class="line">	spotLight-&gt;setType(Ogre::Light::LT_SPOTLIGHT);</span><br><span class="line">	<span class="comment">//灯光投射方向，此处为x,y轴45度方向处。</span></span><br><span class="line">	spotLight-&gt;setDirection(<span class="number">-1</span>, <span class="number">-1</span>, <span class="number">0</span>);</span><br><span class="line">	<span class="comment">//灯光位置</span></span><br><span class="line">	spotLight-&gt;setPosition(Ogre::Vector3(<span class="number">200</span>, <span class="number">200</span>, <span class="number">0</span>));</span><br><span class="line"></span><br><span class="line">	Ogre::Light* directionalLight = mSceneMgr-&gt;createLight(<span class="string">"DirectionalLight"</span>);</span><br><span class="line">	<span class="comment">//设置灯光类型为平行光</span></span><br><span class="line">	directionalLight-&gt;setType(Ogre::Light::LT_DIRECTIONAL);</span><br><span class="line">	directionalLight-&gt;setDiffuseColour(Ogre::ColourValue(<span class="number">.4</span>, <span class="number">0</span>, <span class="number">0</span>));</span><br><span class="line">	directionalLight-&gt;setSpecularColour(Ogre::ColourValue(<span class="number">.4</span>, <span class="number">0</span>, <span class="number">0</span>));</span><br><span class="line">	directionalLight-&gt;setDirection(Ogre::Vector3(<span class="number">0</span>, <span class="number">-1</span>, <span class="number">1</span>));</span><br><span class="line"></span><br><span class="line">	Ogre::Light* pointLight = mSceneMgr-&gt;createLight(<span class="string">"PointLight"</span>);</span><br><span class="line">	<span class="comment">//设置灯光类型为点光源</span></span><br><span class="line">	pointLight-&gt;setType(Ogre::Light::LT_POINT);</span><br><span class="line">	pointLight-&gt;setDiffuseColour(<span class="number">.3</span>, <span class="number">.3</span>, <span class="number">.3</span>);</span><br><span class="line">	pointLight-&gt;setSpecularColour(<span class="number">.3</span>, <span class="number">.3</span>, <span class="number">.3</span>);</span><br><span class="line">	pointLight-&gt;setPosition(Ogre::Vector3(<span class="number">0</span>, <span class="number">150</span>, <span class="number">250</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://7xi4up.com1.z0.glb.clouddn.com/ogre_2_Ogre_LightResult.png" alt="运行结果"></p>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>Ogre基础的场景，摄像头和灯源显示的部分就到此为止了。<br><embed src="http://www.xiami.com/widget/0_1770417397/singlePlayer.swf" type="application/x-shockwave-flash" width="257" height="33" wmode="transparent"><br>详情的可以查看<a href="http://www.ogre3d.org/tikiwiki/tiki-index.php?page=Basic+Tutorial+1" target="_blank" rel="noopener">Ogre wiki的基础教程1</a>和<a href="http://www.ogre3d.org/tikiwiki/tiki-index.php?page=Basic+Tutorial+2" target="_blank" rel="noopener">Ogre wiki的基础教程2</a>部分。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ogre/" rel="tag">#ogre</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/02/08/Ogre三维框架安装篇/" rel="next" title="Ogre三维框架安装篇">
+                <i class="fa fa-chevron-left"></i> Ogre三维框架安装篇
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/02/09/Ogre三维框架基础篇（二）/" rel="prev" title="Ogre三维框架基础篇（二）">
+                Ogre三维框架基础篇（二） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2015/02/08/Ogre三维框架基础篇（一）/" data-title="Ogre三维框架基础篇（一）" data-url="http://www.cpacm.net/2015/02/08/Ogre三维框架基础篇（一）/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/img/author.jpg" alt="cpacm">
+          <p class="site-author-name" itemprop="name">cpacm</p>
+          <p class="site-description motion-element" itemprop="description">请不要忘记，那给你带来感动的，名为二次元的理想乡。</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">52</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/cpacm" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/u/3053253821" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.cnblogs.com/cpacm/" target="_blank" title="博客园">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  博客园
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Ogre场景示例"><span class="nav-number">1.</span> <span class="nav-text">Ogre场景示例</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SceneManager"><span class="nav-number">1.1.</span> <span class="nav-text">SceneManager</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SceneNode"><span class="nav-number">1.2.</span> <span class="nav-text">SceneNode</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#场景代码"><span class="nav-number">1.3.</span> <span class="nav-text">场景代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#XYZ坐标-amp-缩放"><span class="nav-number">1.4.</span> <span class="nav-text">XYZ坐标&amp;缩放</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#旋转"><span class="nav-number">1.5.</span> <span class="nav-text">旋转</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Ogre的显示"><span class="nav-number">2.</span> <span class="nav-text">Ogre的显示</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Camera——Ogre摄像头"><span class="nav-number">2.1.</span> <span class="nav-text">Camera——Ogre摄像头</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Viewports——视图监视器"><span class="nav-number">2.2.</span> <span class="nav-text">Viewports——视图监视器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建一个Plane模型"><span class="nav-number">2.3.</span> <span class="nav-text">创建一个Plane模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#灯光-amp-投影"><span class="nav-number">2.4.</span> <span class="nav-text">灯光&amp;投影</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#运行结果"><span class="nav-number">2.5.</span> <span class="nav-text">运行结果</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结语"><span class="nav-number">3.</span> <span class="nav-text">结语</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">cpacm</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"cpacm"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("2fmsJHBmgPTnmd1bc7R9GcVX-gzGzoHsz", "CBUSqxdc9PSLibNV3TzlhpWg");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+</body>
+</html>

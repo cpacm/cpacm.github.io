@@ -1,0 +1,945 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="环境部署,">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1">
+
+
+
+
+
+
+<meta name="description" content="1、下载并安装githttp://git-scm.com/download 或者直接使用命令下载    $ yum install git">
+<meta name="keywords" content="环境部署">
+<meta property="og:type" content="article">
+<meta property="og:title" content="在Centos下部署python环境">
+<meta property="og:url" content="http://www.cpacm.net/2016/12/22/在Centos下部署python环境/index.html">
+<meta property="og:site_name" content="cpacm">
+<meta property="og:description" content="1、下载并安装githttp://git-scm.com/download 或者直接使用命令下载    $ yum install git">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-01-02T18:19:50.216Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="在Centos下部署python环境">
+<meta name="twitter:description" content="1、下载并安装githttp://git-scm.com/download 或者直接使用命令下载    $ yum install git">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> 在Centos下部署python环境 | cpacm </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?400b16383d4e24e7e0c1604aa14354a4";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">cpacm</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">动漫中毒者，技术宅</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                在Centos下部署python环境
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-12-22T18:12:01+08:00" content="2016-12-22">
+              2016-12-22
+            </time>
+          </span>
+
+          
+            <span class="post-category">
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index">
+                    <span itemprop="name">python</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/12/22/在Centos下部署python环境/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/12/22/在Centos下部署python环境/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/12/22/在Centos下部署python环境/" class="leancloud_visitors" data-flag-title="在Centos下部署python环境">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="1、下载并安装git"><a href="#1、下载并安装git" class="headerlink" title="1、下载并安装git"></a>1、下载并安装git</h3><p><a href="http://git-scm.com/download" target="_blank" rel="noopener">http://git-scm.com/download</a> 或者直接使用命令下载  </p>
+<blockquote>
+<p>$ yum install git</p>
+</blockquote>
+<a id="more"></a>
+
+<ol>
+<li>生成ssh-key<br>进入 ~/.ssh文件夹  <blockquote>
+<p>ssh-keygen -t rsa -C “<a href="mailto:348515494@qq.com" target="_blank" rel="noopener">348515494@qq.com</a>“  即可生成</p>
+</blockquote>
+</li>
+</ol>
+<h3 id="2、安装ruby"><a href="#2、安装ruby" class="headerlink" title="2、安装ruby"></a>2、安装ruby</h3><blockquote>
+<p>yum install ruby<br>yum install ruby-irb</p>
+</blockquote>
+<h3 id="3、安装mysql"><a href="#3、安装mysql" class="headerlink" title="3、安装mysql"></a>3、安装mysql</h3><blockquote>
+<p>yum install mysql-server mysql-devel mysql</p>
+</blockquote>
+<p>执行下面的命令启动mysql： </p>
+<blockquote>
+<p>service mysqld start</p>
+</blockquote>
+<p>进入mysql</p>
+<blockquote>
+<p>mysql -u root </p>
+</blockquote>
+<p>改变当前数据库为mysql：</p>
+<blockquote>
+<p>use mysql</p>
+</blockquote>
+<p>设置从本地主机登录的root帐号密码：</p>
+<blockquote>
+<p>update user set password=’your password’ where user=’root’ and host=’localhost’;</p>
+</blockquote>
+<p>删除匿名帐号： </p>
+<blockquote>
+<p>delete from user where user=’’ ;</p>
+</blockquote>
+<p>删除密码为空的帐号：</p>
+<blockquote>
+<p>delete from user where password=’’;</p>
+</blockquote>
+<p>删除允许非localhost主机登录的帐号：</p>
+<blockquote>
+<p>delete from user where host&lt;&gt;’localhost’;</p>
+</blockquote>
+<p>执行下面的命令使更改生效：</p>
+<blockquote>
+<p>flush privileges ; </p>
+</blockquote>
+<p>执行下面的命令退出mysql命令行：</p>
+<blockquote>
+<p>quit或/q</p>
+</blockquote>
+<h3 id="4、安装wget"><a href="#4、安装wget" class="headerlink" title="4、安装wget"></a>4、安装wget</h3><blockquote>
+<p>yum install wget</p>
+</blockquote>
+<h3 id="5、安装Redis"><a href="#5、安装Redis" class="headerlink" title="5、安装Redis"></a>5、安装Redis</h3><p><a href="http://redis.io/download" target="_blank" rel="noopener">http://redis.io/download</a></p>
+<blockquote>
+<p>$ wget <a href="http://download.redis.io/releases/redis-3.0.4.tar.gz" target="_blank" rel="noopener">http://download.redis.io/releases/redis-3.0.4.tar.gz</a><br>$ tar xzf redis-3.0.4.tar.gz<br>$ cd redis-3.0.4<br>$ make  </p>
+</blockquote>
+<p>启动redis</p>
+<blockquote>
+<p>$ src/redis-server</p>
+</blockquote>
+<p>ctrl+c退出redis系统。</p>
+<h3 id="6、（windows）xftp5"><a href="#6、（windows）xftp5" class="headerlink" title="6、（windows）xftp5"></a>6、（windows）xftp5</h3><p>注册码：101210-450789-147200<br>Xftp5.exeputty.exe<br>连接： ip地址 + 21 端口<br>选择 sftp连接<br>方法： Password  </p>
+<h3 id="7、nginx"><a href="#7、nginx" class="headerlink" title="7、nginx"></a>7、nginx</h3><p>安装：<a href="http://www.cnblogs.com/jtlgb/p/5809808.html" target="_blank" rel="noopener">http://www.cnblogs.com/jtlgb/p/5809808.html</a></p>
+<ol>
+<li><p>要有gcc的环境</p>
+<blockquote>
+<p>#yum install gcc </p>
+</blockquote>
+</li>
+<li><p>安装PCRE,zlib,openssl环境</p>
+<blockquote>
+<p>#yum install -y pcre pcre-devel<br>#yum install -y zlib zlib-devel<br>#yum install -y openssl openssl-devel </p>
+</blockquote>
+</li>
+<li><p>准备 nginx安装包 下载地址：<br><a href="http://nginx.org/en/download.html" target="_blank" rel="noopener">http://nginx.org/en/download.html</a></p>
+</li>
+<li><p>利用xftp将文件传入服务器，并进入nginx当前目录</p>
+</li>
+<li><p>进入目录-&gt;下载（如已经通过ftp传输略过）-&gt;解压-&gt;进入源文件目录-&gt;编译，安装</p>
+<blockquote>
+<p>#mkdir nginx-src &amp;&amp; cd nginx-src<br>#wget <a href="http://nginx.org/download/nginx-1.7.3.tar.gz" target="_blank" rel="noopener">http://nginx.org/download/nginx-1.7.3.tar.gz</a><br>#tar xzf nginx-1.7.3.tar.gz<br>#cd nginx-1.7.3<br>#./configure<br>#make<br>#make install<br>#whereis nginx<br>nginx: /usr/local/nginx  </p>
+</blockquote>
+</li>
+<li><p>默认的安装路径为：/usr/local/nginx；<br>跳转到其目录下sbin路径下，便可以启动或停止它了。</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">启动：nginx</span><br><span class="line">停止：nginx -s stop</span><br><span class="line"># ./nginx -h</span><br><span class="line">nginx version: nginx/<span class="number">1</span>.<span class="number">11</span>.<span class="number">7</span></span><br><span class="line"><span class="function">Usage: <span class="title">nginx</span> [-?<span class="title">hvVtTq</span>] [-<span class="title">s</span> <span class="title">signal</span>] [-<span class="title">c</span> <span class="title">filename</span>] [-<span class="title">p</span> <span class="title">prefix</span>] [-<span class="title">g</span> <span class="title">directives</span>]</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">        <span class="title">Options</span>:</span></span><br><span class="line"><span class="function">          -?,-<span class="title">h</span>         : <span class="title">this</span> <span class="title">help</span></span></span><br><span class="line"><span class="function">          -<span class="title">v</span>            : <span class="title">show</span> <span class="title">version</span> <span class="title">and</span> <span class="title">exit</span></span></span><br><span class="line"><span class="function">          -<span class="title">V</span>            : <span class="title">show</span> <span class="title">version</span> <span class="title">and</span> <span class="title">configure</span> <span class="title">options</span> <span class="title">then</span> <span class="title">exit</span></span></span><br><span class="line"><span class="function">          -<span class="title">t</span>            : <span class="title">test</span> <span class="title">configuration</span> <span class="title">and</span> <span class="title">exit</span></span></span><br><span class="line"><span class="function">          -<span class="title">T</span>            : <span class="title">test</span> <span class="title">configuration</span>, <span class="title">dump</span> <span class="title">it</span> <span class="title">and</span> <span class="title">exit</span></span></span><br><span class="line"><span class="function">          -<span class="title">q</span>            : <span class="title">suppress</span> <span class="title">non</span>-<span class="title">error</span> <span class="title">messages</span> <span class="title">during</span> <span class="title">configuration</span> <span class="title">testing</span></span></span><br><span class="line"><span class="function">          -<span class="title">s</span> <span class="title">signal</span>     : <span class="title">send</span> <span class="title">signal</span> <span class="title">to</span> <span class="title">a</span> <span class="title">master</span> <span class="title">process</span>: <span class="title">stop</span>, <span class="title">quit</span>, <span class="title">reopen</span>, <span class="title">reload</span></span></span><br><span class="line"><span class="function">          -<span class="title">p</span> <span class="title">prefix</span>     : <span class="title">set</span> <span class="title">prefix</span> <span class="title">path</span> (<span class="title">default</span>: /<span class="title">usr</span>/<span class="title">local</span>/<span class="title">nginx</span>/)</span></span><br><span class="line"><span class="function">          -<span class="title">c</span> <span class="title">filename</span>   : <span class="title">set</span> <span class="title">configuration</span> <span class="title">file</span> (<span class="title">default</span>: <span class="title">conf</span>/<span class="title">nginx.conf</span>)</span></span><br><span class="line"><span class="function">          -<span class="title">g</span> <span class="title">directives</span> : <span class="title">set</span> <span class="title">global</span> <span class="title">directives</span> <span class="title">out</span> <span class="title">of</span> <span class="title">configuration</span> <span class="title">file</span></span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>启动 nginx</p>
+<blockquote>
+<p>#service nginx start<br>(题外话 如何重启nginx 需要先kill了进程 ps -ef|grep nginx ps kill -9 进程号)<br>(题外话 查看端口被占用 lsof -i tcp:80)</p>
+</blockquote>
+</li>
+</ol>
+<h3 id="8、python-安装"><a href="#8、python-安装" class="headerlink" title="8、python 安装"></a>8、python 安装</h3><ol>
+<li><p>访问 <a href="https://www.python.org/ftp/python" target="_blank" rel="noopener">https://www.python.org/ftp/python</a> ，下载python安装文件</p>
+</li>
+<li><p>解压，编译，安装 </p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">tar Jxvf Python-<span class="number">3</span>.<span class="number">5</span>.<span class="number">0</span>.tar.xz </span><br><span class="line"><span class="built_in">cd</span> Python-<span class="number">3</span>.<span class="number">5</span>.<span class="number">0</span> ./configure --prefix=/usr/local/python3 //安装地址 </span><br><span class="line">make &amp;&amp; make install</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>设置环境变量</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rm /usr/bin/python</span><br><span class="line">ln -sv /usr/local/python3/bin/python3.<span class="number">5</span> /usr/bin/python</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p>这样做的目的是在系统任意目录敲入python调用的是python3的命令，而非系统默认2.6.6的 但是这样同时这会导致依赖python2.6的yum不能使用，因此还要修改yum配置。</p>
+<ol start="4">
+<li>更新yum配置<blockquote>
+<p>vim /usr/bin/yum </p>
+</blockquote>
+</li>
+</ol>
+<p>通过vim修改yum的配置 </p>
+<p>#!/usr/bin/python改为#!/usr/bin/python2.6<br>保存退出。 完成了python3的安装。</p>
+<ol start="5">
+<li>pip更新<blockquote>
+<p>pip install –upgrade pip</p>
+</blockquote>
+</li>
+</ol>
+<h3 id="9、virtualenv"><a href="#9、virtualenv" class="headerlink" title="9、virtualenv"></a>9、virtualenv</h3><p>安装</p>
+<blockquote>
+<p>pip3 install virtualenv</p>
+</blockquote>
+<p>配置环境变量 </p>
+<blockquote>
+<p>export PATH=$PATH:/usr/local/python3/bin</p>
+</blockquote>
+<p>创建虚拟python环境</p>
+<blockquote>
+<p>virtualenv acgn_env</p>
+</blockquote>
+<p>启动虚拟环境</p>
+<blockquote>
+<p>source acgn_env/bin/activate</p>
+</blockquote>
+<p>虚拟环境下用deactivate退出</p>
+<blockquote>
+<p>deactivate</p>
+</blockquote>
+<h3 id="10、uwsgi安装-虚拟环境下"><a href="#10、uwsgi安装-虚拟环境下" class="headerlink" title="10、uwsgi安装(虚拟环境下)"></a>10、uwsgi安装(虚拟环境下)</h3><blockquote>
+<p>pip install uwsgi #使用pip安装uwsgi</p>
+</blockquote>
+<blockquote>
+<p>./uwsgi –version #检是否安装成功</p>
+</blockquote>
+<p>安装完毕后，利用配置文件配置uwsgi</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">[uwsgi]</span><br><span class="line"></span><br><span class="line"># uwsgi 启动时所使用的地址与端口</span><br><span class="line">socket = 127.0.0.1:8001 </span><br><span class="line"># 指向网站目录</span><br><span class="line">chdir = /acgn/acgn/ </span><br><span class="line"># python 启动程序文件</span><br><span class="line">wsgi-file = manage.py </span><br><span class="line"># python 程序内用以启动的 application 变量名</span><br><span class="line">callable = app </span><br><span class="line"># 处理器数</span><br><span class="line">processes = 4</span><br><span class="line"># 线程数</span><br><span class="line">threads = 2</span><br><span class="line">#状态检测地址</span><br><span class="line">stats = 127.0.0.1:9191</span><br><span class="line"></span><br><span class="line">daemonize = /acgn/logs/acgn.log</span><br><span class="line"></span><br><span class="line">#用于重启进程</span><br><span class="line">pidfile = /tmp/uwsgi.pid</span><br><span class="line"></span><br><span class="line">vacuum = true</span><br><span class="line"></span><br><span class="line">log-maxsize = 50000000</span><br><span class="line"></span><br><span class="line">disable-logging = true</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>$ uwsgi uwsgi_config.ini</p>
+</blockquote>
+<p>最后uwsgi读取配置并成功启动</p>
+<p>ctrl+c 退出</p>
+<h3 id="11、nginx-uwsgi"><a href="#11、nginx-uwsgi" class="headerlink" title="11、nginx + uwsgi"></a>11、nginx + uwsgi</h3><p>编辑nginx的配置文件</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">location / &#123;</span><br><span class="line">    include      uwsgi_params;</span><br><span class="line">    uwsgi_pass   127.0.0.1:8001;  # 指向uwsgi 所应用的内部地址,所有请求将转发给uwsgi 处理</span><br><span class="line">    uwsgi_param UWSGI_PYHOME /acgn/acgn_env; # 指向虚拟环境目录</span><br><span class="line">    uwsgi_param UWSGI_CHDIR  /acgn/acgn; # 指向网站根目录</span><br><span class="line">    uwsgi_param UWSGI_SCRIPT manage:app; # 指定启动程序</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>启动nginx</p>
+<blockquote>
+<p>service nginx start</p>
+</blockquote>
+<p>启动uwsgi</p>
+<blockquote>
+<p>uwsgi uwsgi_config.ini</p>
+</blockquote>
+<p>重启uwsgi</p>
+<blockquote>
+<p>kill -HUP /tmp/uwsgi.pid</p>
+</blockquote>
+<p>至此，python部署完成。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/环境部署/" rel="tag">#环境部署</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/11/29/Java编程思想阅读笔记/" rel="next" title="Java编程思想阅读笔记">
+                <i class="fa fa-chevron-left"></i> Java编程思想阅读笔记
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/01/02/2016回顾和2017展望/" rel="prev" title="2016回顾和2017展望">
+                2016回顾和2017展望 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/12/22/在Centos下部署python环境/" data-title="在Centos下部署python环境" data-url="http://www.cpacm.net/2016/12/22/在Centos下部署python环境/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/img/author.jpg" alt="cpacm">
+          <p class="site-author-name" itemprop="name">cpacm</p>
+          <p class="site-description motion-element" itemprop="description">请不要忘记，那给你带来感动的，名为二次元的理想乡。</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">52</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/cpacm" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/u/3053253821" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.cnblogs.com/cpacm/" target="_blank" title="博客园">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  博客园
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、下载并安装git"><span class="nav-number">1.</span> <span class="nav-text">1、下载并安装git</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2、安装ruby"><span class="nav-number">2.</span> <span class="nav-text">2、安装ruby</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3、安装mysql"><span class="nav-number">3.</span> <span class="nav-text">3、安装mysql</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4、安装wget"><span class="nav-number">4.</span> <span class="nav-text">4、安装wget</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5、安装Redis"><span class="nav-number">5.</span> <span class="nav-text">5、安装Redis</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6、（windows）xftp5"><span class="nav-number">6.</span> <span class="nav-text">6、（windows）xftp5</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7、nginx"><span class="nav-number">7.</span> <span class="nav-text">7、nginx</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8、python-安装"><span class="nav-number">8.</span> <span class="nav-text">8、python 安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9、virtualenv"><span class="nav-number">9.</span> <span class="nav-text">9、virtualenv</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10、uwsgi安装-虚拟环境下"><span class="nav-number">10.</span> <span class="nav-text">10、uwsgi安装(虚拟环境下)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11、nginx-uwsgi"><span class="nav-number">11.</span> <span class="nav-text">11、nginx + uwsgi</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">cpacm</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"cpacm"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("2fmsJHBmgPTnmd1bc7R9GcVX-gzGzoHsz", "CBUSqxdc9PSLibNV3TzlhpWg");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+</body>
+</html>

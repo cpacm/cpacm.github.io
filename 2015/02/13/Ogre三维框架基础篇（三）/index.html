@@ -1,0 +1,839 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="ogre,">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1">
+
+
+
+
+
+
+<meta name="description" content="Ogre三维框架基础篇 —— 鼠标，键盘输入">
+<meta name="keywords" content="ogre">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ogre三维框架基础篇（三）">
+<meta property="og:url" content="http://www.cpacm.net/2015/02/13/Ogre三维框架基础篇（三）/index.html">
+<meta property="og:site_name" content="cpacm">
+<meta property="og:description" content="Ogre三维框架基础篇 —— 鼠标，键盘输入">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://7xi4up.com1.z0.glb.clouddn.com/ogre_4_Ogre_Input_House.jpg">
+<meta property="og:updated_time" content="2016-11-29T14:01:30.030Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Ogre三维框架基础篇（三）">
+<meta name="twitter:description" content="Ogre三维框架基础篇 —— 鼠标，键盘输入">
+<meta name="twitter:image" content="http://7xi4up.com1.z0.glb.clouddn.com/ogre_4_Ogre_Input_House.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> Ogre三维框架基础篇（三） | cpacm </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?400b16383d4e24e7e0c1604aa14354a4";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">cpacm</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">动漫中毒者，技术宅</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Ogre三维框架基础篇（三）
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2015-02-13T21:59:37+08:00" content="2015-02-13">
+              2015-02-13
+            </time>
+          </span>
+
+          
+            <span class="post-category">
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/开源-框架/" itemprop="url" rel="index">
+                    <span itemprop="name">开源&框架</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2015/02/13/Ogre三维框架基础篇（三）/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/02/13/Ogre三维框架基础篇（三）/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2015/02/13/Ogre三维框架基础篇（三）/" class="leancloud_visitors" data-flag-title="Ogre三维框架基础篇（三）">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="交互"><a href="#交互" class="headerlink" title="交互"></a>交互</h2><p>在讲输入之前，先理清几个概念。</p>
+<h3 id="无缓冲输入unbuffered"><a href="#无缓冲输入unbuffered" class="headerlink" title="无缓冲输入unbuffered"></a>无缓冲输入unbuffered</h3><p>不断的响应按键信息，直到按键放开。例如，按下上下左右，使得角色持续移动。一般来讲适合于3D场景漫游过程，当在每帧渲染之前，系统捕获输入设备状态，并根据这些状态对场景中的物体和摄象机进行控制。</p>
+<h3 id="缓冲输入buffered"><a href="#缓冲输入buffered" class="headerlink" title="缓冲输入buffered"></a>缓冲输入buffered</h3><p>在一个按键放开之前，只处理一次输入信息。例如呼出主菜单。适合于GUI界面的情况（如设置菜单），输入设备状态可以被发送到各GUI元素进行处理（如按钮被按下）。</p>
+<h2 id="无缓冲输入"><a href="#无缓冲输入" class="headerlink" title="无缓冲输入"></a>无缓冲输入</h2><p>动画都是一帧一帧刷新的，故三维动画也不例外。在Ogre框架中，在帧刷新的地方加入了响应方法以便开发者调用。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">bool</span> Root::renderOneFrame(<span class="keyword">void</span>)</span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">if</span>(!_fireFrameStarted())</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line"> </span><br><span class="line">  <span class="keyword">if</span> (!_updateAllRenderTargets())</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line"> </span><br><span class="line">  <span class="keyword">return</span> _fireFrameEnded();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>以上分为三步，帧动画开始前，帧动画开始时，帧动画结束后。这些方法会在每次帧刷新时调用。对用的方法也分别为</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">fireFrameStarted();</span><br><span class="line">updateAllRenderTargets();</span><br><span class="line">fireFrameEnded();</span><br></pre></td></tr></table></figure>
+
+<p>而在<code>updateAllRenderTargets()</code>方法中</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">bool</span> Root::_updateAllRenderTargets(<span class="keyword">void</span>)</span><br><span class="line">&#123;</span><br><span class="line">  mActiveRenderer-&gt;_updateAllRenderTargets(<span class="literal">false</span>);</span><br><span class="line"> </span><br><span class="line">  <span class="keyword">bool</span> ret = _fireFrameRenderingQueued();</span><br><span class="line"> </span><br><span class="line">  <span class="comment">// thread is blocked for final swap</span></span><br><span class="line">  mActiveRenderer-&gt;_swapAllRenderTargetBuffers(</span><br><span class="line">    mActiveRenderer-&gt;getWaitForVerticalBlank());</span><br><span class="line"> </span><br><span class="line">  ...</span><br></pre></td></tr></table></figure>
+
+<p>那么调用关系就清楚了，简单归纳为下列五步：<br>1.触发所有FrameListener的frameStarted<br>2.更新所有渲染目标（不翻转）<br>3.触发所有FrameListener的frameRenderingQueued<br>4.翻转所有渲染目标<br>5.触发所有FrameListener的frameEnded。  </p>
+<h3 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h3><p><strong>TutorialApplication.h</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"BaseApplication.h"</span></span></span><br><span class="line"> </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TutorialApplication</span> :</span> <span class="keyword">public</span> BaseApplication</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">  TutorialApplication();</span><br><span class="line">  <span class="keyword">virtual</span> ~TutorialApplication();</span><br><span class="line"> </span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">  <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">createScene</span><span class="params">()</span></span>;</span><br><span class="line">  <span class="function"><span class="keyword">virtual</span> <span class="keyword">bool</span> <span class="title">frameRenderingQueued</span><span class="params">(<span class="keyword">const</span> Ogre::FrameEvent&amp; fe)</span></span>;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">  <span class="function"><span class="keyword">bool</span> <span class="title">processUnbufferedInput</span><span class="params">(<span class="keyword">const</span> Ogre::FrameEvent&amp; fe)</span></span>;</span><br><span class="line"> </span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p><strong>TutorialApplication.cpp</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"TutorialApplication.h"</span></span></span><br><span class="line"> </span><br><span class="line">TutorialApplication::TutorialApplication()</span><br><span class="line">&#123;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">TutorialApplication::~TutorialApplication()</span><br><span class="line">&#123;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">void</span> TutorialApplication::createScene()</span><br><span class="line">&#123;</span><br><span class="line">  mSceneMgr-&gt;setAmbientLight(Ogre::ColourValue(<span class="number">.25</span>, <span class="number">.25</span>, <span class="number">.25</span>));</span><br><span class="line"> </span><br><span class="line">  Ogre::Light* pointLight = mSceneMgr-&gt;createLight(<span class="string">"PointLight"</span>);</span><br><span class="line">  pointLight-&gt;setType(Ogre::Light::LT_POINT);</span><br><span class="line">  pointLight-&gt;setPosition(<span class="number">250</span>, <span class="number">150</span>, <span class="number">250</span>);</span><br><span class="line">  pointLight-&gt;setDiffuseColour(Ogre::ColourValue::White);</span><br><span class="line">  pointLight-&gt;setSpecularColour(Ogre::ColourValue::White);</span><br><span class="line"> </span><br><span class="line">  Ogre::Entity* ninjaEntity = mSceneMgr-&gt;createEntity(<span class="string">"ninja.mesh"</span>);</span><br><span class="line">  Ogre::SceneNode* ninjaNode = mSceneMgr-&gt;getRootSceneNode()-&gt;createChildSceneNode(<span class="string">"NinjaNode"</span>);</span><br><span class="line">  ninjaNode-&gt;attachObject(ninjaEntity);</span><br><span class="line"> </span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">bool</span> TutorialApplication::frameRenderingQueued(<span class="keyword">const</span> Ogre::FrameEvent&amp; fe)</span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">bool</span> ret = BaseApplication::frameRenderingQueued(fe);</span><br><span class="line"> </span><br><span class="line">  <span class="keyword">return</span> ret;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">bool</span> TutorialApplication::processUnbufferedInput(<span class="keyword">const</span> Ogre::FrameEvent&amp; fe)</span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在类中定义变量</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">bool</span> mouseDownLastFrame = <span class="literal">false</span>;</span><br><span class="line"><span class="keyword">static</span> Ogre::Real toggleTimer = <span class="number">0.0</span>;</span><br><span class="line"><span class="keyword">static</span> Ogre::Real rotate = <span class="number">.13</span>;</span><br><span class="line"><span class="keyword">static</span> Ogre::Real move = <span class="number">250</span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="监听鼠标左键"><a href="#监听鼠标左键" class="headerlink" title="监听鼠标左键"></a>监听鼠标左键</h3><p>鼠标左键打开和关闭灯源，写入<code>processUnbufferedInput</code>中</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">bool</span> TutorialApplication::processUnbufferedInput(<span class="keyword">const</span> Ogre::FrameEvent&amp; fe)&#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//监控鼠标左键，按下则为true</span></span><br><span class="line">	<span class="keyword">bool</span> leftMouseDown = mMouse-&gt;getMouseState().buttonDown(OIS::MB_Left);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//保证鼠标为非长按状态</span></span><br><span class="line">	<span class="keyword">if</span> (leftMouseDown &amp;&amp; !mouseDownLastFrame)</span><br><span class="line">	&#123;</span><br><span class="line">		Ogre::Light* light = mSceneMgr-&gt;getLight(<span class="string">"PointLight"</span>);</span><br><span class="line">		light-&gt;setVisible(!light-&gt;isVisible());</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	mouseDownLastFrame = leftMouseDown;</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="监听鼠标右键"><a href="#监听鼠标右键" class="headerlink" title="监听鼠标右键"></a>监听鼠标右键</h3><p>鼠标右键有个计时的功能，即只能在一定时差下才能改变灯源的状态</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">bool</span> TutorialApplication::frameRenderingQueued(<span class="keyword">const</span> Ogre::FrameEvent&amp; fe)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">bool</span> ret = BaseApplication::frameRenderingQueued(fe);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span>(!processUnbufferedInput(fe)) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">	toggleTimer -= fe.timeSinceLastFrame;</span><br><span class="line">	<span class="comment">//计时器。在0.5秒内右键不能控制灯光的开关</span></span><br><span class="line">	<span class="keyword">if</span> ((toggleTimer &lt; <span class="number">0</span>) &amp;&amp; mMouse-&gt;getMouseState().buttonDown(OIS::MB_Right))</span><br><span class="line">	&#123;</span><br><span class="line">		toggleTimer  = <span class="number">0.5</span>;</span><br><span class="line"></span><br><span class="line">		Ogre::Light* light = mSceneMgr-&gt;getLight(<span class="string">"PointLight"</span>);</span><br><span class="line">		light-&gt;setVisible(!light-&gt;isVisible());</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">return</span> ret;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="键盘监听"><a href="#键盘监听" class="headerlink" title="键盘监听"></a>键盘监听</h3><p>继续在<code>frameRenderingQueued</code>方法下添加方法</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">Ogre::Vector3 dirVec = Ogre::Vector3::ZERO;</span><br><span class="line">	<span class="comment">//键盘I的监听</span></span><br><span class="line">	<span class="keyword">if</span> (mKeyboard-&gt;isKeyDown(OIS::KC_I))</span><br><span class="line">		dirVec.z -= move;</span><br><span class="line">	<span class="comment">//键盘U的监听</span></span><br><span class="line">	<span class="keyword">if</span> (mKeyboard-&gt;isKeyDown(OIS::KC_U))</span><br><span class="line">		dirVec.y += move;</span><br><span class="line">	<span class="comment">//键盘O的监听</span></span><br><span class="line">	<span class="keyword">if</span> (mKeyboard-&gt;isKeyDown(OIS::KC_O))</span><br><span class="line">		dirVec.y -= move;</span><br><span class="line">	<span class="comment">//键盘J的监听</span></span><br><span class="line">	<span class="keyword">if</span> (mKeyboard-&gt;isKeyDown(OIS::KC_J))</span><br><span class="line">	&#123;   </span><br><span class="line">		<span class="comment">//如果同时按下了左shift键，则顺时针旋转模型</span></span><br><span class="line">		<span class="keyword">if</span>(mKeyboard-&gt;isKeyDown(OIS::KC_LSHIFT))</span><br><span class="line">			mSceneMgr-&gt;getSceneNode(<span class="string">"NinjaNode"</span>)-&gt;yaw(Ogre::Degree(<span class="number">5</span> * rotate));</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">			dirVec.x -= move;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//键盘L的监听</span></span><br><span class="line">	<span class="keyword">if</span> (mKeyboard-&gt;isKeyDown(OIS::KC_L))</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="comment">//如果同时按下了左shift键，则逆时针旋转模型</span></span><br><span class="line">		<span class="keyword">if</span>(mKeyboard-&gt;isKeyDown(OIS::KC_LSHIFT))</span><br><span class="line">			mSceneMgr-&gt;getSceneNode(<span class="string">"NinjaNode"</span>)-&gt;yaw(Ogre::Degree(<span class="number">-5</span> * rotate));</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">			dirVec.x += move;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//移动模型</span></span><br><span class="line">	mSceneMgr-&gt;getSceneNode(<span class="string">"NinjaNode"</span>)-&gt;translate(</span><br><span class="line">		dirVec * fe.timeSinceLastFrame,</span><br><span class="line">		Ogre::Node::TS_LOCAL);</span><br></pre></td></tr></table></figure>
+
+<h2 id="缓冲输入"><a href="#缓冲输入" class="headerlink" title="缓冲输入"></a>缓冲输入</h2><p>准备<code>tudohouse.mesh</code>和fw12b.jpg的材质图片。在material Examples的脚本中写入</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">material Examples/TudorHouse</span><br><span class="line">&#123;</span><br><span class="line">	technique</span><br><span class="line">	&#123;</span><br><span class="line">		pass</span><br><span class="line">		&#123;</span><br><span class="line">			texture_unit</span><br><span class="line">			&#123;</span><br><span class="line">				texture fw12b.jpg</span><br><span class="line">				tex_address_mode clamp</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>（Ogre1.9中已经包括这些东西）<br><strong>TutorialApplication.h</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> TUTORIALAPPLICATION_H</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TUTORIALAPPLICATION_H</span></span><br><span class="line"> </span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"BaseApplication.h"</span></span></span><br><span class="line"> </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TutorialApplication</span> :</span> <span class="keyword">public</span> BaseApplication</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">  TutorialApplication();</span><br><span class="line">  <span class="keyword">virtual</span> ~TutorialApplication();</span><br><span class="line"> </span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">  <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">createScene</span><span class="params">()</span></span>;</span><br><span class="line">  <span class="function"><span class="keyword">virtual</span> <span class="keyword">bool</span> <span class="title">frameRenderingQueued</span><span class="params">(<span class="keyword">const</span> Ogre::FrameEvent&amp; fe)</span></span>;</span><br><span class="line"> </span><br><span class="line">  Ogre::Real mRotate;</span><br><span class="line">  Ogre::Real mMove;</span><br><span class="line">  Ogre::SceneNode* mCamNode;</span><br><span class="line">  Ogre::Vector3 mDirection;</span><br><span class="line"> </span><br><span class="line">&#125;;</span><br><span class="line"> </span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+
+<p><strong>TutorialApplication.cpp</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">TutorialApplication::TutorialApplication()</span><br><span class="line">  : mRotate(<span class="number">.13</span>),</span><br><span class="line">    mMove(<span class="number">250</span>),</span><br><span class="line">    mCamNode(<span class="number">0</span>),</span><br><span class="line">    mDirection(Ogre::Vector3::ZERO)</span><br><span class="line">&#123;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">TutorialApplication::~TutorialApplication()</span><br><span class="line">&#123;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">void</span> TutorialApplication::createScene()</span><br><span class="line">&#123;</span><br><span class="line">  mSceneMgr-&gt;setAmbientLight(Ogre::ColourValue(<span class="number">.2</span>, <span class="number">.2</span>, <span class="number">.2</span>));</span><br><span class="line"> </span><br><span class="line">  Ogre::Entity* tudorEntity = mSceneMgr-&gt;createEntity(<span class="string">"tudorhouse.mesh"</span>);</span><br><span class="line">  Ogre::SceneNode* node = mSceneMgr-&gt;getRootSceneNode()-&gt;createChildSceneNode(</span><br><span class="line">    <span class="string">"Node"</span>);</span><br><span class="line">  node-&gt;attachObject(tudorEntity);</span><br><span class="line"> </span><br><span class="line">  Ogre::Light* light = mSceneMgr-&gt;createLight(<span class="string">"Light1"</span>);</span><br><span class="line">  light-&gt;setType(Ogre::Light::LT_POINT);</span><br><span class="line">  light-&gt;setPosition(Ogre::Vector3(<span class="number">250</span>, <span class="number">150</span>, <span class="number">250</span>));</span><br><span class="line">  light-&gt;setDiffuseColour(Ogre::ColourValue::White);</span><br><span class="line">  light-&gt;setSpecularColour(Ogre::ColourValue::White);</span><br><span class="line"> </span><br><span class="line">  mCamera-&gt;setPosition(<span class="number">0</span>, <span class="number">-370</span>, <span class="number">1000</span>);</span><br><span class="line"> </span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">bool</span> TutorialApplication::frameRenderingQueued(<span class="keyword">const</span> Ogre::FrameEvent&amp; fe)</span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">bool</span> ret = BaseApplication::frameRenderingQueued(fe);</span><br><span class="line"> </span><br><span class="line">  <span class="keyword">return</span> ret;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="按键响应和接口"><a href="#按键响应和接口" class="headerlink" title="按键响应和接口"></a>按键响应和接口</h3><p>键盘有两个方法，按下和松开</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//TutorialApplication.h</span></span><br><span class="line"><span class="function"><span class="keyword">virtual</span> <span class="keyword">bool</span> <span class="title">keyPressed</span><span class="params">(<span class="keyword">const</span> OIS::KeyEvent&amp; ke)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">virtual</span> <span class="keyword">bool</span> <span class="title">keyReleased</span><span class="params">(<span class="keyword">const</span> OIS::KeyEvent&amp; ke)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//TutorialApplication.cpp</span></span><br><span class="line"><span class="keyword">bool</span> TutorialApplication::keyPressed(<span class="keyword">const</span> OIS::KeyEvent&amp; ke) </span><br><span class="line">&#123; </span><br><span class="line">  <span class="keyword">return</span> <span class="literal">true</span>; </span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">bool</span> TutorialApplication::keyReleased(<span class="keyword">const</span> OIS::KeyEvent&amp; ke) </span><br><span class="line">&#123; </span><br><span class="line">  <span class="keyword">return</span> <span class="literal">true</span>; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>鼠标有三个方法，鼠标移动，鼠标按下，鼠标松开</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//TutorialApplication.h</span></span><br><span class="line"><span class="function"><span class="keyword">virtual</span> <span class="keyword">bool</span> <span class="title">mouseMoved</span><span class="params">(<span class="keyword">const</span> OIS::MouseEvent&amp; me)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">virtual</span> <span class="keyword">bool</span> <span class="title">mousePressed</span><span class="params">(<span class="keyword">const</span> OIS::MouseEvent&amp; me, OIS::MouseButtonID id)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">virtual</span> <span class="keyword">bool</span> <span class="title">mouseReleased</span><span class="params">(<span class="keyword">const</span> OIS::MouseEvent&amp; me, OIS::MouseButtonID id)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//TutorialApplication.cpp</span></span><br><span class="line"><span class="keyword">bool</span> TutorialApplication::mouseMoved(<span class="keyword">const</span> OIS::MouseEvent&amp; me) </span><br><span class="line">&#123; </span><br><span class="line">  <span class="keyword">return</span> <span class="literal">true</span>; </span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">bool</span> TutorialApplication::mousePressed(</span><br><span class="line">  <span class="keyword">const</span> OIS::MouseEvent&amp; me, OIS::MouseButtonID id) </span><br><span class="line">&#123; </span><br><span class="line">  <span class="keyword">return</span> <span class="literal">true</span>; </span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">bool</span> TutorialApplication::mouseReleased(</span><br><span class="line">  <span class="keyword">const</span> OIS::MouseEvent&amp; me, OIS::MouseButtonID id) </span><br><span class="line">&#123; </span><br><span class="line">  <span class="keyword">return</span> <span class="literal">true</span>; </span><br><span class="line">&#125;</span><br><span class="line">``` </span><br><span class="line">### 设置两个摄像头结点</span><br><span class="line">在`createScene`方法中的创建灯源后面加上代码</span><br><span class="line">```c++</span><br><span class="line"><span class="comment">//创造结点用于设置摄像头</span></span><br><span class="line">	node = mSceneMgr-&gt;getRootSceneNode()-&gt;createChildSceneNode(<span class="string">"CamNode1"</span>, Ogre::Vector3(<span class="number">1200</span>, <span class="number">-370</span>, <span class="number">0</span>));</span><br><span class="line">	node-&gt;yaw(Ogre::Degree(<span class="number">90</span>));</span><br><span class="line">	<span class="comment">//将结点与摄像头绑定</span></span><br><span class="line">	mCamNode = node;</span><br><span class="line">	node-&gt;attachObject(mCamera);</span><br><span class="line">	<span class="comment">//第二个摄像头结点</span></span><br><span class="line">	node = mSceneMgr-&gt;getRootSceneNode()-&gt;createChildSceneNode(<span class="string">"CamNode2"</span>, Ogre::Vector3(<span class="number">-500</span>, <span class="number">-370</span>, <span class="number">1000</span>));</span><br><span class="line">	node-&gt;yaw(Ogre::Degree(<span class="number">-30</span>));</span><br></pre></td></tr></table></figure>
+
+<h3 id="键盘监听并处理"><a href="#键盘监听并处理" class="headerlink" title="键盘监听并处理"></a>键盘监听并处理</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">bool</span> TutorialApplication::keyPressed(<span class="keyword">const</span> OIS::KeyEvent&amp; ke) </span><br><span class="line">&#123; </span><br><span class="line">	<span class="keyword">switch</span> (ke.key)</span><br><span class="line">	&#123;</span><br><span class="line">	<span class="keyword">case</span> OIS::KC_ESCAPE: </span><br><span class="line">		mShutDown = <span class="literal">true</span>;</span><br><span class="line">		<span class="keyword">break</span>;</span><br><span class="line">		<span class="comment">//设置摄像头1</span></span><br><span class="line">	<span class="keyword">case</span> OIS::KC_1:</span><br><span class="line">		<span class="comment">//解除当前摄像头的绑定</span></span><br><span class="line">		mCamera-&gt;getParentSceneNode()-&gt;detachObject(mCamera);</span><br><span class="line">		mCamNode = mSceneMgr-&gt;getSceneNode(<span class="string">"CamNode1"</span>);</span><br><span class="line">		mCamNode-&gt;attachObject(mCamera);</span><br><span class="line">		<span class="keyword">break</span>;</span><br><span class="line">		<span class="comment">//设置摄像头2</span></span><br><span class="line">	<span class="keyword">case</span> OIS::KC_2:</span><br><span class="line">		mCamera-&gt;getParentSceneNode()-&gt;detachObject(mCamera);</span><br><span class="line">		mCamNode = mSceneMgr-&gt;getSceneNode(<span class="string">"CamNode2"</span>);</span><br><span class="line">		mCamNode-&gt;attachObject(mCamera);</span><br><span class="line">		<span class="keyword">break</span>;</span><br><span class="line">		<span class="comment">//移动位置</span></span><br><span class="line">	<span class="keyword">case</span> OIS::KC_UP:</span><br><span class="line">	<span class="keyword">case</span> OIS::KC_W:</span><br><span class="line">		mDirection.z = -mMove;</span><br><span class="line">		<span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">case</span> OIS::KC_DOWN:</span><br><span class="line">	<span class="keyword">case</span> OIS::KC_S:</span><br><span class="line">		mDirection.z = mMove;</span><br><span class="line">		<span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">case</span> OIS::KC_LEFT:</span><br><span class="line">	<span class="keyword">case</span> OIS::KC_A:</span><br><span class="line">		mDirection.x = -mMove;</span><br><span class="line">		<span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">case</span> OIS::KC_RIGHT:</span><br><span class="line">	<span class="keyword">case</span> OIS::KC_D:</span><br><span class="line">		mDirection.x = mMove;</span><br><span class="line">		<span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">case</span> OIS::KC_PGDOWN:</span><br><span class="line">	<span class="keyword">case</span> OIS::KC_E:</span><br><span class="line">		mDirection.y = -mMove;</span><br><span class="line">		<span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">case</span> OIS::KC_PGUP:</span><br><span class="line">	<span class="keyword">case</span> OIS::KC_Q:</span><br><span class="line">		mDirection.y = mMove;</span><br><span class="line">		<span class="keyword">break</span>;</span><br><span class="line">	<span class="keyword">default</span>:</span><br><span class="line">		<span class="keyword">break</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">true</span>; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">bool</span> TutorialApplication::keyReleased(<span class="keyword">const</span> OIS::KeyEvent&amp; ke) </span><br><span class="line">&#123; </span><br><span class="line">	<span class="keyword">switch</span> (ke.key)</span><br><span class="line">	&#123;</span><br><span class="line">	<span class="keyword">case</span> OIS::KC_UP:</span><br><span class="line">	<span class="keyword">case</span> OIS::KC_W:</span><br><span class="line">		mDirection.z = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">case</span> OIS::KC_DOWN:</span><br><span class="line">	<span class="keyword">case</span> OIS::KC_S:</span><br><span class="line">		mDirection.z = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">case</span> OIS::KC_LEFT:</span><br><span class="line">	<span class="keyword">case</span> OIS::KC_A:</span><br><span class="line">		mDirection.x = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">case</span> OIS::KC_RIGHT:</span><br><span class="line">	<span class="keyword">case</span> OIS::KC_D:</span><br><span class="line">		mDirection.x = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">case</span> OIS::KC_PGDOWN:</span><br><span class="line">	<span class="keyword">case</span> OIS::KC_E:</span><br><span class="line">		mDirection.y = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">case</span> OIS::KC_PGUP:</span><br><span class="line">	<span class="keyword">case</span> OIS::KC_Q:</span><br><span class="line">		mDirection.y = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">default</span>:</span><br><span class="line">		<span class="keyword">break</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>最后在帧刷新处更新摄像头的位置。<code>frameRenderingQueued</code></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mCamNode-&gt;translate(mDirection * fe.timeSinceLastFrame, Ogre::Node::TS_LOCAL);</span><br></pre></td></tr></table></figure>
+
+<h3 id="鼠标监听并处理"><a href="#鼠标监听并处理" class="headerlink" title="鼠标监听并处理"></a>鼠标监听并处理</h3><p>左键控制灯源的开关<code>mousePressed()</code></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">bool</span> TutorialApplication::mousePressed(</span><br><span class="line">	<span class="keyword">const</span> OIS::MouseEvent&amp; me, OIS::MouseButtonID id) </span><br><span class="line">&#123; </span><br><span class="line">	Ogre::Light* light = mSceneMgr-&gt;getLight(<span class="string">"Light1"</span>);</span><br><span class="line">	<span class="keyword">switch</span> (id)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="comment">//左键控制灯光开关</span></span><br><span class="line">	<span class="keyword">case</span> OIS::MB_Left:</span><br><span class="line">		light-&gt;setVisible(!light-&gt;isVisible());</span><br><span class="line">		<span class="keyword">break</span>;</span><br><span class="line">	<span class="keyword">default</span>:</span><br><span class="line">		<span class="keyword">break</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">true</span>; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>右键移动旋转</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">bool</span> TutorialApplication::mouseMoved(<span class="keyword">const</span> OIS::MouseEvent&amp; me) </span><br><span class="line">&#123; </span><br><span class="line">	<span class="keyword">if</span> (me.state.buttonDown(OIS::MB_Right))</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="comment">//绕y轴旋转</span></span><br><span class="line">		mCamNode-&gt;yaw(Ogre::Degree(-mRotate * me.state.X.rel), Ogre::Node::TS_WORLD);</span><br><span class="line">		<span class="comment">//绕x轴旋转</span></span><br><span class="line">		mCamNode-&gt;pitch(Ogre::Degree(-mRotate * me.state.Y.rel), Ogre::Node::TS_LOCAL);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">true</span>; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="运行结果"><a href="#运行结果" class="headerlink" title="运行结果"></a>运行结果</h3><p><img src="http://7xi4up.com1.z0.glb.clouddn.com/ogre_4_Ogre_Input_House.jpg" alt="房屋"></p>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p><embed src="http://www.xiami.com/widget/0_3539294/singlePlayer.swf" type="application/x-shockwave-flash" width="257" height="33" wmode="transparent"><br>这是Ogre框架交互的整合，包括键盘，鼠标以及本文未提及的joystick控制器。主要为两部分：一部分为帧刷新，另一部分则为输入监听。Ogre主要通过这两种方法与用户进行交互。<br>参考文章：<a href="http://www.ogre3d.org/tikiwiki/tiki-index.php?page=Basic+Tutorial+5&structure=Tutorials" target="_blank" rel="noopener">Ogre基础教程5</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ogre/" rel="tag">#ogre</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/02/09/Ogre三维框架基础篇（二）/" rel="next" title="Ogre三维框架基础篇（二）">
+                <i class="fa fa-chevron-left"></i> Ogre三维框架基础篇（二）
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/02/15/Ogre三维框架基础篇（四）/" rel="prev" title="Ogre三维框架基础篇（四）">
+                Ogre三维框架基础篇（四） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2015/02/13/Ogre三维框架基础篇（三）/" data-title="Ogre三维框架基础篇（三）" data-url="http://www.cpacm.net/2015/02/13/Ogre三维框架基础篇（三）/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/img/author.jpg" alt="cpacm">
+          <p class="site-author-name" itemprop="name">cpacm</p>
+          <p class="site-description motion-element" itemprop="description">请不要忘记，那给你带来感动的，名为二次元的理想乡。</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">52</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/cpacm" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/u/3053253821" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.cnblogs.com/cpacm/" target="_blank" title="博客园">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  博客园
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#交互"><span class="nav-number">1.</span> <span class="nav-text">交互</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#无缓冲输入unbuffered"><span class="nav-number">1.1.</span> <span class="nav-text">无缓冲输入unbuffered</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#缓冲输入buffered"><span class="nav-number">1.2.</span> <span class="nav-text">缓冲输入buffered</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#无缓冲输入"><span class="nav-number">2.</span> <span class="nav-text">无缓冲输入</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#准备"><span class="nav-number">2.1.</span> <span class="nav-text">准备</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#监听鼠标左键"><span class="nav-number">2.2.</span> <span class="nav-text">监听鼠标左键</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#监听鼠标右键"><span class="nav-number">2.3.</span> <span class="nav-text">监听鼠标右键</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#键盘监听"><span class="nav-number">2.4.</span> <span class="nav-text">键盘监听</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#缓冲输入"><span class="nav-number">3.</span> <span class="nav-text">缓冲输入</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#按键响应和接口"><span class="nav-number">3.1.</span> <span class="nav-text">按键响应和接口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#键盘监听并处理"><span class="nav-number">3.2.</span> <span class="nav-text">键盘监听并处理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#鼠标监听并处理"><span class="nav-number">3.3.</span> <span class="nav-text">鼠标监听并处理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#运行结果"><span class="nav-number">3.4.</span> <span class="nav-text">运行结果</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结语"><span class="nav-number">4.</span> <span class="nav-text">结语</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">cpacm</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"cpacm"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("2fmsJHBmgPTnmd1bc7R9GcVX-gzGzoHsz", "CBUSqxdc9PSLibNV3TzlhpWg");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+</body>
+</html>

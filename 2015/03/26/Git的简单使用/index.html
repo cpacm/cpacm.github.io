@@ -1,0 +1,847 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="Git,管理工具,">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1">
+
+
+
+
+
+
+<meta name="description" content="Git是一个开源的分布式版本控制系统，用以有效、高速的处理从很小到非常大的项目版本管理。Git 是 Linus Torvalds 为了帮助管理 Linux 内核开发而开发的一个开放源码的版本控制软件。Torvalds 开始着手开发 Git 是为了作为一种过渡方案来替代 BitKeeper，后者之前一直是 Linux 内核开发人员在全球使用的主要源代码工具。">
+<meta name="keywords" content="Git,管理工具">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Git的简单使用">
+<meta property="og:url" content="http://www.cpacm.net/2015/03/26/Git的简单使用/index.html">
+<meta property="og:site_name" content="cpacm">
+<meta property="og:description" content="Git是一个开源的分布式版本控制系统，用以有效、高速的处理从很小到非常大的项目版本管理。Git 是 Linus Torvalds 为了帮助管理 Linux 内核开发而开发的一个开放源码的版本控制软件。Torvalds 开始着手开发 Git 是为了作为一种过渡方案来替代 BitKeeper，后者之前一直是 Linux 内核开发人员在全球使用的主要源代码工具。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://7xi4up.com1.z0.glb.clouddn.com/Git_SSH.png">
+<meta property="og:image" content="http://7xi4up.com1.z0.glb.clouddn.com/Git_cmd_1.png">
+<meta property="og:image" content="http://7xi4up.com1.z0.glb.clouddn.com/Git_set.png">
+<meta property="og:image" content="http://7xi4up.com1.z0.glb.clouddn.com/Git_SSHKey.png">
+<meta property="og:image" content="http://7xi4up.com1.z0.glb.clouddn.com/Git_SSH_Add.png">
+<meta property="og:image" content="http://7xi4up.com1.z0.glb.clouddn.com/Git_SSH_TABLE.png">
+<meta property="og:image" content="http://7xi4up.com1.z0.glb.clouddn.com/Git_Menu.jpg">
+<meta property="og:image" content="http://7xi4up.com1.z0.glb.clouddn.com/Git_Menu_Update.png">
+<meta property="og:image" content="http://7xi4up.com1.z0.glb.clouddn.com/Git_Gui.png">
+<meta property="og:image" content="http://7xi4up.com1.z0.glb.clouddn.com/Git%E6%B5%81%E7%A8%8B%E5%9B%BE.png">
+<meta property="og:image" content="http://7xi4up.com1.z0.glb.clouddn.com/Git%E5%AE%A2%E6%88%B7%E7%AB%AF.png">
+<meta property="og:image" content="http://7xi4up.com1.z0.glb.clouddn.com/Git%E5%AE%A2%E6%88%B7%E7%AB%AF%E8%AE%BE%E7%BD%AE%E7%95%8C%E9%9D%A2.png">
+<meta property="og:image" content="http://7xi4up.com1.z0.glb.clouddn.com/Git%E5%AE%A2%E6%88%B7%E7%AB%AFCreate%E5%92%8CClone%E7%95%8C%E9%9D%A2.png">
+<meta property="og:image" content="http://7xi4up.com1.z0.glb.clouddn.com/Git%E5%AE%A2%E6%88%B7%E7%AB%AF%E4%B8%BB%E7%95%8C%E9%9D%A2.png">
+<meta property="og:image" content="http://7xi4up.com1.z0.glb.clouddn.com/Git%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%9C%AC%E5%9C%B0%E5%8F%98%E5%8C%96.png">
+<meta property="og:image" content="http://7xi4up.com1.z0.glb.clouddn.com/Git%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%88%86%E6%94%AF.png">
+<meta property="og:image" content="http://7xi4up.com1.z0.glb.clouddn.com/Git%E5%AE%A2%E6%88%B7%E7%AB%AF%E7%9A%84%E9%A1%B9%E7%9B%AE%E8%8F%9C%E5%8D%95.png">
+<meta property="og:image" content="http://7xi4up.com1.z0.glb.clouddn.com/Git%E7%BD%91%E9%A1%B5%E9%A1%B9%E7%9B%AE%E8%AE%BE%E7%BD%AE.png">
+<meta property="og:updated_time" content="2015-12-24T19:09:42.076Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Git的简单使用">
+<meta name="twitter:description" content="Git是一个开源的分布式版本控制系统，用以有效、高速的处理从很小到非常大的项目版本管理。Git 是 Linus Torvalds 为了帮助管理 Linux 内核开发而开发的一个开放源码的版本控制软件。Torvalds 开始着手开发 Git 是为了作为一种过渡方案来替代 BitKeeper，后者之前一直是 Linux 内核开发人员在全球使用的主要源代码工具。">
+<meta name="twitter:image" content="http://7xi4up.com1.z0.glb.clouddn.com/Git_SSH.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> Git的简单使用 | cpacm </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?400b16383d4e24e7e0c1604aa14354a4";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">cpacm</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">动漫中毒者，技术宅</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Git的简单使用
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2015-03-26T01:29:07+08:00" content="2015-03-26">
+              2015-03-26
+            </time>
+          </span>
+
+          
+            <span class="post-category">
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/编程/" itemprop="url" rel="index">
+                    <span itemprop="name">编程</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2015/03/26/Git的简单使用/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/03/26/Git的简单使用/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2015/03/26/Git的简单使用/" class="leancloud_visitors" data-flag-title="Git的简单使用">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="一、Git介绍"><a href="#一、Git介绍" class="headerlink" title="一、Git介绍"></a>一、Git介绍</h2><p>Git是一个开源的分布式版本控制系统，用以有效、高速的处理从很小到非常大的项目版本管理。Git 是 Linus Torvalds 为了帮助管理 Linux 内核开发而开发的一个开放源码的版本控制软件。Torvalds 开始着手开发 Git 是为了作为一种过渡方案来替代 BitKeeper，后者之前一直是 Linux 内核开发人员在全球使用的主要源代码工具。开放源码社区中的有些人觉得 BitKeeper 的许可证并不适合开放源码社区的工作，因此 Torvalds 决定着手研究许可证更为灵活的版本控制系统。尽管最初 Git 的开发是为了辅助 Linux 内核开发的过程，但是我们已经发现在很多其他自由软件项目中也使用了 Git。例如 最近就迁移到 Git 上来了，很多 Freedesktop 的项目也迁移到了 Git 上。</p>
+<blockquote>
+<p>保存点 : Git的保存点可以追踪源码中的文件, 并能得到某一个时间点上的整个工程项目额状态; 可以在该保存点将多人提交的源码合并, 也可以会退到某一个保存点上;</p>
+</blockquote>
+<blockquote>
+<p>Git离线操作性 :Git可以离线进行代码提交, 因此它称得上是完全的分布式处理, Git所有的操作不需要在线进行; 这意味着Git的速度要比SVN等工具快得多, 因为SVN等工具需要在线时才能操作, 如果网络环境不好, 提交代码会变得非常缓慢;</p>
+</blockquote>
+<blockquote>
+<p>Git基于快照 : SVN等老式版本控制工具是将提交点保存成补丁文件, Git提交是将提交点指向提交时的项目快照, 提交的东西包含一些元数据(作者, 日期, GPG等);</p>
+</blockquote>
+<blockquote>
+<p>Git的分支和合并 : 分支模型是Git最显著的特点, 因为这改变了开发者的开发模式, SVN等版本控制工具将每个分支都要放在不同的目录中, Git可以在同一个目录中切换不同的分支;<br>分支即时性 : 创建和切换分支几乎是同时进行的, 用户可以上传一部分分支, 另外一部分分支可以隐藏在本地, 不必将所有的分支都上传到GitHub中去;</p>
+</blockquote>
+<blockquote>
+<p>分支灵活性 : 用户可以随时 创建 合并 删除分支, 多人实现不同的功能, 可以创建多个分支进行开发, 之后进行分支合并, 这种方式使开发变得快速, 简单, 安全。  </p>
+</blockquote>
+<p>*<em>Git通用客户端官方下载地址：<a href="http://git-scm.com/" target="_blank" rel="noopener">http://git-scm.com/</a> *</em>  </p>
+<h2 id="二、Git安装"><a href="#二、Git安装" class="headerlink" title="二、Git安装"></a>二、Git安装</h2><p>安装的话可以一路默认，路径可以自己指定。有关安装时参数的详细介绍，大家可以去这里看看，里面做了详细的介绍  <a href="http://www.ihref.com/read-16377.html" target="_blank" rel="noopener">http://www.ihref.com/read-16377.html</a></p>
+<p>安装完后到你的安装目录下，找到一个叫做 Git Bash.vbs文件。配置同步需要使用到这个文件。双击打开，我们会得到一个命令行控制台界面。接下来我们来配置Git吧。</p>
+<h3 id="Git上有三种传输方式"><a href="#Git上有三种传输方式" class="headerlink" title="Git上有三种传输方式"></a>Git上有三种传输方式</h3><p>（如下图），我们现在来选择SSH方式传输。在控制台输入ssh-keygen -t rsa -C “<a href="mailto:XXXXX@163.com" target="_blank" rel="noopener">XXXXX@163.com</a>“ 。<br><strong>GitHub邮箱</strong> : 该命令后面的邮箱就是GitHub的注册邮箱（没有账号的请先在Github上申请）;<br><strong>路径选择</strong> : 使用该命令之后, 会出现提示选择ssh-key生成路径, 这里直接点回车默认即可, 生成的ssh-key在默认路径中;<br><strong>密码确认</strong> : 自设的一个密码。这里我就不使用密码进行登录了。<br><img src="http://7xi4up.com1.z0.glb.clouddn.com/Git_SSH.png" alt="Git_SSH">  <img src="http://7xi4up.com1.z0.glb.clouddn.com/Git_cmd_1.png" alt="Git_cmd"><br><strong>将SSH配置到GitHub网站中</strong>。进入生成的ssh目录 : C:\Documents and Settings\Administrator.ssh （或者 C:\Users\自己电脑用户名.ssh）中, 使用记事本打开 id_rsa.pub 文件, 将该文件中的内容复制;<br>进入GitHub网站 : 登录GitHub, 选择Setting 进行用户设置：<br><img src="http://7xi4up.com1.z0.glb.clouddn.com/Git_set.png" alt="Git_set"><br>在左边的列表下找到SSH Keys的选项：<br><img src="http://7xi4up.com1.z0.glb.clouddn.com/Git_SSHKey.png" alt="Git_SSH_Key"><br><img src="http://7xi4up.com1.z0.glb.clouddn.com/Git_SSH_Add.png" alt="Git_SSH_Add"><br>然后将SSH Key值复制进去<br><img src="http://7xi4up.com1.z0.glb.clouddn.com/Git_SSH_TABLE.png" alt="Git_SSH_TABLE"><br>验证是否配置成功 :<code>ssh -T git@github.com</code><br>验证时可能让你输入YES。<br>成功提示 : 如果出现<code>Hi cpacm！ You’ve successfully authenticated, but GitHub does not provide shell access.</code>就说明配置成功, 可以连接上GitHub;  </p>
+<h3 id="配置本地邮箱"><a href="#配置本地邮箱" class="headerlink" title="配置本地邮箱"></a>配置本地邮箱</h3><p>用户名邮箱作用 : 我们需要设置一个用户名 和 邮箱, 这是用来上传本地仓库到GitHub中, 在GitHub中显示代码上传者;<br>使用命令 :</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config --global user.name &quot;cpacm&quot; //设置用户名 </span><br><span class="line">git config --global user.email &quot;xxx@163.com&quot; //设置邮箱,不要求是注册邮箱。</span><br></pre></td></tr></table></figure>
+
+<p>到此Git的安装基本上就可以了。</p>
+<h2 id="三、Git的使用"><a href="#三、Git的使用" class="headerlink" title="三、Git的使用"></a>三、Git的使用</h2><p>我们现在会发现右键菜单新出来了三个选项:<br><img src="http://7xi4up.com1.z0.glb.clouddn.com/Git_Menu.jpg" alt="Git_Menu"><br>功能分别是将本地作为本地仓库，打开Git Gui，打开Git Bash命令控制台。</p>
+<p>###选择文件夹作为本地仓库<br>在目录中右键执行 <code>git init here</code>，就可以创建一个 Git 仓库了。<br>查看有哪些文件，使用ls指令。比如，我们这个目录，里头有个test.tet文件，可以用如下：</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ ls</span><br><span class="line">test.txt</span><br></pre></td></tr></table></figure>
+
+<p>也可以用cd来指定地址，将其仓库化</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> 路径</span><br><span class="line">$ git init</span><br><span class="line">Initialized empty Git repository <span class="keyword">in</span> /opt/konnichiwa/.git/</span><br><span class="line"># 在 /opt/konnichiwa/.git 目录初始化空 Git 仓库完毕。</span><br></pre></td></tr></table></figure>
+
+<p>现在你可以看到在你的项目目录中有个 .git 的子目录。 这就是你的 Git 仓库了，所有有关你的此项目的快照数据都存放在这里。<br>简而言之，用 git init 来在目录中创建新的 Git 仓库。 你可以在任何时候、任何目录中这么做，完全是本地化的。　　</p>
+<h3 id="clone一个项目到本地"><a href="#clone一个项目到本地" class="headerlink" title="clone一个项目到本地"></a>clone一个项目到本地</h3><p>如果你需要与他人合作一个项目，或者想要复制一个项目，看看代码，你就可以克隆那个项目。 执行 <code>git clone [url]</code>，[url] 为你想要复制的项目地址，就可以了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git clone git://github.com/schacon/simplegit.git</span><br></pre></td></tr></table></figure>
+
+<p>###添加文件到缓存，并上传<br>在本地建立仓库后，右键选项会产生变化<br><img src="http://7xi4up.com1.z0.glb.clouddn.com/Git_Menu_Update.png" alt="Git_Menu_Init"></p>
+<blockquote>
+<p>第一项：添加所有文件到本地缓存；<br>第二项：提交工具，若本地缓存有变化，则会显示变化  </p>
+</blockquote>
+<p><img src="http://7xi4up.com1.z0.glb.clouddn.com/Git_Gui.png" alt="Git_Gui"></p>
+<blockquote>
+<p>第三项，提交的历史记录，通常以一次提交为一次记录。<br>第四项：Git Gui管理工具，如上图。第五项：Git分支。第六项：控制台。然后填写描述点击上传按钮就可以上传了。  </p>
+</blockquote>
+<p>简单流程图<br><img src="http://7xi4up.com1.z0.glb.clouddn.com/Git%E6%B5%81%E7%A8%8B%E5%9B%BE.png" alt="Git流程图"></p>
+<h2 id="四、Git客户端"><a href="#四、Git客户端" class="headerlink" title="四、Git客户端"></a>四、Git客户端</h2><p>Git有一个专门的客户端，只要安装了它，以上的这些其实都可以不用这么麻烦的实现。<br>*<em>地址：<a href="https://windows.github.com/" target="_blank" rel="noopener">https://windows.github.com/</a> *</em></p>
+<h3 id="GitHub的安装"><a href="#GitHub的安装" class="headerlink" title="GitHub的安装"></a>GitHub的安装</h3><p>基本上按步骤就行了，（就是下安装程序时可能要挂VPN）。<br>安装完后会有这两个东西。打开GitHub,按照提示来进行设置。<br><img src="http://7xi4up.com1.z0.glb.clouddn.com/Git%E5%AE%A2%E6%88%B7%E7%AB%AF.png" alt="Git客户端"></p>
+<h3 id="设置界面"><a href="#设置界面" class="headerlink" title="设置界面"></a>设置界面</h3><p>左上角会有添加项目的按钮，右上角则是设置按钮，打开设置，选择options.<br><img src="http://7xi4up.com1.z0.glb.clouddn.com/Git%E5%AE%A2%E6%88%B7%E7%AB%AF%E8%AE%BE%E7%BD%AE%E7%95%8C%E9%9D%A2.png" alt="Git客户端设置界面"></p>
+<h3 id="添加项目和Clone项目"><a href="#添加项目和Clone项目" class="headerlink" title="添加项目和Clone项目"></a>添加项目和Clone项目</h3><p><img src="http://7xi4up.com1.z0.glb.clouddn.com/Git%E5%AE%A2%E6%88%B7%E7%AB%AFCreate%E5%92%8CClone%E7%95%8C%E9%9D%A2.png" alt="Git客户端添加和克隆界面"><br>信息一目了然，我就不作多讲了。关于Clone,想要Clone其他人开源的项目，请使用shell来进行。</p>
+<h3 id="操作台"><a href="#操作台" class="headerlink" title="操作台"></a>操作台</h3><p><img src="http://7xi4up.com1.z0.glb.clouddn.com/Git%E5%AE%A2%E6%88%B7%E7%AB%AF%E4%B8%BB%E7%95%8C%E9%9D%A2.png" alt="Git客户端主界面"></p>
+<h3 id="本地变化"><a href="#本地变化" class="headerlink" title="本地变化"></a>本地变化</h3><p>当我在项目中添加了一个txt文件，操作台就会实时的出现变化，此时我们可以将变动提交到本地缓存中。<br><img src="http://7xi4up.com1.z0.glb.clouddn.com/Git%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%9C%AC%E5%9C%B0%E5%8F%98%E5%8C%96.png" alt="Git客户端本地变化"></p>
+<h3 id="分支"><a href="#分支" class="headerlink" title="分支"></a>分支</h3><p>建立和管理分支<br><img src="http://7xi4up.com1.z0.glb.clouddn.com/Git%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%88%86%E6%94%AF.png" alt="Git客户端分支"></p>
+<h3 id="删除项目"><a href="#删除项目" class="headerlink" title="删除项目"></a>删除项目</h3><p><img src="http://7xi4up.com1.z0.glb.clouddn.com/Git%E5%AE%A2%E6%88%B7%E7%AB%AF%E7%9A%84%E9%A1%B9%E7%9B%AE%E8%8F%9C%E5%8D%95.png" alt="Git客户端的项目菜单"><br>最后一项就是移除，但文件还是会存在的。其他项功能就跟字面意思一样。</p>
+<h3 id="在GitHub网站上删除项目"><a href="#在GitHub网站上删除项目" class="headerlink" title="在GitHub网站上删除项目"></a>在GitHub网站上删除项目</h3><p><img src="http://7xi4up.com1.z0.glb.clouddn.com/Git%E7%BD%91%E9%A1%B5%E9%A1%B9%E7%9B%AE%E8%AE%BE%E7%BD%AE.png" alt="Git网页项目设置"><br>进入想要删除的项目页面，右侧有个功能导航，选择Setting<br>跳转后拉到最后面就有删除项目的按钮。<br><embed src="http://www.xiami.com/widget/0_1771040088/singlePlayer.swf" type="application/x-shockwave-flash" width="257" height="33" wmode="transparent"><br>以上就是我简单安装完Git的全部了。  </p>
+<h2 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h2><p>（1）<a href="http://www.ihref.com/read-16369.html" target="_blank" rel="noopener">Git版本控制软件结合GitHub从入门到精通常用命令学习手册</a><br>（2）<a href="http://www.cr173.com/html/15618_1.html" target="_blank" rel="noopener">Github for Windows使用图文教程</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Git/" rel="tag">#Git</a>
+          
+            <a href="/tags/管理工具/" rel="tag">#管理工具</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/03/23/吉卜力新作——-记忆中的玛妮/" rel="next" title="吉卜力新作 —— <记忆中的玛妮>">
+                <i class="fa fa-chevron-left"></i> 吉卜力新作 —— <记忆中的玛妮>
+              </记忆中的玛妮></a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/03/26/Android开发日记（八）——Android的Intent机制/" rel="prev" title="Android开发日记（八）——Android的Intent机制">
+                Android开发日记（八）——Android的Intent机制 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2015/03/26/Git的简单使用/" data-title="Git的简单使用" data-url="http://www.cpacm.net/2015/03/26/Git的简单使用/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/img/author.jpg" alt="cpacm">
+          <p class="site-author-name" itemprop="name">cpacm</p>
+          <p class="site-description motion-element" itemprop="description">请不要忘记，那给你带来感动的，名为二次元的理想乡。</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">52</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/cpacm" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/u/3053253821" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.cnblogs.com/cpacm/" target="_blank" title="博客园">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  博客园
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、Git介绍"><span class="nav-number">1.</span> <span class="nav-text">一、Git介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、Git安装"><span class="nav-number">2.</span> <span class="nav-text">二、Git安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Git上有三种传输方式"><span class="nav-number">2.1.</span> <span class="nav-text">Git上有三种传输方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置本地邮箱"><span class="nav-number">2.2.</span> <span class="nav-text">配置本地邮箱</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、Git的使用"><span class="nav-number">3.</span> <span class="nav-text">三、Git的使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#clone一个项目到本地"><span class="nav-number">3.1.</span> <span class="nav-text">clone一个项目到本地</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四、Git客户端"><span class="nav-number">4.</span> <span class="nav-text">四、Git客户端</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#GitHub的安装"><span class="nav-number">4.1.</span> <span class="nav-text">GitHub的安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#设置界面"><span class="nav-number">4.2.</span> <span class="nav-text">设置界面</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#添加项目和Clone项目"><span class="nav-number">4.3.</span> <span class="nav-text">添加项目和Clone项目</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#操作台"><span class="nav-number">4.4.</span> <span class="nav-text">操作台</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#本地变化"><span class="nav-number">4.5.</span> <span class="nav-text">本地变化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分支"><span class="nav-number">4.6.</span> <span class="nav-text">分支</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#删除项目"><span class="nav-number">4.7.</span> <span class="nav-text">删除项目</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在GitHub网站上删除项目"><span class="nav-number">4.8.</span> <span class="nav-text">在GitHub网站上删除项目</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考文章"><span class="nav-number">5.</span> <span class="nav-text">参考文章</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">cpacm</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"cpacm"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("2fmsJHBmgPTnmd1bc7R9GcVX-gzGzoHsz", "CBUSqxdc9PSLibNV3TzlhpWg");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+</body>
+</html>

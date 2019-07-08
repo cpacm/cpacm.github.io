@@ -1,0 +1,882 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="Android,开源项目,">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1">
+
+
+
+
+
+
+<meta name="description" content="一款Git上圆形弹出菜单的开源项目。">
+<meta name="keywords" content="Android,开源项目">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Git上开源介绍（一）—— CFA Menu">
+<meta property="og:url" content="http://www.cpacm.net/2015/03/21/Git上开源介绍（一）——CFA-Menu/index.html">
+<meta property="og:site_name" content="cpacm">
+<meta property="og:description" content="一款Git上圆形弹出菜单的开源项目。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://7xi4up.com1.z0.glb.clouddn.com/git_cfa_menu-demo.jpeg">
+<meta property="og:image" content="http://7xi4up.com1.z0.glb.clouddn.com/git_cfa_circlemenu.jpg">
+<meta property="og:image" content="http://7xi4up.com1.z0.glb.clouddn.com/git_cfa_menu_uml.jpg">
+<meta property="og:image" content="http://7xi4up.com1.z0.glb.clouddn.com/git_cfa_menu.jpg">
+<meta property="og:image" content="http://7xi4up.com1.z0.glb.clouddn.com/git_cfa_%E6%B5%81%E7%A8%8B%E5%9B%BE.jpg">
+<meta property="og:updated_time" content="2015-12-24T19:06:56.231Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Git上开源介绍（一）—— CFA Menu">
+<meta name="twitter:description" content="一款Git上圆形弹出菜单的开源项目。">
+<meta name="twitter:image" content="http://7xi4up.com1.z0.glb.clouddn.com/git_cfa_menu-demo.jpeg">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> Git上开源介绍（一）—— CFA Menu | cpacm </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?400b16383d4e24e7e0c1604aa14354a4";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">cpacm</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">动漫中毒者，技术宅</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Git上开源介绍（一）—— CFA Menu
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2015-03-21T15:28:53+08:00" content="2015-03-21">
+              2015-03-21
+            </time>
+          </span>
+
+          
+            <span class="post-category">
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/开源-框架/" itemprop="url" rel="index">
+                    <span itemprop="name">开源&框架</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2015/03/21/Git上开源介绍（一）——CFA-Menu/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/03/21/Git上开源介绍（一）——CFA-Menu/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2015/03/21/Git上开源介绍（一）——CFA-Menu/" class="leancloud_visitors" data-flag-title="Git上开源介绍（一）—— CFA Menu">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><em>该系列源于 <a href="https://github.com/trinea" target="_blank" rel="noopener">Trinea</a> 组织的开源活动 <a href="http://codekk.com/open-source-project-analysis" target="_blank" rel="noopener">codeKK</a>。</em></p>
+<h2 id="CircularFloatingActionMenu-源码解析"><a href="#CircularFloatingActionMenu-源码解析" class="headerlink" title="CircularFloatingActionMenu 源码解析"></a>CircularFloatingActionMenu 源码解析</h2><blockquote>
+<p>本文为 <a href="https://github.com/android-cn/android-open-project-analysis" target="_blank" rel="noopener">Android 开源项目源码解析</a> 中 circular-foating-action-menu 部分<br>项目地址：<a href="https://github.com/oguzbilgener/CircularFloatingActionMenu" target="_blank" rel="noopener">CircularFloatingActionMenu</a>，分析的版本：<a href="https://github.com/oguzbilgener/CircularFloatingActionMenu/commit/8efb1aab2b361ed9019fa4af6e5d43e77777bcb6" target="_blank" rel="noopener">8efb1aa</a>，Demo 地址：<a href="https://github.com/android-cn/android-open-project-demo/tree/master/circular-floating-actionmenu-demo" target="_blank" rel="noopener">CFAMenu-demo</a><br>分析者：<a href="https://github.com/cpacm" target="_blank" rel="noopener">cpacm</a>，校对者：<a href="https://github.com/dkmeteor" target="_blank" rel="noopener">dkmeteor</a>、<a href="https://github.com/trinea" target="_blank" rel="noopener">Trinea</a>  </p>
+</blockquote>
+<h3 id="1-功能介绍"><a href="#1-功能介绍" class="headerlink" title="1. 功能介绍"></a>1. 功能介绍</h3><p>一个与著名应用 <a href="https://play.google.com/store/apps/details?id=com.path" target="_blank" rel="noopener">Path</a> 菜单类似的圆形弹出菜单，可方便的定制菜单以及动画。<br>菜单可能是非完整圆形，本文统称为<code>圆形菜单</code>。  </p>
+<h4 id="1-1-特点"><a href="#1-1-特点" class="headerlink" title="1.1 特点"></a>1.1 特点</h4><p>可自定义动画、菜单、角度范围、半径等。  </p>
+<h4 id="1-2-概念"><a href="#1-2-概念" class="headerlink" title="1.2 概念"></a>1.2 概念</h4><p><img src="http://7xi4up.com1.z0.glb.clouddn.com/git_cfa_menu-demo.jpeg" alt="Menu Demo"><br>以上是简单的圆形弹出菜单示例，更详细的示例图见：<a href="https://github.com/android-cn/android-open-project-demo/blob/master/circular-floating-actionmenu-demo/README.md#2-screenshot" target="_blank" rel="noopener">Screenshot</a>。<br><strong>菜单按钮(Event)：</strong>点击会弹出圆形菜单的控件，如上图的 + 对应控件，对应代码中的<code>FloatingActionButton.java</code>。  </p>
+<p><strong>子菜单按钮(Event)：</strong>圆形菜单中的控件，如上图的定位、视频、相机、文本对应的控件，对应代码中的<code>SubActionButton.java</code>。  </p>
+<p><strong>菜单：</strong>整个菜单，包含上面的<code>菜单按钮</code>和<code>子菜单按钮</code>，对应代码中的<code>FloatingActionMenu.java</code>。  </p>
+<p><strong>菜单动画回调：</strong>点击<code>菜单按钮</code>弹出<code>子菜单按钮</code>的动画设置的抽象类，对应代码中的<code>MenuAnimationHandler.java</code>。  </p>
+<h3 id="2-总体设计"><a href="#2-总体设计" class="headerlink" title="2. 总体设计"></a>2. 总体设计</h3><p>本项目较为简单，总体设计省略。  </p>
+<h3 id="3-流程图"><a href="#3-流程图" class="headerlink" title="3. 流程图"></a>3. 流程图</h3><p><img src="http://7xi4up.com1.z0.glb.clouddn.com/git_cfa_circlemenu.jpg" alt="设计流程图" title="流程图"><br>流程图如上图所示，中间最复杂的可能是计算<code>子菜单按钮</code>位置的地方。</p>
+<h3 id="4-详细设计"><a href="#4-详细设计" class="headerlink" title="4. 详细设计"></a>4. 详细设计</h3><h4 id="4-1-类关系图"><a href="#4-1-类关系图" class="headerlink" title="4.1 类关系图"></a>4.1 类关系图</h4><p><img src="http://7xi4up.com1.z0.glb.clouddn.com/git_cfa_menu_uml.jpg" alt="uml" title="uml"><br>以上是<code>CircularFloatingActionMenu</code>主要类的关系图。  </p>
+<p><code>FloatingActionButton</code>、<code>SubActionButton</code>都是继承自<code>FrameLayout</code>的自定义控件，可支持以其他 View 为内容，如<code>ImageView</code>、<code>TextView</code>。  </p>
+<p><code>FloatingActionMenu</code>由<code>FloatingActionButton</code>、<code>SubActionButton</code>以及<code>MenuAnimationHandler</code>等构成。  </p>
+<h4 id="4-2-类功能介绍"><a href="#4-2-类功能介绍" class="headerlink" title="4.2 类功能介绍"></a>4.2 类功能介绍</h4><p><code>CircularFloatingActionMenu</code>源码主要分成两部分，一部分是构成菜单的 View 部分，另一部分是动画的操作类。  </p>
+<p>View 部分包含我们上面提到的菜单按钮<code>FloatingActionButton.java</code>、子菜单按钮<code>SubActionButton.java</code>、菜单<code>FloatingActionMenu.java</code>。 </p>
+<p>动画部分包含菜单动画回调抽象类<code>MenuAnimationHandler.java</code>以及它默认的实现<code>DefaultAnimationHandler.java</code>。  </p>
+<h5 id="4-2-1-SubActionButton-java"><a href="#4-2-1-SubActionButton-java" class="headerlink" title="4.2.1 SubActionButton.java"></a>4.2.1 SubActionButton.java</h5><p>子菜单按钮，即按菜单键弹出来的选项按钮。这个类继承自<code>FrameLayout</code>，实现一个自定义图标的功能。<br>可以根据构造函数传进来的参数来选择不同风格的图案底纹，然后将其传给<code>FloatingActionMenu</code>以便控制。<br>首先是构造函数</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">SubActionButton</span><span class="params">(Activity activity, LayoutParams layoutParams, <span class="keyword">int</span> theme, Drawable backgroundDrawable, View contentView, LayoutParams contentParams)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(activity);</span><br><span class="line">        setLayoutParams(layoutParams);</span><br><span class="line">        <span class="comment">// If no custom backgroundDrawable is specified, use the background drawable of the theme.</span></span><br><span class="line">        <span class="keyword">if</span>(backgroundDrawable == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">if</span>(theme == THEME_LIGHT) &#123;</span><br><span class="line">                backgroundDrawable = activity.getResources().getDrawable(R.drawable.button_sub_action_selector);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span>(theme == THEME_DARK) &#123;</span><br><span class="line">                backgroundDrawable = activity.getResources().getDrawable(R.drawable.button_sub_action_dark_selector);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span>(theme == THEME_LIGHTER) &#123;</span><br><span class="line">                backgroundDrawable = activity.getResources().getDrawable(R.drawable.button_action_selector);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span>(theme == THEME_DARKER) &#123;</span><br><span class="line">                backgroundDrawable = activity.getResources().getDrawable(R.drawable.button_action_dark_selector);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"Unknown SubActionButton theme: "</span> + theme);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">//通过mutate()方法解决Drawable共用一个内存空间的问题</span></span><br><span class="line">            backgroundDrawable = backgroundDrawable.mutate().getConstantState().newDrawable();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//设置背景（考虑版本问题）</span></span><br><span class="line">        setBackgroundResource(backgroundDrawable);</span><br><span class="line">        <span class="keyword">if</span>(contentView != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="comment">//添加view(即菜单的选项视图)</span></span><br><span class="line">            setContentView(contentView, contentParams);</span><br><span class="line">        &#125;</span><br><span class="line">        setClickable(<span class="keyword">true</span>);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>从构造函数可以看的出来，选项按钮有四个主题可以选择，分别是下面的四种颜色</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> THEME_LIGHT = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> THEME_DARK = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> THEME_LIGHTER = <span class="number">2</span>;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> THEME_DARKER = <span class="number">3</span>;</span><br></pre></td></tr></table></figure>
+
+<p>之后是设定 ImageView 到这个按钮上，并且设定与父 View 的距离。（通过 setMargins()）<br>这个我们在创建 subActionButton 时就要调用。核心函数是 addView(contentView, params)。这个方法能够在视图上再添加一个 view，作为子视图。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Sets a content view with custom LayoutParams that will be displayed inside this SubActionButton.</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> contentView</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> params</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setContentView</span><span class="params">(View contentView, LayoutParams params)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(params == <span class="keyword">null</span>) &#123;</span><br><span class="line">        params = <span class="keyword">new</span> LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, Gravity.CENTER);</span><br><span class="line">        <span class="keyword">final</span> <span class="keyword">int</span> margin = getResources().getDimensionPixelSize(R.dimen.sub_action_button_content_margin);</span><br><span class="line">        params.setMargins(margin, margin, margin, margin);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    contentView.setClickable(<span class="keyword">false</span>);</span><br><span class="line">    <span class="keyword">this</span>.addView(contentView, params);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>最后就是一个建造器了，专门生成用于生成该类的建造器，静态全局</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * A builder for &#123;<span class="doctag">@link</span> com.cpacm.library.SubActionButton&#125; in conventional Java Builder format</span></span><br><span class="line"><span class="comment"> * 菜单选项的建造器</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Builder</span> </span>&#123;</span><br><span class="line">    ...</span><br><span class="line">   <span class="function"><span class="keyword">public</span> SubActionButton <span class="title">build</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> SubActionButton(activity,</span><br><span class="line">                layoutParams,</span><br><span class="line">                theme,</span><br><span class="line">                backgroundDrawable,</span><br><span class="line">                contentView,</span><br><span class="line">                contentParams);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>传入 activity，视图特性配置，主题的 id，背景图，imageview（子视图），imageview（子视图）的特性配置。用这些来配置选项按钮。</p>
+<h5 id="4-2-2-FloatingActionButton-java"><a href="#4-2-2-FloatingActionButton-java" class="headerlink" title="4.2.2 FloatingActionButton.java"></a>4.2.2 FloatingActionButton.java</h5><p>菜单按钮，点击会弹出圆形菜单的控件。   </p>
+<p>这个类跟<code>SubActionButton</code>基本相似，同样可以通过内部自定义的<code>build</code>构造器来定制自己的按钮。<br>菜单按钮其实跟选项按钮的代码模式差不多，也是由设定子视图和一个建造器组成。<br>不过它多了几个方法：<br>设定位置，如左下，右下等方位</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Sets the position of the button by calculating its Gravity from the position parameter</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> position one of 8 specified positions.</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> layoutParams</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setPosition</span><span class="params">(<span class="keyword">int</span> position, FrameLayout.LayoutParams layoutParams)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> gravity;</span><br><span class="line">    <span class="keyword">switch</span>(position) &#123;</span><br><span class="line">        ...<span class="comment">//具体代码请自行查看源代码</span></span><br><span class="line">    &#125;</span><br><span class="line">    layoutParams.gravity = gravity;</span><br><span class="line">    setLayoutParams(layoutParams);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>将视图绑定到 activity 的主视图中。这样我们就能在 activity 的主视图中操作这个 view 了。<br>FloatingActionButton的建造器</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * A builder for &#123;<span class="doctag">@link</span> com.cpacm.library.FloatingActionButton&#125; in conventional Java Builder format</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Builder</span> </span>&#123;</span><br><span class="line">...</span><br><span class="line">    <span class="function"><span class="keyword">public</span> FloatingActionButton <span class="title">build</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> FloatingActionButton(activity,</span><br><span class="line">                                           layoutParams,</span><br><span class="line">                                           theme,</span><br><span class="line">                                           backgroundDrawable,</span><br><span class="line">                                           position,</span><br><span class="line">                                           contentView,</span><br><span class="line">                                           contentParams);</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>比 SubActionButton 多了一个位置的属性。</p>
+<h5 id="4-2-3-FloatingActionMenu-java"><a href="#4-2-3-FloatingActionMenu-java" class="headerlink" title="4.2.3 FloatingActionMenu.java"></a>4.2.3 FloatingActionMenu.java</h5><p>那么最重要的类来了，<code>FloatingActionMenu</code>表示整个菜单，它存放着所有的按钮以及动画操作。  </p>
+<p>基本结构图如下：<br><img src="http://7xi4up.com1.z0.glb.clouddn.com/git_cfa_menu.jpg" alt="Alt text" title="menu"><br>这个类也是由一个建造器生成，那么我们从建造器开始说起<br>我们先看看生成 Menu 的代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">FloatingActionMenu rightLowerMenu = <span class="keyword">new</span> FloatingActionMenu.Builder(<span class="keyword">this</span>)</span><br><span class="line">                .addSubActionView(rLSubBuilder.setContentView(rlIcon1).build())</span><br><span class="line">                .addSubActionView(rLSubBuilder.setContentView(rlIcon2).build())</span><br><span class="line">                .addSubActionView(rLSubBuilder.setContentView(rlIcon3).build())</span><br><span class="line">                .addSubActionView(rLSubBuilder.setContentView(rlIcon4).build())</span><br><span class="line">                .setAnimationHandler(<span class="keyword">new</span> SliderAnimationHandler())</span><br><span class="line">                .attachTo(rightLowerButton)</span><br><span class="line">                .build();</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Builder(this) 将 activity 传入 menu 中</li>
+<li>addSubActionView 添加选项按钮到 activity 的视图中。在 FloatingActionMenu中管理 SubActionView 是一个 Item 的 list 集合，每次加一个按钮就往里面添加。Item 是一个辅助类，里面包括一个视图，x 坐标，y 坐标，长度，宽度。</li>
+<li>setAnimationHandler 则是设定动画。</li>
+<li>attachTo 是将 menu 与 activity 的视图绑定。（即把菜单按钮的视图添加到 activity 的视图中）  </li>
+</ul>
+<p>FloatingActionMenu 类主要是管理菜单按钮和选项按钮的位置和状态（开和关）<br>（1）首先是通过 view 的 onClick 监听器来控制状态  </p>
+<p>（2）开关主要是两种状态，开的时候会获得菜单按钮的中心位置 center（getActionViewCenter()）和计算 item 的位置（calculateItemPositions()）。然后发送动画的请求到 AnimationHandler 中（animationHandler.animateMenuOpening(center)）。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Simply opens the menu by doing necessary calculations.</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> animated if true, this action is executed by the current &#123;<span class="doctag">@link</span> MenuAnimationHandler&#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">open</span><span class="params">(<span class="keyword">boolean</span> animated)</span> </span>&#123;</span><br><span class="line">    ...<span class="comment">//具体代码请自行查看源代码</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>其中 item 的 x，y 是记录视图的终点位置，然后经过动画把 view 移到 x，y 的位置上。  </p>
+<p>stateChangeListener 为状态变化的监听器，开关都会响应相应的方法。主要在 AnimationHandler 中添加具体方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * A listener to listen open/closed state changes of the Menu</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">interface</span> <span class="title">MenuStateChangeListener</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onMenuOpened</span><span class="params">(FloatingActionMenu menu)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onMenuClosed</span><span class="params">(FloatingActionMenu menu)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>（3）计算位置</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Calculates the desired positions of all items.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">calculateItemPositions</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    ...<span class="comment">//具体代码请自行查看源代码</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="4-2-4-MenuAnimationHandler-java"><a href="#4-2-4-MenuAnimationHandler-java" class="headerlink" title="4.2.4 MenuAnimationHandler.java"></a>4.2.4 MenuAnimationHandler.java</h5><p>这是是所有动画类的父类，它主要定义了菜单打开，关闭，以及运行结束后状态的保存的方法。  </p>
+<pre><code>animateMenuOpening(Point center)
+animateMenuClosing(Point center)   
+restoreSubActionViewAfterAnimation(FloatingActionMenu.Item subActionItem, ActionType actionType)</code></pre><h5 id="4-2-5-DefaultAnimationHandler-java"><a href="#4-2-5-DefaultAnimationHandler-java" class="headerlink" title="4.2.5 DefaultAnimationHandler.java"></a>4.2.5 DefaultAnimationHandler.java</h5><p>这一个默认的动画类，当我们不对动画做修改时就会默认使用这个类里面的动画效果。我们也可以参考这个类来进行设计新的动画效果。<br>动画效果主要是通过<code>ObjectAnimator.ofPropertyValuesHolder(menu.getSubActionItems().get(i).view, pvhX, pvhY, pvhR, pvhsX, pvhsY, pvhA)</code>来实现。<br>动画实现的主要类，继承自 MenuAnimationHandler<br>主要通过 Animator 来实现属性动画。<br>里面有一个 restoreSubActionViewAfterAnimation 的方法，它主要是恢复选项按钮到未打开的状态。 </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Restores the specified sub action view to its final state, accoding to the current actionType</span></span><br><span class="line"><span class="comment"> * Should be called after an animation finishes.</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> subActionItem</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> actionType</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">restoreSubActionViewAfterAnimation</span><span class="params">(FloatingActionMenu.Item subActionItem, ActionType actionType)</span> </span>&#123;</span><br><span class="line">    ...<span class="comment">//具体代码请自行查看源代码</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Animator属性动画以及其他动画的实现请参考我写的博客<br><a href="http://www.cnblogs.com/cpacm/p/4067283.html" target="_blank" rel="noopener">Android的动画效果</a></p>
+<h4 id="4-3-如何使用"><a href="#4-3-如何使用" class="headerlink" title="4.3 如何使用"></a>4.3 如何使用</h4><pre><code>// Set up the white button on the lower right corner
+// more or less with default parameter
+ImageView fabIconNew = new ImageView(this);
+fabIconNew.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_new_light));
+FloatingActionButton rightLowerButton = new FloatingActionButton.Builder(this)
+        .setContentView(fabIconNew)
+        .build();
+
+SubActionButton.Builder rLSubBuilder = new SubActionButton.Builder(this);
+ImageView rlIcon1 = new ImageView(this);
+ImageView rlIcon2 = new ImageView(this);
+ImageView rlIcon3 = new ImageView(this);
+ImageView rlIcon4 = new ImageView(this);
+
+rlIcon1.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_chat_light));
+rlIcon2.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_camera_light));
+rlIcon3.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_video_light));
+rlIcon4.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_place_light));
+
+// Build the menu with default options: light theme, 90 degrees, 72dp radius.
+// Set 4 default SubActionButtons
+FloatingActionMenu rightLowerMenu = new FloatingActionMenu.Builder(this)
+        .addSubActionView(rLSubBuilder.setContentView(rlIcon1).build())
+        .addSubActionView(rLSubBuilder.setContentView(rlIcon2).build())
+        .addSubActionView(rLSubBuilder.setContentView(rlIcon3).build())
+        .addSubActionView(rLSubBuilder.setContentView(rlIcon4).build())
+        .setAnimationHandler(new SliderAnimationHandler())
+        .attachTo(rightLowerButton)
+        .build();</code></pre><p>如以上代码所示  </p>
+<p>（1）先建立一个 view 来作为一个总容器，设置好图片，然后作为菜单的按钮  </p>
+<p>（2）建立好选项菜单的视图，添加属性后，添加到 FloatingActionMenu 中的 ArrayList<item> 数组中，并同时绑定上面的菜单按钮。  </item></p>
+<p>（3）如果使用自己定义的动画，setAnimationHandler(new SliderAnimationHandler())。  </p>
+<p>这样子，一个简单的案例就做好了</p>
+<p><img src="http://7xi4up.com1.z0.glb.clouddn.com/git_cfa_%E6%B5%81%E7%A8%8B%E5%9B%BE.jpg" alt="流程图" title="流程图"></p>
+<h3 id="5-杂谈"><a href="#5-杂谈" class="headerlink" title="5. 杂谈"></a>5. 杂谈</h3><p><embed src="http://www.xiami.com/widget/0_1769131051/singlePlayer.swf" type="application/x-shockwave-flash" width="257" height="33" wmode="transparent"><br>动画的类型有点少，以及在屏幕尺寸异常的机子上测试时（如 mx3 的 1800x1080）会出现子选项偏离中心菜单键的问题，原因出在 view 的位置计算上，它没有考虑到一些特殊机型的机子。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag">#Android</a>
+          
+            <a href="/tags/开源项目/" rel="tag">#开源项目</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/03/20/Android开发日记（一）——开发工具Android-Studio/" rel="next" title="Android开发日记（一）——开发工具Android Studio">
+                <i class="fa fa-chevron-left"></i> Android开发日记（一）——开发工具Android Studio
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/03/22/Git上开源介绍（二）——-side-menu/" rel="prev" title="Git上开源介绍（二）—— side-menu">
+                Git上开源介绍（二）—— side-menu <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2015/03/21/Git上开源介绍（一）——CFA-Menu/" data-title="Git上开源介绍（一）—— CFA Menu" data-url="http://www.cpacm.net/2015/03/21/Git上开源介绍（一）——CFA-Menu/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/img/author.jpg" alt="cpacm">
+          <p class="site-author-name" itemprop="name">cpacm</p>
+          <p class="site-description motion-element" itemprop="description">请不要忘记，那给你带来感动的，名为二次元的理想乡。</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">52</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/cpacm" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/u/3053253821" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.cnblogs.com/cpacm/" target="_blank" title="博客园">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  博客园
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#CircularFloatingActionMenu-源码解析"><span class="nav-number">1.</span> <span class="nav-text">CircularFloatingActionMenu 源码解析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-功能介绍"><span class="nav-number">1.1.</span> <span class="nav-text">1. 功能介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-特点"><span class="nav-number">1.1.1.</span> <span class="nav-text">1.1 特点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-概念"><span class="nav-number">1.1.2.</span> <span class="nav-text">1.2 概念</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-总体设计"><span class="nav-number">1.2.</span> <span class="nav-text">2. 总体设计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-流程图"><span class="nav-number">1.3.</span> <span class="nav-text">3. 流程图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-详细设计"><span class="nav-number">1.4.</span> <span class="nav-text">4. 详细设计</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#4-1-类关系图"><span class="nav-number">1.4.1.</span> <span class="nav-text">4.1 类关系图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-2-类功能介绍"><span class="nav-number">1.4.2.</span> <span class="nav-text">4.2 类功能介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#4-2-1-SubActionButton-java"><span class="nav-number">1.4.2.1.</span> <span class="nav-text">4.2.1 SubActionButton.java</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-2-2-FloatingActionButton-java"><span class="nav-number">1.4.2.2.</span> <span class="nav-text">4.2.2 FloatingActionButton.java</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-2-3-FloatingActionMenu-java"><span class="nav-number">1.4.2.3.</span> <span class="nav-text">4.2.3 FloatingActionMenu.java</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-2-4-MenuAnimationHandler-java"><span class="nav-number">1.4.2.4.</span> <span class="nav-text">4.2.4 MenuAnimationHandler.java</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-2-5-DefaultAnimationHandler-java"><span class="nav-number">1.4.2.5.</span> <span class="nav-text">4.2.5 DefaultAnimationHandler.java</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-3-如何使用"><span class="nav-number">1.4.3.</span> <span class="nav-text">4.3 如何使用</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-杂谈"><span class="nav-number">1.5.</span> <span class="nav-text">5. 杂谈</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">cpacm</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"cpacm"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("2fmsJHBmgPTnmd1bc7R9GcVX-gzGzoHsz", "CBUSqxdc9PSLibNV3TzlhpWg");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+</body>
+</html>

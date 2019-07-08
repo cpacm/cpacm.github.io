@@ -1,0 +1,810 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="Android,开源项目,">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1">
+
+
+
+
+
+
+<meta name="description" content="一个基于Toolbar的侧边菜单。">
+<meta name="keywords" content="Android,开源项目">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Git上开源介绍（二）—— side-menu">
+<meta property="og:url" content="http://www.cpacm.net/2015/03/22/Git上开源介绍（二）——-side-menu/index.html">
+<meta property="og:site_name" content="cpacm">
+<meta property="og:description" content="一个基于Toolbar的侧边菜单。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://7xi4up.com1.z0.glb.clouddn.com/git_demo.gif">
+<meta property="og:image" content="http://7xi4up.com1.z0.glb.clouddn.com/git_side_menu.jpg">
+<meta property="og:image" content="http://7xi4up.com1.z0.glb.clouddn.com/git_side_menu_class.jpg">
+<meta property="og:updated_time" content="2015-12-24T19:08:05.622Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Git上开源介绍（二）—— side-menu">
+<meta name="twitter:description" content="一个基于Toolbar的侧边菜单。">
+<meta name="twitter:image" content="http://7xi4up.com1.z0.glb.clouddn.com/git_demo.gif">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> Git上开源介绍（二）—— side-menu | cpacm </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?400b16383d4e24e7e0c1604aa14354a4";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">cpacm</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">动漫中毒者，技术宅</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Git上开源介绍（二）—— side-menu
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2015-03-22T01:12:23+08:00" content="2015-03-22">
+              2015-03-22
+            </time>
+          </span>
+
+          
+            <span class="post-category">
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/开源-框架/" itemprop="url" rel="index">
+                    <span itemprop="name">开源&框架</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2015/03/22/Git上开源介绍（二）——-side-menu/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/03/22/Git上开源介绍（二）——-side-menu/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2015/03/22/Git上开源介绍（二）——-side-menu/" class="leancloud_visitors" data-flag-title="Git上开源介绍（二）—— side-menu">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><em>该系列源于 <a href="https://github.com/trinea" target="_blank" rel="noopener">Trinea</a> 组织的开源活动 <a href="http://codekk.com/open-source-project-analysis" target="_blank" rel="noopener">codeKK</a>。</em></p>
+<h1 id="Side-Menu-Android-源码解析"><a href="#Side-Menu-Android-源码解析" class="headerlink" title="Side Menu.Android 源码解析"></a>Side Menu.Android 源码解析</h1><blockquote>
+<p>本文为 <a href="https://github.com/aosp-exchange-group/android-open-project-analysis" target="_blank" rel="noopener">Android 开源项目源码解析</a> 中 Side Menu.Android 部分<br>项目地址：<a href="https://github.com/Yalantis/Side-Menu.Android" target="_blank" rel="noopener">Side Menu.Android</a>，分析的版本：<a href="https://github.com/Yalantis/Side-Menu.Android/commit/2c23bff1dbebb87b3a3291e3f7d629cc0d5efbfa" target="_blank" rel="noopener">2c23bff</a>，Demo 地址：<a href="https://github.com/aosp-exchange-group/android-open-project-demo/tree/master/side-menu-demo" target="_blank" rel="noopener">side-menu-demo</a><br>分析者：<a href="https://github.com/cpacm" target="_blank" rel="noopener">cpacm</a>  </p>
+</blockquote>
+<p><img src="http://7xi4up.com1.z0.glb.clouddn.com/git_demo.gif" alt="side-menu demo">  </p>
+<h2 id="1-功能介绍"><a href="#1-功能介绍" class="headerlink" title="1. 功能介绍"></a>1. 功能介绍</h2><h4 id="1-1-特点"><a href="#1-1-特点" class="headerlink" title="1.1 特点"></a>1.1 特点</h4><p>提供了一个翻页动画——<code>Flip Animation</code>。<br>基于Android 5.0开发。<br>使用ToolBar控制菜单。  </p>
+<h4 id="1-2-要求"><a href="#1-2-要求" class="headerlink" title="1.2 要求"></a>1.2 要求</h4><p><strong>（1）</strong>界面布局使用DrawerLayout为容器，当通过xml来布局的话，需要把DrawerLayout作为父容器，内容布局作为其第一个子节点，而菜单布局则紧随其后作为第二个子节点，这样做就能把内容展示区和菜单区分开来，之后只需要分别在这两个区域里设置内容即可。<br><strong>（2）</strong>内容布局中，使用Toolbar并将其作为菜单界面的载体，通过Toolbar来控制菜单界面的打开和关闭。<br><strong>（3）</strong>内容布局中的信息界面需要继承ScreenShotable接口（如demo中的ContentFragment），以便切换信息。<br><strong>（4）</strong>主界面需要继承ViewAnimator.ViewAnimatorListener接口（如demo中的myActivity）。</p>
+<h2 id="2-流程图"><a href="#2-流程图" class="headerlink" title="2. 流程图"></a>2. 流程图</h2><p><img src="http://7xi4up.com1.z0.glb.clouddn.com/git_side_menu.jpg" alt="流程图" title="流程图"></p>
+<h2 id="3-详细介绍"><a href="#3-详细介绍" class="headerlink" title="3. 详细介绍"></a>3. 详细介绍</h2><h4 id="3-1-类"><a href="#3-1-类" class="headerlink" title="3.1 类"></a>3.1 类</h4><p><em>（一）ViewAnimator类</em> <code>Side Menu 的管理类</code><br>1、ViewAnimator的构造函数需要传入5个参数，分别为<code>作为主界面的ActionBarActivity</code>、<code>子按钮列表</code>、<code>继承ScreenShotable接口的信息界面</code>、<code>DrawerLayout</code>、<code>继承ViewAnimatorListener接口的主界面</code>。  </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">ViewAnimator</span><span class="params">(ActionBarActivity activity,</span></span></span><br><span class="line"><span class="function"><span class="params">                        List&lt;T&gt; items,</span></span></span><br><span class="line"><span class="function"><span class="params">                        ScreenShotable screenShotable,</span></span></span><br><span class="line"><span class="function"><span class="params">                        <span class="keyword">final</span> DrawerLayout drawerLayout,</span></span></span><br><span class="line"><span class="function"><span class="params">                        ViewAnimatorListener animatorListener)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.actionBarActivity = activity;</span><br><span class="line">        <span class="keyword">this</span>.list = items;</span><br><span class="line">        <span class="keyword">this</span>.screenShotable = screenShotable;</span><br><span class="line">        <span class="keyword">this</span>.drawerLayout = drawerLayout;</span><br><span class="line">        <span class="keyword">this</span>.animatorListener = animatorListener;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>2、showMenuContent()方法，打开菜单界面。<br>简单地将其分成几部分：（1）在菜单未完全打开前设置按钮为不可用同时调用了ViewAnimatorListener接口中的disableHomeButton()方法。清空原先存放按钮视图的列表。（2）根据传入的按钮个数生成相应个数的按钮View,并为每个按钮添加点击事件，当事件发生时调用</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> *参数分别为：选中的按钮，当前的信息界面，触摸点的Y坐标</span></span><br><span class="line"><span class="comment"> **/</span></span><br><span class="line">animatorListener.onSwitch(slideMenuItem, screenShotable, topPosition)</span><br></pre></td></tr></table></figure>
+
+<p>方法并关闭菜单列表。（3）将其添加到存放按钮视图的列表中。调用AnimatorListener接口的<code>addViewToContainer(viewMenu)</code>方法（我们要在Activity中人为的将其添加到界面布局中）。在菜单打开动画未完成情况下，将其属性设为不可用。调用<code>animateView（）</code>方法使用FlipAnimation类来实现动画设置，Handler实现延时播放。<br>3、hideMenuContent()方法，关闭菜单界面。<br>为每个按钮视图调用<code>animateHideView()</code>方法来设置关闭的动画，并通过Handler进行延时播放。在动画结束的监听器中设置视图不可见，drawerLayout上的关闭视图方法是最后一个按钮动画结束时调用。  </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">animatorListener.enableHomeButton();<span class="comment">//回调函数，使主界面的菜单键生效</span></span><br><span class="line">drawerLayout.closeDrawers();</span><br></pre></td></tr></table></figure>
+
+<p><em>（二）SlideMenuItem类</em> <code>选项按钮类</code><br>一个按钮容器类，里面存放着两个变量。主要用来设置菜单按钮。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> String name;<span class="comment">//名称</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">int</span> imageRes;<span class="comment">//图片id</span></span><br></pre></td></tr></table></figure>
+
+<p><em>（三）FlipAnimation类</em> <code>翻转动画</code><br>一个翻转动画工具类，继承自Animation类。根据传入的参数来实现不同的翻转效果。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 参数分别为：起始角度，终止角度，中心点的X坐标，中心点的Y坐标</span></span><br><span class="line"><span class="comment"> **/</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">FlipAnimation</span><span class="params">(<span class="keyword">float</span> fromDegrees, <span class="keyword">float</span> toDegrees,<span class="keyword">float</span> centerX, <span class="keyword">float</span> centerY)</span> </span>&#123;</span><br><span class="line">...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><em>（四）Resourceble接口</em> <code>选项接口</code><br>按钮选项必须继承该接口(如SlideMenuItem就继承了该接口)，用于存放资源。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Resourceble</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getImageRes</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><em>（五）ScreenShotable接口</em> <code>用于信息变更的接口</code><br>该接口包含两个方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">ScreenShotable</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">takeScreenShot</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> Bitmap <span class="title">getBitmap</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>1、takeScreenShot()方法是在按钮被点击时触发。<br>2、getBitmap()方法,获取当前显示的Bitmap。  </p>
+<h4 id="3-2-类关系图"><a href="#3-2-类关系图" class="headerlink" title="3.2 类关系图"></a>3.2 类关系图</h4><p><img src="http://7xi4up.com1.z0.glb.clouddn.com/git_side_menu_class.jpg" alt="类图" title="类图"></p>
+<h2 id="4-个人总结"><a href="#4-个人总结" class="headerlink" title="4.个人总结"></a>4.个人总结</h2><p><embed src="http://www.xiami.com/widget/0_1769673191/singlePlayer.swf" type="application/x-shockwave-flash" width="257" height="33" wmode="transparent"><br>一个很简单的一个项目，所以从难度上没有什么好讲的（自己的收获则是熟悉了在Android5.0下Toolbar的用法）。<br>我认为问题最大的是它的扩展性太差，从ViewAnimator类的构造函数就能发现这个库一定要在相应的环境下（ActionBarActivity,DrawerLayout）才会产生作用。<br>其次是动画类型不能让开发者进行二次定制，要想改变动画类型则要进library库进行修改。最后是ViewAnimator里的很多设置是通过回调函数返回给开发者自己设置，感觉变得更复杂了。<br>总体上而言这更像专门定制的一款UI设计。不过我认为它最大的意义在于提供了一种在Toolbar下自定义菜单的思路，这是最值得我们借鉴的~</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag">#Android</a>
+          
+            <a href="/tags/开源项目/" rel="tag">#开源项目</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/03/21/Git上开源介绍（一）——CFA-Menu/" rel="next" title="Git上开源介绍（一）—— CFA Menu">
+                <i class="fa fa-chevron-left"></i> Git上开源介绍（一）—— CFA Menu
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/03/22/Android开发日记（二）——Android四大组件之Activity/" rel="prev" title="Android开发日记（二）——Android四大组件之Activity">
+                Android开发日记（二）——Android四大组件之Activity <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2015/03/22/Git上开源介绍（二）——-side-menu/" data-title="Git上开源介绍（二）—— side-menu" data-url="http://www.cpacm.net/2015/03/22/Git上开源介绍（二）——-side-menu/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/img/author.jpg" alt="cpacm">
+          <p class="site-author-name" itemprop="name">cpacm</p>
+          <p class="site-description motion-element" itemprop="description">请不要忘记，那给你带来感动的，名为二次元的理想乡。</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">52</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/cpacm" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/u/3053253821" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.cnblogs.com/cpacm/" target="_blank" title="博客园">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  博客园
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Side-Menu-Android-源码解析"><span class="nav-number">1.</span> <span class="nav-text">Side Menu.Android 源码解析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-功能介绍"><span class="nav-number">1.1.</span> <span class="nav-text">1. 功能介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-特点"><span class="nav-number">1.1.0.1.</span> <span class="nav-text">1.1 特点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-要求"><span class="nav-number">1.1.0.2.</span> <span class="nav-text">1.2 要求</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-流程图"><span class="nav-number">1.2.</span> <span class="nav-text">2. 流程图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-详细介绍"><span class="nav-number">1.3.</span> <span class="nav-text">3. 详细介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-类"><span class="nav-number">1.3.0.1.</span> <span class="nav-text">3.1 类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-类关系图"><span class="nav-number">1.3.0.2.</span> <span class="nav-text">3.2 类关系图</span></a></li></ol></li></ol><li class="nav-item nav-level-2"><a class="nav-link" href="#4-个人总结"><span class="nav-number">1.4.</span> <span class="nav-text">4.个人总结</span></a></li></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">cpacm</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"cpacm"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("2fmsJHBmgPTnmd1bc7R9GcVX-gzGzoHsz", "CBUSqxdc9PSLibNV3TzlhpWg");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+</body>
+</html>

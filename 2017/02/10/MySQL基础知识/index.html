@@ -1,0 +1,1069 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="数据库,">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1">
+
+
+
+
+
+
+<meta name="description" content="简介这是一篇关于《MySQL技术内幕（第4版）》的阅读笔记，主要是为了从无到有系统的学习下数据库的知识。 杜波依斯编著的《MySQL技术内幕（第4版）》介绍了MySQL的基础知识及其有别于其他数据库系统的独特功能，包括SQL的工作原理和MySQL API的相关知识；讲述了如何将MySQL与Perl或PHP等语言结合起来，为数据库查询结果生成动态Web页面，如何编写MySQL数据访问程序；详细讨论了">
+<meta name="keywords" content="数据库">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL基础知识">
+<meta property="og:url" content="http://www.cpacm.net/2017/02/10/MySQL基础知识/index.html">
+<meta property="og:site_name" content="cpacm">
+<meta property="og:description" content="简介这是一篇关于《MySQL技术内幕（第4版）》的阅读笔记，主要是为了从无到有系统的学习下数据库的知识。 杜波依斯编著的《MySQL技术内幕（第4版）》介绍了MySQL的基础知识及其有别于其他数据库系统的独特功能，包括SQL的工作原理和MySQL API的相关知识；讲述了如何将MySQL与Perl或PHP等语言结合起来，为数据库查询结果生成动态Web页面，如何编写MySQL数据访问程序；详细讨论了">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-02-10T13:50:00.112Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="MySQL基础知识">
+<meta name="twitter:description" content="简介这是一篇关于《MySQL技术内幕（第4版）》的阅读笔记，主要是为了从无到有系统的学习下数据库的知识。 杜波依斯编著的《MySQL技术内幕（第4版）》介绍了MySQL的基础知识及其有别于其他数据库系统的独特功能，包括SQL的工作原理和MySQL API的相关知识；讲述了如何将MySQL与Perl或PHP等语言结合起来，为数据库查询结果生成动态Web页面，如何编写MySQL数据访问程序；详细讨论了">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> MySQL基础知识 | cpacm </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?400b16383d4e24e7e0c1604aa14354a4";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">cpacm</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">动漫中毒者，技术宅</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                MySQL基础知识
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-02-10T21:50:00+08:00" content="2017-02-10">
+              2017-02-10
+            </time>
+          </span>
+
+          
+            <span class="post-category">
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/读书笔记/" itemprop="url" rel="index">
+                    <span itemprop="name">读书笔记</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/02/10/MySQL基础知识/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/02/10/MySQL基础知识/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2017/02/10/MySQL基础知识/" class="leancloud_visitors" data-flag-title="MySQL基础知识">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>这是一篇关于《MySQL技术内幕（第4版）》的阅读笔记，主要是为了从无到有系统的学习下数据库的知识。</p>
+<p>杜波依斯编著的《MySQL技术内幕（第4版）》介绍了MySQL的基础知识及其有别于其他数据库系统的独特功能，包括SQL的工作原理和MySQL API的相关知识；讲述了如何将MySQL与Perl或PHP等语言结合起来，为数据库查询结果生成动态Web页面，如何编写MySQL数据访问程序；详细讨论了数据库管理和维护、数据目录的组织和内容、访问控制、安全连接等。附录还提供了软件的安装信息，罗列了MySQL数据类型、函数、变量、语法、程序、API等重要细节。</p>
+<a id="more"></a>
+
+<h2 id="数据库的操作"><a href="#数据库的操作" class="headerlink" title="数据库的操作"></a>数据库的操作</h2><p>进入数据库</p>
+<blockquote>
+<p>mysql -u root -p</p>
+</blockquote>
+<p>退出</p>
+<blockquote>
+<p>quit</p>
+</blockquote>
+<p>;或\g(go)作为结束符表示终止指令，\G表示为竖排显示数据</p>
+<p>创建名为 acgdb 的数据库</p>
+<blockquote>
+<p>create database acgdb;</p>
+</blockquote>
+<p>可以使用character set 和 collate 子句对数据库属性作出明确的设置</p>
+<blockquote>
+<p>create database acgdb character.set utf8 collate utf8_icelandic_ci;</p>
+</blockquote>
+<p>改变数据库的全局特性</p>
+<blockquote>
+<p>ALTER DATABASE [db_name] [CHARACTER SET charset] [COLLATE collation];</p>
+</blockquote>
+<p>使用语句查看现有数据库的定义</p>
+<blockquote>
+<p>show create database acgdb;</p>
+</blockquote>
+<p>删除数据库</p>
+<blockquote>
+<p>drop database acgdb;</p>
+</blockquote>
+<p>此时并没有数据库再使用，可以用下面指令查看</p>
+<blockquote>
+<p>select database();</p>
+</blockquote>
+<p>使用 acgdb</p>
+<blockquote>
+<p>use acgdb;</p>
+</blockquote>
+<p>也可以在进入数据库的时候携带数据库名称</p>
+<blockquote>
+<p>mysql -p -u root acgdb;</p>
+</blockquote>
+<h3 id="数据引擎"><a href="#数据引擎" class="headerlink" title="数据引擎"></a>数据引擎</h3><p><strong>MyISAM</strong> 和 <strong>InnoDB</strong>的适用场景<br>MyISAM适合：</p>
+<ol>
+<li>做很多 count 的计算；</li>
+<li>插入不频繁，查询非常频繁；</li>
+<li>没有事务。</li>
+</ol>
+<p>InnoDB适合：</p>
+<ol>
+<li>可靠性要求比较高，或者要求事务；</li>
+<li>表更新和查询都相当的频繁，并且表锁定的机会比较大的情况。</li>
+</ol>
+<p><strong>MyISAM</strong> 和 <strong>InnoDB</strong>的区别</p>
+<ol>
+<li>MyISAM类型不支持事务处理等高级处理，而InnoDB类型支持</li>
+<li>mysiam表不支持外键</li>
+<li>在执行数据库写入的操作（insert,update,delete）的时候，mysiam表会锁表，而innodb表会锁行</li>
+<li>当你的数据库有大量的写入、更新操作而查询比较少或者数据完整性要求比较高的时候就选择innodb表。当你的数据库主要以查询为主，相比较而言更新和写 入比较少，并且业务方面数据完整性要求不那么严格，就选择mysiam表。因为mysiam表的查询操作效率和速度都比innodb要快</li>
+</ol>
+<h3 id="查看元数据"><a href="#查看元数据" class="headerlink" title="查看元数据"></a>查看元数据</h3><p>查看服务器的数据库</p>
+<blockquote>
+<p>show databases;</p>
+</blockquote>
+<p>查看给定数据库的 CREATE DATABASE 语句：</p>
+<blockquote>
+<p>show CREATE DATABASE db_name;</p>
+</blockquote>
+<p>列出默认数据库或给定数据库的数据表：</p>
+<blockquote>
+<p>show tables [from db_name];</p>
+</blockquote>
+<p>查看数据表的CREATE TABLE 语句：</p>
+<blockquote>
+<p>show CREATE TABLE tb_name;</p>
+</blockquote>
+<p>查看数据表里的数据列或索引信息：</p>
+<blockquote>
+<p>show COLUMNS FROM tb_name;<br>show INDEX from tb_name;</p>
+</blockquote>
+<p>查看默认数据库或某给定数据库里的数据表的描述性信息：</p>
+<blockquote>
+<p>show table status [from db_name];</p>
+</blockquote>
+<p>show 支持模糊查询和 where 查询并显示</p>
+<blockquote>
+<p>show columns from student LIKE ‘s%’;<br>查询学生表中s字符开头的数据列</p>
+</blockquote>
+<p>另外一种获取元数据的方法是访问 INFORMATION_SCHEMA 数据库。</p>
+<blockquote>
+<p>show tables in INFORMATION_SCHEMA;</p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">+<span class="comment">---------------------------------------+</span></span><br><span class="line">| Tables_in_information_schema          |</span><br><span class="line">+<span class="comment">---------------------------------------+</span></span><br><span class="line">| CHARACTER_SETS                        |</span><br><span class="line">| COLLATIONS                            |</span><br><span class="line">| COLLATION_CHARACTER_SET_APPLICABILITY |</span><br><span class="line">| COLUMNS                               |</span><br><span class="line">| COLUMN_PRIVILEGES                     |</span><br><span class="line">| ENGINES                               |</span><br><span class="line">| EVENTS                                |</span><br><span class="line">| FILES                                 |</span><br><span class="line">| GLOBAL_STATUS                         |</span><br><span class="line">| GLOBAL_VARIABLES                      |</span><br><span class="line">| KEY_COLUMN_USAGE                      |</span><br><span class="line">| ...                                   |</span><br><span class="line">+<span class="comment">---------------------------------------+</span></span><br></pre></td></tr></table></figure>
+
+<p>INFORMATION_SCHEMA 数据库记录着 mysql 服务商所有数据库的相关信息。</p>
+<p>在命令行中也可以使用 mysqlshow 命令符查看数据库的信息，用法基本与 show 一致。</p>
+<blockquote>
+<p>mysqlshow db_name tb_name;<br>mysqlshow –keys db_name tb_name;//查看索引信息</p>
+</blockquote>
+<h3 id="联结操作对数据库检索"><a href="#联结操作对数据库检索" class="headerlink" title="联结操作对数据库检索"></a>联结操作对数据库检索</h3><h4 id="内联结"><a href="#内联结" class="headerlink" title="内联结"></a>内联结</h4><p>基础操作</p>
+<blockquote>
+<p>select t1.<em>,t2.</em> from t1 INNER JOIN t2;</p>
+</blockquote>
+<p>作用是将两张表的数据列拼在一起并显示</p>
+<p><strong>INNER JOIN,CROSS JOIN, JOIN</strong>作用类似，同时它们还支持另外几种用来表明如何对数据表中的数据列进行匹配的语法变体</p>
+<ul>
+<li>用一条 ON 子句代替 WHERE 子句<blockquote>
+<p>select t1.<em>,t2.</em> from t1 INNER JOIN t2 ON t1.i1 = t2.i2;</p>
+</blockquote>
+</li>
+<li>USING 子句，概念上类似于ON子句，但要求被联结的数据列必须是同名的<blockquote>
+<p>select mytb1.<em>, mytb2.</em> from mytb1 INNER JOIN mytb2 USING (b);</p>
+</blockquote>
+</li>
+</ul>
+<p><strong>为了避免歧义，在联结操作时数据列最好携带数据表的名字，若是同一张数据表则使用 AS 进行别名</strong></p>
+<blockquote>
+<p>select mytb1.col1, m.col2 from mytb1 AS m where mytb1.col1 &gt; m.col1;</p>
+</blockquote>
+<h4 id="外联结-（左联结和右联结）"><a href="#外联结-（左联结和右联结）" class="headerlink" title="外联结 （左联结和右联结）"></a>外联结 （左联结和右联结）</h4><p><strong>LEFT JOIN</strong> 和 <strong>RIGHT JOIN</strong><br><code>LEFT JOIN</code> 的工作情况：用来联结的两张数据表，当来自左数据表的某个数据航与来自由数据表的某个数据行匹配时，那两个数据行内容就会被选取为一个输出数据行，与内联结一样；如果来自左数据表的某个数据行在右数据表找不到匹配，它也会被选取为一个输出行，此时与它联结的是一个来自右数据表的“假”数据行，这个“假”数据行的所有数据列都包含NULL值。<code>RIGHT JOIN</code> 同理。<br>简单来说，左联结时，左数据表的的数据全部输出，右数据表只输出匹配的数据，其他数据为 NULL 值； 右联结时，右数据表的的数据全部输出，左数据表只输出匹配的数据，其他数据为 NULL 值。</p>
+<blockquote>
+<p>select t1.<em>, t2.</em> from t1 LEFT JOIN t1 ON t1.i1 = t2.i2;<br>select t1.<em>, t1.</em> from t2 RIGHT JOIN t1 ON t1.i1 = t2.i1;<br>这两句输出相同</p>
+</blockquote>
+<h3 id="子查询进行多数据表检索"><a href="#子查询进行多数据表检索" class="headerlink" title="子查询进行多数据表检索"></a>子查询进行多数据表检索</h3><p>MySQL支持子查询，也就是把一条SELECT语句用括号括起来嵌入另一个SELECT语句。</p>
+<blockquote>
+<p>select * from score where event_id IN (select event_id from grade_event where category = ‘T’);<br>从 grade_event 数据表里找出对应于考试（‘T’）的event_id,再用它们选取考试的成绩。</p>
+</blockquote>
+<p>子查询可以返回不同类型的信息</p>
+<ul>
+<li>标量子查询将返回一个值，而比较操作符=、&lt;&gt;、&gt;、&gt;=、&lt;和&lt;=只能和标量子查询配合使用，若返回多个值将出错</li>
+<li>可以用IN和NOT_IN操作符来测试某给定值是否包含在子查询的结果集里。主查询里的数据行与子查询所返回的任何一个数据匹配数据，IN 操作符的比较结果为true；反之，都不匹配的话NOT IN操作符的比较结果是true</li>
+<li>可以用ALL、ANY、和 SOME 操作符把某给定值与子查询的结果集进行比较。其中 SOME 和 ANY 是同义词。 IN 等价于 = ANY ; NOT IN 等价于 &lt;&gt;ALL</li>
+<li>EXISTS 和 NOT EXISTS 用于测试某个子查询是否返回了数据行。</li>
+</ul>
+<p>有相当一部分的子查询可以改写为联结查询。</p>
+<blockquote>
+<p>select * from table1 where column1 in (select column2a from table2 where column2b = value);<br>这种选取匹配值的子查询可以改写<br>select table1.* from table1 INNER JOIN table2 ON table1.column1 = table2.column2a where column2b = value;</p>
+</blockquote>
+<h3 id="UNION-语句进行多数据表检索"><a href="#UNION-语句进行多数据表检索" class="headerlink" title="UNION 语句进行多数据表检索"></a>UNION 语句进行多数据表检索</h3><blockquote>
+<p>select i from t1 UNION select i from t2 UNION select i from t3;</p>
+</blockquote>
+<p>UNION 结果集里的数据列名字来自第一个 SELECT 语句里的数据列的名字。UNION中的第二个和再后面的 select 语句必须选取个数相同的数据列，但各有关数据列不必有同样的名字或数据类型。数据列是一一对应的，根据位置而不是根据名字进行匹配的。<br>在默认情况下，UNION 将从结果集里剔除重复的数据行，UNION DISTINCT = UNION;若不想剔除，则使用 UNION ALL。</p>
+<p>若想对UNION语句输出的数据进行处理，如排序，限制个数等，需要在每个查询语句中加上括号。</p>
+<blockquote>
+<p>(select i, c from t1) UNION (select i,d from t3) order by c;</p>
+</blockquote>
+<h3 id="使用视图"><a href="#使用视图" class="headerlink" title="使用视图"></a>使用视图</h3><p>视图是一个虚拟的数据表，它们的行为与数据表一样但不包含任何数据。从实现效果来看，更像是数据库语句的快捷方式。<br>比如下面这个语句：</p>
+<blockquote>
+<p>select last_name, first_name, city, state from president;</p>
+</blockquote>
+<p>每次查询都要写出一大串数据列，这时候就可以使用视图来代替，可以实现同样的效果。</p>
+<blockquote>
+<p>CREATE VIEW vpres AS SELECT last_name, first_name, city, state FROM president;<br>SELECT * FROM vpres;</p>
+</blockquote>
+<p>在默认的情况下，视图里的数据列的名字与 select 语句离列出的输出数据列相同。如果你想明确地改用另外的数据列名字，需要在定义视图时再视图名字后面用括号列出新名字。</p>
+<blockquote>
+<p>CREATE VIEW vpres2 (ln, fn) AS SELECT last_name, first_name FROM president;<br>SELECT ln, fn FROM vpres2;</p>
+</blockquote>
+<p>视图内部可以加表达式，联结操作等，亦可以执行更新操作。</p>
+<h3 id="涉及多个数据表的删除和更新操作"><a href="#涉及多个数据表的删除和更新操作" class="headerlink" title="涉及多个数据表的删除和更新操作"></a>涉及多个数据表的删除和更新操作</h3><p>select 语句同样在 delete 语句中可以使用。</p>
+<blockquote>
+<p>DELETE t1, t2 FROM t1 INNER JOIN t2 ON t1.id = t2.id;<br>此时表示两张表同时删除被检索到的数据。</p>
+</blockquote>
+<p>可以使用 USING 子句来联结各有关数据表以确定哪些数据行需要被删除。</p>
+<blockquote>
+<p>DELETE FROM t1, t2 USING t1 INNER JOIN t2 ON t1.id = t2.id;</p>
+</blockquote>
+<h3 id="事务处理"><a href="#事务处理" class="headerlink" title="事务处理"></a>事务处理</h3><p>事务是作为一个不可分割的逻辑单元而被执行的一组SQL语句，如有必要，它们的执行效果可以被撤销。<br>事务以 START TRANSACTION 作为开始语句，以 COMMIT 提交结束。</p>
+<blockquote>
+<p>START TRANSACTION;<br>INSERT INTO t SET name = ‘cpacm’;<br>INSERT INTO t SET name = ‘Wallace’;<br>COMMIT;</p>
+</blockquote>
+<p>当事务过程中发生了一个错误时，可以用 ROLLBACK 语句把它删除。</p>
+<blockquote>
+<p>ERROR 1062 (23000):Duplicate entry ‘Wallcae’ for key 1<br>ROLLBACK;</p>
+</blockquote>
+<p>也可以设置自动提交模式，当自动提交模式设为0时，其后所有的任何语句都将成为当前事务的一部分直到你发出一条 COMMIT 或 ROLLBACK。</p>
+<blockquote>
+<p>SET autocommit = 0;<br>SET autocommit = 1;</p>
+</blockquote>
+<p>一些语句会隐形的提交事务，如：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">INDEX</span></span><br><span class="line"><span class="keyword">DROP</span> ...</span><br><span class="line"><span class="keyword">LOCK</span> <span class="keyword">TABLES</span></span><br><span class="line"><span class="keyword">RENAME</span> <span class="keyword">TABLE</span></span><br><span class="line"><span class="keyword">SET</span> autocommit = <span class="number">1</span></span><br><span class="line"><span class="keyword">TRUNCATE</span> <span class="keyword">TABLE</span></span><br><span class="line"><span class="keyword">UNLOCK</span> <span class="keyword">TABLES</span></span><br></pre></td></tr></table></figure>
+
+<p>可以使用事务保存点对一个事务进行部分回滚。</p>
+<blockquote>
+<p>START TRANSACTION;<br>…<br>SAVEPOINT my_save;<br>…<br>ROLLBACK TO SAVEPOINT my_save;</p>
+</blockquote>
+<h3 id="外键"><a href="#外键" class="headerlink" title="外键"></a>外键</h3><p>利用外键关系可以在某个数据表里声明与另一个数据表里的某个索引相关联的索引。</p>
+<p>父表</p>
+<blockquote>
+<p>CREATE TABLE parent (par_id INT NOT NULL, PRIMARY KEY (par_id))</p>
+</blockquote>
+<p>子表</p>
+<blockquote>
+<p>CREATE TABLE child (<br>  par_id INT NOT NULL,<br>  child_id INT NOT NULL,<br>  PRIMARY KEY (par_id, child_id),<br>  FOREIGN KEY (par_id) REFERENCES parent (par_id)<br>      ON DELETE CASCADE<br>      ON UPDATE CASCADE<br>  )</p>
+</blockquote>
+<p>这个例子在定义外键时使用 ON DELETE CASCADE 子句，它指定当parent数据表里的某个数据行被删除时，MySQL将自动从child数据表里把有匹配par_id值的数据行也删掉。ON UPDATE CASCADE子句表明：如果parent数据表里的某个数据行的par_id值被改变了，MySQL将自动地把child数据表里的所有匹配的par_id值也改成新值。即级联操作。</p>
+<h3 id="FULLTEXT索引"><a href="#FULLTEXT索引" class="headerlink" title="FULLTEXT索引"></a>FULLTEXT索引</h3><p>要想对某个数据表进行全文搜索，必须事先为它创建一个 FULLTEXT 索引。</p>
+<ol>
+<li>这种索引只能在MyISAM数据表里建造。FULLTEXT 索引只能由 CHAR、VARVHAR和TEXT这几种组成。</li>
+<li>全文搜索将忽略常见的单词，常见表示“至少在一半的数据行中出现”。</li>
+<li>忽略常见的休止单词，如<code>the</code>、<code>after</code>和<code>other</code>等</li>
+<li>少于设置的长度也会被忽略。</li>
+</ol>
+<blockquote>
+<p>ALTER TABLE apothegm<br>  ADD FULLTEXT (phrase),<br>  ADD FULLTEXT (attrbution),<br>  ADD FULLTEXT (phrase, attribution);</p>
+</blockquote>
+<h4 id="自然搜索"><a href="#自然搜索" class="headerlink" title="自然搜索"></a>自然搜索</h4><p>把搜索字符串解释为一系列单词并查找包含这些单词的数据行。</p>
+<blockquote>
+<p>SELECT * FROM apothegm WHERE MATCH(phrase) AGAINST(‘hardsoft’ IN NATURAL LANGUAGE MODE);</p>
+</blockquote>
+<p>match 里面是将要被搜索的数据列，against里面是要搜索的关键字，数据库默认模式为自然搜索，所以 IN NATURAL LANGUAGE MODE 可以省略不写。</p>
+<h4 id="布尔模式-IN-BOOLEAN-MODE"><a href="#布尔模式-IN-BOOLEAN-MODE" class="headerlink" title="布尔模式 (IN BOOLEAN MODE)"></a>布尔模式 (IN BOOLEAN MODE)</h4><p>把搜索字符串解释为一系列单词，但允许使用一些操作符来‘修饰’这些单词一表明特定的要求，如某给定单词必须出现（或不出现）在匹配数据行里，某个数据行必须包含一个精确的短语。</p>
+<h4 id="查询扩展模式-（WITH-QUERY-EXPANSION）"><a href="#查询扩展模式-（WITH-QUERY-EXPANSION）" class="headerlink" title="查询扩展模式 （WITH QUERY EXPANSION）"></a>查询扩展模式 （WITH QUERY EXPANSION）</h4><p>进行两边搜索，第一遍自然语言搜索，然后将第一遍的结果加上原来的搜索单词进行第二次搜索。</p>
+<h4 id="全文搜索配置"><a href="#全文搜索配置" class="headerlink" title="全文搜索配置"></a>全文搜索配置</h4><ol>
+<li>修改最少单词长度设置： ft_min_word_len 设置为3</li>
+<li>修复现有FULLTEXT索引的现有数据表： REPAIR TABLE tb1_name QUICK;</li>
+</ol>
+<p>查询在概念上是集合操作，在实际设备上操作时查询是要占用时间的，有时候长得让人无法忍受，所以我们要寻找能够加快查询的方法。</p>
+<h2 id="使用索引"><a href="#使用索引" class="headerlink" title="使用索引"></a>使用索引</h2><p>通常能造成查询速度最大差异的是索引的正确使用。所以优先使用索引来最大程度地改进性能，然后再看是否还有其他技术可以采用。</p>
+<h3 id="索引的优点"><a href="#索引的优点" class="headerlink" title="索引的优点"></a>索引的优点</h3><p>一个没有索引的数据表就是一个无序的数据行集合，如果想要找某一行数据就必须要检查数据表的每一个数据行。而添加索引之后，就不用再一行一行地搜索整个数据表来寻找匹配项，可以直接通过扫描索引来查找。而且索引值是经过分类的，比如说当我们读取到14的值时就知道不会有与13相匹配的内容。由此可知，索引可以提高搜索效率的一个原因就是我们知道匹配数据行在什么位置结束，从而跳过其余部分，另外一个原因则是定位算法的使用，它可以不用从索引开始位置经过线性扫描就能直接找到第一个匹配项。</p>
+<p>MySQL 使用索引的几种方式：</p>
+<ol>
+<li>一是在查询操作中把与 WHERE 子句所给出的条件相匹配的数据行尽快找出来；二是在关联操作中把与其他数据表里的数据行相匹配的数据行尽快找出来。</li>
+<li>对于使用<code>MIN()</code>和<code>MAX()</code>函数的查询，如果数据列带索引，那么它的最小值和最大值能够被迅速找到而不是通过逐行检查的方法来查找。</li>
+<li>MySQL经常使用索引来迅速地完成 ORDER BY 子句和 GROUP BY 子句的分类和分组操作。</li>
+<li>可以使用索引来避免为一个查询整体读取数据行。</li>
+</ol>
+<h3 id="索引的缺点"><a href="#索引的缺点" class="headerlink" title="索引的缺点"></a>索引的缺点</h3><p>索引加快了检索速度，但却降低了在带索引的数据列里插入、删除以及修改数值的速度。因为在写入一条数据行时还要求所有所以都要做出改变。其次，索引要占据磁盘空间，索引越多空间占用越大。所以如果不需要某个特定的索引来加快查询速度就不要创建它。</p>
+<h3 id="如何挑选索引"><a href="#如何挑选索引" class="headerlink" title="如何挑选索引"></a>如何挑选索引</h3><ol>
+<li><p>尽量为用来搜索、分类或分组的数据列编制索引。</p>
+</li>
+<li><p>综合考虑各数据列的维度势。即索引里面独一无二的值越多，使用的效果就越好。</p>
+</li>
+<li><p>对短小的值进行索引。比较“小”的数据类型。</p>
+</li>
+<li><p>为字符串值的前缀编索引。</p>
+</li>
+<li><p>充分利用最左边的前缀。</p>
+</li>
+<li><p>适可而止，不要建立过多的索引。</p>
+</li>
+<li><p>让索引的类型与你打算进行的比较操作的类型保持匹配。散列索引或者B树。散列索引精确比较操作速度快，但用来查找一个范围的比较操作里表现不佳；B树则在两方面表现都可以。<br>创建一个B树索引</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> lookup</span><br><span class="line">(</span><br><span class="line">    <span class="keyword">id</span>  <span class="built_in">INT</span> <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">    <span class="keyword">name</span>    <span class="built_in">CHAR</span>(<span class="number">20</span>),</span><br><span class="line">    PRIMARY <span class="keyword">KEY</span> <span class="keyword">USING</span> BTREE (<span class="keyword">id</span>)</span><br><span class="line">) <span class="keyword">ENGINE</span> = <span class="keyword">MEMORY</span>;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>利用“慢查询”日志找出性能低劣的查询。</p>
+</li>
+</ol>
+<h2 id="MySQL的查询优化程序"><a href="#MySQL的查询优化程序" class="headerlink" title="MySQL的查询优化程序"></a>MySQL的查询优化程序</h2><p>数据库自带查询优化程序，可以使用 <code>EXPLAIN</code> 查看一个查询语句的详细信息。</p>
+<blockquote>
+<p>EXPLAIN SELECT * FROM tb1_name WHERE FALSE\G</p>
+</blockquote>
+<h2 id="挑选数据类型"><a href="#挑选数据类型" class="headerlink" title="挑选数据类型"></a>挑选数据类型</h2><ol>
+<li><p>尽量使用数值操作，少使用字符串操作。</p>
+</li>
+<li><p>如果“小”类型够用就不要选用“大”类型。</p>
+</li>
+<li><p>选择最适用于你的存储引擎的格式。</p>
+</li>
+<li><p>尽量把数据列声明为 NOT NULL。</p>
+</li>
+<li><p>考虑使用 ENUM 类型</p>
+</li>
+<li><p>利用 PROCEDURE ANALYSE()来分析数据表</p>
+<blockquote>
+<p>SELECT * FROM tb1_name PROCEDURE ANALYSE();</p>
+</blockquote>
+</li>
+<li><p>对容易产生碎片的数据表进行整理。定期使用 OPTIMIZE TABLE 语句有助于防止数据表查询性能的降低。</p>
+</li>
+<li><p>把数据压缩到 BLOB 或 TEXT 数据列里。</p>
+</li>
+<li><p>使用人造索引。</p>
+</li>
+<li><p>尽量避免对很大的 BLOB 或 TEXT 进行检索。</p>
+</li>
+<li><p>把 BLOB 或 TEXT 数据列剥离到单独一个数据表里。</p>
+</li>
+</ol>
+<h2 id="有效加载数据"><a href="#有效加载数据" class="headerlink" title="有效加载数据"></a>有效加载数据</h2><ol>
+<li>批量加载的效率比单数据行加载的效率高；</li>
+<li>加载有索引的数据表比加载无索引的数据表快一些；</li>
+<li>较短的 SQL 语句的数据加载快。</li>
+</ol>
+<h2 id="调度和锁定问题"><a href="#调度和锁定问题" class="headerlink" title="调度和锁定问题"></a>调度和锁定问题</h2><p>MySQL 的默认调度策略：</p>
+<ol>
+<li>写入比读取有着更高的优先权。</li>
+<li>对数据表的写操作必须按照“写”请求先来后到的顺序一个接一个地进行。</li>
+<li>对同一个数据表进行的读操作可以同时进行。</li>
+</ol>
+<h2 id="系统管理员所完成的优化"><a href="#系统管理员所完成的优化" class="headerlink" title="系统管理员所完成的优化"></a>系统管理员所完成的优化</h2><ol>
+<li>在内存中访问数据比从磁盘上访问数据块。</li>
+<li>在内存中尽可能长地保存数据可以减少磁盘活动量。</li>
+<li>保留索引的信息要比保留数据行的内容更加重要。</li>
+</ol>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/数据库/" rel="tag">#数据库</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/01/19/Android开发日记（十三）——Android 设置启动页/" rel="next" title="Android开发日记（十三）—— 正确的启动页设置姿势">
+                <i class="fa fa-chevron-left"></i> Android开发日记（十三）—— 正确的启动页设置姿势
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/02/10/Android开发日记（十四）——带你解决 WebView 里的常见问题/" rel="prev" title="Android开发日记（十四）——带你解决 WebView 里的常见问题">
+                Android开发日记（十四）——带你解决 WebView 里的常见问题 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/02/10/MySQL基础知识/" data-title="MySQL基础知识" data-url="http://www.cpacm.net/2017/02/10/MySQL基础知识/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/img/author.jpg" alt="cpacm">
+          <p class="site-author-name" itemprop="name">cpacm</p>
+          <p class="site-description motion-element" itemprop="description">请不要忘记，那给你带来感动的，名为二次元的理想乡。</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">52</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/cpacm" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/u/3053253821" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.cnblogs.com/cpacm/" target="_blank" title="博客园">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  博客园
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据库的操作"><span class="nav-number">2.</span> <span class="nav-text">数据库的操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#数据引擎"><span class="nav-number">2.1.</span> <span class="nav-text">数据引擎</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看元数据"><span class="nav-number">2.2.</span> <span class="nav-text">查看元数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#联结操作对数据库检索"><span class="nav-number">2.3.</span> <span class="nav-text">联结操作对数据库检索</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#内联结"><span class="nav-number">2.3.1.</span> <span class="nav-text">内联结</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#外联结-（左联结和右联结）"><span class="nav-number">2.3.2.</span> <span class="nav-text">外联结 （左联结和右联结）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#子查询进行多数据表检索"><span class="nav-number">2.4.</span> <span class="nav-text">子查询进行多数据表检索</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#UNION-语句进行多数据表检索"><span class="nav-number">2.5.</span> <span class="nav-text">UNION 语句进行多数据表检索</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用视图"><span class="nav-number">2.6.</span> <span class="nav-text">使用视图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#涉及多个数据表的删除和更新操作"><span class="nav-number">2.7.</span> <span class="nav-text">涉及多个数据表的删除和更新操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#事务处理"><span class="nav-number">2.8.</span> <span class="nav-text">事务处理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#外键"><span class="nav-number">2.9.</span> <span class="nav-text">外键</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#FULLTEXT索引"><span class="nav-number">2.10.</span> <span class="nav-text">FULLTEXT索引</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#自然搜索"><span class="nav-number">2.10.1.</span> <span class="nav-text">自然搜索</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#布尔模式-IN-BOOLEAN-MODE"><span class="nav-number">2.10.2.</span> <span class="nav-text">布尔模式 (IN BOOLEAN MODE)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#查询扩展模式-（WITH-QUERY-EXPANSION）"><span class="nav-number">2.10.3.</span> <span class="nav-text">查询扩展模式 （WITH QUERY EXPANSION）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#全文搜索配置"><span class="nav-number">2.10.4.</span> <span class="nav-text">全文搜索配置</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用索引"><span class="nav-number">3.</span> <span class="nav-text">使用索引</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#索引的优点"><span class="nav-number">3.1.</span> <span class="nav-text">索引的优点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#索引的缺点"><span class="nav-number">3.2.</span> <span class="nav-text">索引的缺点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如何挑选索引"><span class="nav-number">3.3.</span> <span class="nav-text">如何挑选索引</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MySQL的查询优化程序"><span class="nav-number">4.</span> <span class="nav-text">MySQL的查询优化程序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#挑选数据类型"><span class="nav-number">5.</span> <span class="nav-text">挑选数据类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#有效加载数据"><span class="nav-number">6.</span> <span class="nav-text">有效加载数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#调度和锁定问题"><span class="nav-number">7.</span> <span class="nav-text">调度和锁定问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#系统管理员所完成的优化"><span class="nav-number">8.</span> <span class="nav-text">系统管理员所完成的优化</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">cpacm</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"cpacm"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("2fmsJHBmgPTnmd1bc7R9GcVX-gzGzoHsz", "CBUSqxdc9PSLibNV3TzlhpWg");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+</body>
+</html>

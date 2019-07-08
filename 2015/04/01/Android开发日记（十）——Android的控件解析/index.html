@@ -1,0 +1,792 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="Android,开发系列,">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1">
+
+
+
+
+
+
+<meta name="description" content="Android的控件都派生自android.view.View类，在android.widget包中定义了大量的系统控件供开发者使用，开发者也可以从View类及其子类中，派生出自定义的控件。">
+<meta name="keywords" content="Android,开发系列">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android开发日记（十）——Android的控件解析">
+<meta property="og:url" content="http://www.cpacm.net/2015/04/01/Android开发日记（十）——Android的控件解析/index.html">
+<meta property="og:site_name" content="cpacm">
+<meta property="og:description" content="Android的控件都派生自android.view.View类，在android.widget包中定义了大量的系统控件供开发者使用，开发者也可以从View类及其子类中，派生出自定义的控件。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://7xi4up.com1.z0.glb.clouddn.com/android_9_%E6%8E%A7%E4%BB%B6UI.jpg">
+<meta property="og:image" content="http://7xi4up.com1.z0.glb.clouddn.com/android_9_%E6%8E%A7%E4%BB%B6%E6%A0%91.jpg">
+<meta property="og:image" content="http://7xi4up.com1.z0.glb.clouddn.com/android_9_%E6%8E%A7%E4%BB%B6%E7%95%8C%E9%9D%A2%E7%BB%84%E4%BB%B6.png">
+<meta property="og:image" content="http://7xi4up.com1.z0.glb.clouddn.com/android_9_%E6%8E%A7%E4%BB%B6_base.jpg">
+<meta property="og:updated_time" content="2015-12-24T19:16:59.180Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android开发日记（十）——Android的控件解析">
+<meta name="twitter:description" content="Android的控件都派生自android.view.View类，在android.widget包中定义了大量的系统控件供开发者使用，开发者也可以从View类及其子类中，派生出自定义的控件。">
+<meta name="twitter:image" content="http://7xi4up.com1.z0.glb.clouddn.com/android_9_%E6%8E%A7%E4%BB%B6UI.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> Android开发日记（十）——Android的控件解析 | cpacm </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?400b16383d4e24e7e0c1604aa14354a4";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">cpacm</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">动漫中毒者，技术宅</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Android开发日记（十）——Android的控件解析
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2015-04-01T11:15:05+08:00" content="2015-04-01">
+              2015-04-01
+            </time>
+          </span>
+
+          
+            <span class="post-category">
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2015/04/01/Android开发日记（十）——Android的控件解析/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/04/01/Android开发日记（十）——Android的控件解析/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2015/04/01/Android开发日记（十）——Android的控件解析/" class="leancloud_visitors" data-flag-title="Android开发日记（十）——Android的控件解析">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><em>本系列原本写于博客园，现移植到自己的博客上并重新编辑。</em>   </p>
+<h2 id="一、Android的控件结构"><a href="#一、Android的控件结构" class="headerlink" title="一、Android的控件结构"></a>一、Android的控件结构</h2><p>Android中有一类重要的控件，称为容器控件，它们派生自View的子类<code>android.view.ViewGroup</code>。每个容器控件都可以作为父控件存在，其中包含若干个子控件，每个子控件占据其父控件的一块区域，统一由父控件进行管理和支配。<br><img src="http://7xi4up.com1.z0.glb.clouddn.com/android_9_%E6%8E%A7%E4%BB%B6UI.jpg" alt="控件UI传递"><br>交互界面中控件的关系直观上是极其复杂的，所以Android将控件对象之间的联系抽象为树形结构，从而简化了控件之间的关系——每个控件只会受其父控件的控制，而不会被其他控件影响。为了保证保证调控的整体性，Android为控件树增加了一个统一的交互事件管理对象<code>ViewParent</code>，它可以从整体上对控件树的变化进行调度，避免了控件对象彼此间的局部通信，从而大大降低控件对象间的耦合性。<br>在Android控件中，交互事件都是沿着控件树自顶向下传播的。父控件接受到交互事件后，会先判断事件的目标控件对象，如果是自己需要的，就会截获事件进行处理，否则就尝试将事件向下分发给对应的子控件，并递推地逐级向下传播事件，直至该事件被处理或者忽略。而在Android中，View定义了一系列事件函数用来接收和处理各类交互事件，比如通过<code>View.onKeyDown</code>函数可以接收到用户的按键操作，<code>onTouchEvent</code>可以获取用户触摸屏幕的相关事件，等等。每个View类的子控件都可以重载这些函数，来处理自己所需的事件。</p>
+<h2 id="二、Android的控件属性"><a href="#二、Android的控件属性" class="headerlink" title="二、Android的控件属性"></a>二、Android的控件属性</h2><p>每个Android控件都有一定的属性，用于表示控件对象的基本特征。这些属性都定义在View类中。</p>
+<p><strong>标识</strong><br>每个控件对象都可以由一个整数型作为其标识。我们可以通过<code>View.getId</code>函数获取控件对象的标识，setId设定标识。或者使用<code>View.findViewById</code>函数从控件（包括子控件）寻找到第一个匹配给定标识的控件对象，其寻找方式采用了树的深度遍历。<br>尺寸每个控件对象都会占据一定的区域（矩形），该控件对象会处理与矩形区域相关的交互事件。所以通过长、宽来进行描述控件的尺寸。精确描述：具体数值，几像素，几毫米等；模糊描述：依赖于父控件或者控件中内容，来确定自身大小。除此之外，还有位置，距离等信息。<br>可见性使用View.setVisibility来改变控件的可见性。三种状态：可见状态View.VISIBLE、不可见状态View.INVISIBLE和消失状态View.GONE.<br>不可见状态时，控件的位置不会有任何变化；而当控件处于消失状态时，它就不再占据任何界面区域，它的位置会被其他控件顶替。<br><strong>焦点</strong><br>焦点指出了当前交互的控件，并可以将一些信息（比如说按键信息）传递给控件。焦点切换的计算模式具有很强的灵活性，开发者也可以通过View.setNextFocusDownId等来设置焦点。</p>
+<h2 id="三、Android的窗口机制"><a href="#三、Android的窗口机制" class="headerlink" title="三、Android的窗口机制"></a>三、Android的窗口机制</h2><p>所谓窗口机制，是指Android采取了基于窗口注册的实现模式，将用户与界面的交互传递到对应的控件中去。使用过c++和java中界面开发可能会比较熟悉。<br>窗口机制的核心是窗口管理服务（<code>WindowManagerService</code>），它是Android系统的核心服务之一，运行在系统核心进程的一个独立线程中。它负责管理所以交互界面的控件树，并将用户操作转换成交互事件传递至当前界面。<br><img src="http://7xi4up.com1.z0.glb.clouddn.com/android_9_%E6%8E%A7%E4%BB%B6%E6%A0%91.jpg" alt="窗口管理服务"></p>
+<h3 id="界面组件和窗口"><a href="#界面组件和窗口" class="headerlink" title="界面组件和窗口"></a>界面组件和窗口</h3><p>界面组件是Android中最重要的交互单元，每个界面组件都有一个android.view.Window对象。每个Window对象都会负责构造和管理一棵控件树，它会为该控件树构造对应的ViewRoot对象建立与窗口管理服务的双向通信。界面组件的交互界面主要由标题区域和内容区域构成。其中，标题的格式比较固定，通常是由标题文字、进度条和组件图标等元素构成，开发者可以通过setTitle方法来改变标题的内容。而内容区域可以通过setContentView函数或者自定义来进行设定。当然，开发者往往不会满足于这样的基本界面框架，所以Android提供了很多接口帮助开发者突破基本的界面样式。<br><img src="http://7xi4up.com1.z0.glb.clouddn.com/android_9_%E6%8E%A7%E4%BB%B6%E7%95%8C%E9%9D%A2%E7%BB%84%E4%BB%B6.png" alt="界面组件和窗口"></p>
+<h3 id="对话框"><a href="#对话框" class="headerlink" title="对话框"></a>对话框</h3><p>对话框也是一个很重要的交互单元，它需要寄宿在某个界面组件中。与界面组件相比，对话框的构造更为轻量，生命周期更为简单，数据传输也更为快捷。所以常作为临时的辅助交互对象，将相关信息提示给用户。</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//在界面组件中构造并展现一个对话框对象</span></span><br><span class="line"><span class="selector-tag">new</span> <span class="selector-tag">AlertDialog</span><span class="selector-class">.Bulider</span>(this)</span><br><span class="line">      <span class="selector-class">.setTitle</span>(<span class="string">"对话框标题"</span>)  <span class="comment">//设置标题</span></span><br><span class="line">      <span class="selector-class">.setMessage</span>(<span class="string">"对话框内容"</span>)<span class="comment">//设置提示信息</span></span><br><span class="line">      <span class="selector-class">.setPositiveButton</span>(<span class="string">"关闭"</span>,new OnClickListener()&#123;</span><br><span class="line">       <span class="comment">//相关处理</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="selector-class">.show</span>();</span><br></pre></td></tr></table></figure>
+
+<p>其内容区域用于设置提示信息，或接受用户输入信息。<code>AlertDialog.Builder</code>对象提供了大量的便捷接口供开发者使用，比如可以通过<code>AlertDialog.Bulider.setMessage</code>设置提醒的文字信息，也可以通过<code>AlertDialog.Bulider.setItems</code>函数设置选择列表亦或可以通过<code>AlertDialog.Bulider.setView</code>自定义内容区域的样式。<br>在界面组件中，可以通过<code>Activity.showDialog</code>函数来弹出指定的对话框对象，开发者需要在<code>Activity.onCreateDialog</code>函数中对其进行构造。对话框一旦被构造，就会被缓存下来。开发者可以通过<code>Activity.dismissDialog</code>函数消隐该对话框，可以通过<code>Activity.removeDialog</code>函数删除缓存的对话框对象。每次对话框呈现之前，都会调用<code>Activity.onPrepareDialog</code>函数，开发者可以通过重载该函数动态地变更对话框对象中的内容。</p>
+<h3 id="弹出窗口"><a href="#弹出窗口" class="headerlink" title="弹出窗口"></a>弹出窗口</h3><p>派生自<code>android.widget.Popup.Window</code>的对象。作用也是在界面组件中用于构造临时交互界面。从使用上来看，PopWindow不像对话框那样从屏幕的固定位置弹出，而是依赖于描点控件对象的位置。PopWindow的展示盒功能都是以它为核心，作为描点控件的扩展交互界面，以增强控件的功能。<br>如：自动完成文本控件 <code>android.widget.AutoCompleteTextView</code> 是PopWindow的一个应用实例。它有一个文本输入控件和与之绑定的PopWindow共同构成。</p>
+<h2 id="四、Android的基本控件"><a href="#四、Android的基本控件" class="headerlink" title="四、Android的基本控件"></a>四、Android的基本控件</h2><p><img src="http://7xi4up.com1.z0.glb.clouddn.com/android_9_%E6%8E%A7%E4%BB%B6_base.jpg" alt="Android的基本控件"></p>
+<h2 id="五、结语"><a href="#五、结语" class="headerlink" title="五、结语"></a>五、结语</h2><p>控件是构建界面的基本单元。为了帮助更好地进行界面的构造，Android提供了大量的基础控件。对于开发者而言，只有了解这些控件的实现特征和使用方式，才能够更快更好地进行交互界面的开发。那么接下来，我会为大家一个一个介绍Android中比较重要的控件，并附上简单的操作代码。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag">#Android</a>
+          
+            <a href="/tags/开发系列/" rel="tag">#开发系列</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/03/26/Android开发日记（九）——Android组件间的数据传输/" rel="next" title="Android开发日记（九）——Android组件间的数据传输">
+                <i class="fa fa-chevron-left"></i> Android开发日记（九）——Android组件间的数据传输
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/04/01/Android开发日记（十一）——Button控件-自定义Button控件/" rel="prev" title="Android开发日记（十一）——Button控件+自定义Button控件">
+                Android开发日记（十一）——Button控件+自定义Button控件 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2015/04/01/Android开发日记（十）——Android的控件解析/" data-title="Android开发日记（十）——Android的控件解析" data-url="http://www.cpacm.net/2015/04/01/Android开发日记（十）——Android的控件解析/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/img/author.jpg" alt="cpacm">
+          <p class="site-author-name" itemprop="name">cpacm</p>
+          <p class="site-description motion-element" itemprop="description">请不要忘记，那给你带来感动的，名为二次元的理想乡。</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">52</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/cpacm" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/u/3053253821" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.cnblogs.com/cpacm/" target="_blank" title="博客园">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  博客园
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、Android的控件结构"><span class="nav-number">1.</span> <span class="nav-text">一、Android的控件结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、Android的控件属性"><span class="nav-number">2.</span> <span class="nav-text">二、Android的控件属性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、Android的窗口机制"><span class="nav-number">3.</span> <span class="nav-text">三、Android的窗口机制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#界面组件和窗口"><span class="nav-number">3.1.</span> <span class="nav-text">界面组件和窗口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#对话框"><span class="nav-number">3.2.</span> <span class="nav-text">对话框</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#弹出窗口"><span class="nav-number">3.3.</span> <span class="nav-text">弹出窗口</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四、Android的基本控件"><span class="nav-number">4.</span> <span class="nav-text">四、Android的基本控件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#五、结语"><span class="nav-number">5.</span> <span class="nav-text">五、结语</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">cpacm</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"cpacm"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("2fmsJHBmgPTnmd1bc7R9GcVX-gzGzoHsz", "CBUSqxdc9PSLibNV3TzlhpWg");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+</body>
+</html>

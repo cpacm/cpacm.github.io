@@ -1,0 +1,787 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="ogre,">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1">
+
+
+
+
+
+
+<meta name="description" content="Ogre是一个基于C++的面向对象、非常灵活的开源引擎，它能使开发者更容易、更直接地利用硬件加速的3D图形系统开发应用。我们基于Ogre1.9+VS2010来搭建基础环境。">
+<meta name="keywords" content="ogre">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ogre三维框架安装篇">
+<meta property="og:url" content="http://www.cpacm.net/2015/02/08/Ogre三维框架安装篇/index.html">
+<meta property="og:site_name" content="cpacm">
+<meta property="og:description" content="Ogre是一个基于C++的面向对象、非常灵活的开源引擎，它能使开发者更容易、更直接地利用硬件加速的3D图形系统开发应用。我们基于Ogre1.9+VS2010来搭建基础环境。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://7xi4up.com1.z0.glb.clouddn.com/ogre_1_Ogre_win32.png">
+<meta property="og:image" content="http://7xi4up.com1.z0.glb.clouddn.com/ogre_1_Ogre_Set.jpg">
+<meta property="og:updated_time" content="2016-11-29T14:01:17.012Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Ogre三维框架安装篇">
+<meta name="twitter:description" content="Ogre是一个基于C++的面向对象、非常灵活的开源引擎，它能使开发者更容易、更直接地利用硬件加速的3D图形系统开发应用。我们基于Ogre1.9+VS2010来搭建基础环境。">
+<meta name="twitter:image" content="http://7xi4up.com1.z0.glb.clouddn.com/ogre_1_Ogre_win32.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> Ogre三维框架安装篇 | cpacm </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?400b16383d4e24e7e0c1604aa14354a4";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">cpacm</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">动漫中毒者，技术宅</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Ogre三维框架安装篇
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2015-02-08T01:13:49+08:00" content="2015-02-08">
+              2015-02-08
+            </time>
+          </span>
+
+          
+            <span class="post-category">
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/开源-框架/" itemprop="url" rel="index">
+                    <span itemprop="name">开源&框架</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2015/02/08/Ogre三维框架安装篇/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/02/08/Ogre三维框架安装篇/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2015/02/08/Ogre三维框架安装篇/" class="leancloud_visitors" data-flag-title="Ogre三维框架安装篇">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><h3 id="1、VS2010或者VS2012或以上版本"><a href="#1、VS2010或者VS2012或以上版本" class="headerlink" title="1、VS2010或者VS2012或以上版本"></a>1、VS2010或者VS2012或以上版本</h3><p>本人使用的为VS2010。(请保证VS2010 service pack 1的安装)</p>
+<h3 id="2、下载SDK"><a href="#2、下载SDK" class="headerlink" title="2、下载SDK"></a>2、下载SDK</h3><p><a href="http://www.ogre3d.org/download/sdk" target="_blank" rel="noopener">OGRE下载地址</a> ,在下载列表中选择符合自己条件的SDK下载。</p>
+<h3 id="3、SDK解压并配置环境变量"><a href="#3、SDK解压并配置环境变量" class="headerlink" title="3、SDK解压并配置环境变量"></a>3、SDK解压并配置环境变量</h3><p>将SDK解压到任意的文件夹下，如：我将其放在F盘下<code>F:\OgreSDK_vc10_v1-9-0</code><br>配置“OGRE_HOME”的环境变量为<code>F:\OgreSDK_vc10_v1-9-0</code></p>
+<h2 id="项目环境"><a href="#项目环境" class="headerlink" title="项目环境"></a>项目环境</h2><h3 id="1、新建一个项目"><a href="#1、新建一个项目" class="headerlink" title="1、新建一个项目"></a>1、新建一个项目</h3><p>我们刚开始写的ogre程序基本上是win32程序。所以请在VS中建立一个空的Win32项目。<br><img src="http://7xi4up.com1.z0.glb.clouddn.com/ogre_1_Ogre_win32.png" alt="Win32"><br>并从Ogre官网上下载示例文件进行配置。<a href="www.ogre3d.org/tikiwiki/tiki-download_wiki_attachment.php?attId=182&download=y">基本文件</a>  </p>
+<h3 id="2、环境设置"><a href="#2、环境设置" class="headerlink" title="2、环境设置"></a>2、环境设置</h3><p><img src="http://7xi4up.com1.z0.glb.clouddn.com/ogre_1_Ogre_Set.jpg" alt="项目环境配置"><br>1、<strong>配置</strong>中选择<strong>所有配置</strong>。<br>2、<strong>常规</strong>的<strong>字符集</strong>选择<strong>多字节</strong>。<br>3、左侧选中<strong>调试</strong>，在<strong>命令</strong>中填入<code>“$(OGRE_HOME)\Bin\$(Configuration)\$(ProjectName).exe”</code><br>4、<strong>工作目录</strong>中填入<code>“$(OGRE_HOME)\Bin\$(Configuration)”</code><br>5、在C/C++的常规中编辑<strong>附加包含目录</strong>  </p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$(OGRE_HOME)\include</span><br><span class="line">$(OGRE_HOME)\include\OIS</span><br><span class="line">$(OGRE_HOME)\include\OGRE</span><br><span class="line">$(OGRE_HOME)\Samples\Common\include</span><br><span class="line">$(OGRE_HOME)\boost</span><br><span class="line">//<span class="number">1</span>.<span class="number">9</span>的话可以加上</span><br><span class="line">$(OGRE_HOME)\include\OGRE\Overlay</span><br></pre></td></tr></table></figure>
+
+<p>6、链接器的常规中编辑<strong>附加库目录</strong></p>
+<figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$(OGRE_HOME)\<span class="class"><span class="keyword">lib</span>\$(<span class="title">Configuration</span>)</span></span><br><span class="line">$(OGRE_HOME)\boost\<span class="class"><span class="keyword">lib</span></span></span><br></pre></td></tr></table></figure>
+
+<p>7、<strong>生成事件</strong>中的<strong>后期生成事件</strong>编辑命令行</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">copy</span><span class="bash"> <span class="string">"<span class="variable">$(OutDir)</span>\$(TargetFileName)"</span> <span class="string">"<span class="variable">$(OGRE_HOME)</span>\Bin\$(Configuration)"</span></span></span><br></pre></td></tr></table></figure>
+
+<p>8、将配置从所有配置切换到“活动（Debug）”<br>9、找到<strong>链接器</strong>-<strong>输入</strong>-<strong>附加依赖项</strong>添加<br><code>OgreMain_d.lib</code><br><code>OIS_d.lib</code><br>1.9版本则可以多添加<code>OgreOverlay_d.lib</code></p>
+<p>10、切换配置到“Release”<br>11、找到<strong>链接器</strong>-<strong>输入</strong>-<strong>附加依赖项</strong>添加<br><code>OgreMain.lib</code><br><code>OIS.lib</code><br>1.9版本则可以多添加<code>OgreOverlay.lib</code><br><strong>配置到此完成</strong></p>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>本文是直接使用OgreSDK的方法，大家也可以直接下载源码然后用cmake编译后再使用，效果与使用SDK一样。环境配置后可以利用VS的模板导出功能将其生成一个自定义的模板，以后就可以不必每新建一个项目就配置一遍环境。（VS2010不支持C++的模板导出，这又是让我一阵郁闷）<br>详细和更多版本教程可以直接去官网看。 <a href="http://www.ogre3d.org/tikiwiki/tiki-index.php?page=Setting+Up+An+Application+-+Visual+Studio" target="_blank" rel="noopener">传送门</a><br><embed src="http://www.xiami.com/widget/0_1772857609/singlePlayer.swf" type="application/x-shockwave-flash" width="257" height="33" wmode="transparent"><br>安装到此结束，至此可以运行官网给出的案例。 <a href="http://www.ogre3d.org/tikiwiki/tiki-index.php?page=Home" target="_blank" rel="noopener">OgreWiki</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ogre/" rel="tag">#ogre</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/02/08/Ogre三维框架基础篇（一）/" rel="prev" title="Ogre三维框架基础篇（一）">
+                Ogre三维框架基础篇（一） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2015/02/08/Ogre三维框架安装篇/" data-title="Ogre三维框架安装篇" data-url="http://www.cpacm.net/2015/02/08/Ogre三维框架安装篇/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/img/author.jpg" alt="cpacm">
+          <p class="site-author-name" itemprop="name">cpacm</p>
+          <p class="site-description motion-element" itemprop="description">请不要忘记，那给你带来感动的，名为二次元的理想乡。</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">52</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/cpacm" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/u/3053253821" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.cnblogs.com/cpacm/" target="_blank" title="博客园">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  博客园
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#准备"><span class="nav-number">1.</span> <span class="nav-text">准备</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、VS2010或者VS2012或以上版本"><span class="nav-number">1.1.</span> <span class="nav-text">1、VS2010或者VS2012或以上版本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2、下载SDK"><span class="nav-number">1.2.</span> <span class="nav-text">2、下载SDK</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3、SDK解压并配置环境变量"><span class="nav-number">1.3.</span> <span class="nav-text">3、SDK解压并配置环境变量</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#项目环境"><span class="nav-number">2.</span> <span class="nav-text">项目环境</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、新建一个项目"><span class="nav-number">2.1.</span> <span class="nav-text">1、新建一个项目</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2、环境设置"><span class="nav-number">2.2.</span> <span class="nav-text">2、环境设置</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结语"><span class="nav-number">3.</span> <span class="nav-text">结语</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">cpacm</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"cpacm"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("2fmsJHBmgPTnmd1bc7R9GcVX-gzGzoHsz", "CBUSqxdc9PSLibNV3TzlhpWg");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+</body>
+</html>
