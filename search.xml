@@ -4,6 +4,35 @@
   
     
     <entry>
+      <title>cantos7下python3.7以及scrapy安装手册</title>
+      <link href="/2019/10/23/cantos7%E4%B8%8Bpython3.7%E4%BB%A5%E5%8F%8Ascrapy%E5%AE%89%E8%A3%85%E6%89%8B%E5%86%8C/"/>
+      <url>/2019/10/23/cantos7%E4%B8%8Bpython3.7%E4%BB%A5%E5%8F%8Ascrapy%E5%AE%89%E8%A3%85%E6%89%8B%E5%86%8C/</url>
+      
+        <content type="html"><![CDATA[<h1 id="cantos7下python3-7以及scrapy安装手册"><a href="#cantos7下python3-7以及scrapy安装手册" class="headerlink" title="cantos7下python3.7以及scrapy安装手册"></a>cantos7下python3.7以及scrapy安装手册</h1><h2 id="安装python3最新版"><a href="#安装python3最新版" class="headerlink" title="安装python3最新版"></a>安装python3最新版</h2><p>一般来说，centos都会自带一个python2的版本，所以这时候就必须兼容python2和python3的版本</p><h3 id="预先安装"><a href="#预先安装" class="headerlink" title="预先安装"></a>预先安装</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">yum install gcc patch libffi-devel python-devel  zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel readline-devel tk-devel gdbm-devel db4-devel libpcap-devel xz-devel -y</span><br><span class="line"><span class="comment"># 或者直接安装</span></span><br><span class="line">yum groupinstall development tools</span><br><span class="line">yun install python-devel</span><br></pre></td></tr></table></figure><p>其中重要的是gcc(用来编译python)和openssl</p><h3 id="下载源代码"><a href="#下载源代码" class="headerlink" title="下载源代码"></a>下载源代码</h3><p>不推荐使用最新的python代码，有可能相应的框架并未支持，这里选择的是python3.7.3<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget https://www.python.org/ftp/python/3.7.3/Python-3.7.3.tgz</span><br></pre></td></tr></table></figure></p><p>之后配置编译再安装，这里注意的是需要带上openssl  </p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum -y install openssl-devel # 确定openssl的已安装</span><br><span class="line">./configure --prefix=/usr/local/python3 --with-ssl=openssl</span><br></pre></td></tr></table></figure><p>配置过程中有输出以下内容说明成功<br><figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">checking whether compiling and linking against OpenSSL works... yes</span><br><span class="line">checking <span class="keyword">for</span> X509_VERIFY_PARAM_set1_host <span class="keyword">in</span> libssl... yes</span><br></pre></td></tr></table></figure></p><h3 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h3><p>其中上面配置编译的 python3 将是编译完成后python3的安装地址<br><figure class="highlight gauss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">make</span></span><br><span class="line"><span class="built_in">make</span> install</span><br></pre></td></tr></table></figure></p><p>完成后创建软链接,这样直接python就能直接使用python3<br><figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ln -s /usr/local/python3/bin/python3 /usr/bin/python</span><br></pre></td></tr></table></figure></p><p>修改 yum 为 python2.7<br><figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi /usr/bin/yum</span><br></pre></td></tr></table></figure></p><p>把文件开头第一行的</p><h1 id="usr-bin-python改成-usr-bin-python2-7-这样就可以了。"><a href="#usr-bin-python改成-usr-bin-python2-7-这样就可以了。" class="headerlink" title="!/usr/bin/python改成#!/usr/bin/python2.7  这样就可以了。"></a>!/usr/bin/python改成#!/usr/bin/python2.7  这样就可以了。</h1><p>查看一下链接情况：<br><figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ll -a python* </span><br><span class="line">python -V</span><br></pre></td></tr></table></figure></p><h2 id="pip3和virtualenv"><a href="#pip3和virtualenv" class="headerlink" title="pip3和virtualenv"></a>pip3和virtualenv</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum install python3-pip</span><br><span class="line">pip3 install virtualenv</span><br></pre></td></tr></table></figure><p>创建并激活虚拟环境<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">virtualenv scrapy</span><br><span class="line">source scrapy/bin/activate</span><br><span class="line">deactivate <span class="comment"># 退出</span></span><br></pre></td></tr></table></figure></p><h2 id="安装-scrapy"><a href="#安装-scrapy" class="headerlink" title="安装 scrapy"></a>安装 scrapy</h2><p>pip3 install scrapy<br>以上基本就没问题了</p><p>pip3 install PyMySQL<br>pip3 install urllib3</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> Linux </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 环境部署 </tag>
+            
+            <tag> Linux </tag>
+            
+            <tag> python </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>防止服务器SSH被暴力破解</title>
       <link href="/2019/09/23/%E9%98%B2%E6%AD%A2%E6%9C%8D%E5%8A%A1%E5%99%A8SSH%E8%A2%AB%E6%9A%B4%E5%8A%9B%E7%A0%B4%E8%A7%A3/"/>
       <url>/2019/09/23/%E9%98%B2%E6%AD%A2%E6%9C%8D%E5%8A%A1%E5%99%A8SSH%E8%A2%AB%E6%9A%B4%E5%8A%9B%E7%A0%B4%E8%A7%A3/</url>
