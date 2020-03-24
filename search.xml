@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>Android客户端 — 基于bgm数据，一款可在线观看动漫的客户端</title>
+      <link href="/2020/03/24/%E8%B4%9D%E5%A1%94%E5%8A%A8%E6%BC%AB%20%E2%80%94%20%E5%9F%BA%E4%BA%8Ebgm%E6%95%B0%E6%8D%AE%EF%BC%8C%E4%B8%80%E6%AC%BE%E5%8F%AF%E5%9C%A8%E7%BA%BF%E8%A7%82%E7%9C%8B%E5%8A%A8%E6%BC%AB%E7%9A%84%E5%AE%A2%E6%88%B7%E7%AB%AF/"/>
+      <url>/2020/03/24/%E8%B4%9D%E5%A1%94%E5%8A%A8%E6%BC%AB%20%E2%80%94%20%E5%9F%BA%E4%BA%8Ebgm%E6%95%B0%E6%8D%AE%EF%BC%8C%E4%B8%80%E6%AC%BE%E5%8F%AF%E5%9C%A8%E7%BA%BF%E8%A7%82%E7%9C%8B%E5%8A%A8%E6%BC%AB%E7%9A%84%E5%AE%A2%E6%88%B7%E7%AB%AF/</url>
+      
+        <content type="html"><![CDATA[<blockquote><p>每日新闻，为您推荐最新的资讯；<br>每季追番，每天动漫看不停；<br>最全动漫，动画，漫画，轻小说应有尽有；<br>用户信息，为您记录最美好的时光。</p></blockquote><p><strong>贝塔动漫</strong> 是一款由我个人开发的应用，最初的目的主要是为了能够解决看番需要多个平台的问题，后续陆续增加了在线观看漫画，轻小说，专题分享等功能，现在变成了一个二次元在线资源观看的一款软件。</p><p><strong>贝塔动漫</strong> 现在上架的平台只有 <a href="https://play.google.com/store/apps/details?id=com.cpacm.bangumi" target="_blank" rel="noopener">Google Play</a>，国内的话可能会由于各种原因而导致根本无法上架，我也就不知讨没趣了。除了去 <a href="https://play.google.com/store/apps/details?id=com.cpacm.bangumi" target="_blank" rel="noopener">Google Play</a> 以外也可以直接扫描下面的二维码直接下载APK安装</p><p><img src="https://bangumi.oss-cn-hangzhou.aliyuncs.com/bangumi_qrcode.png" alt="贝塔动漫"></p><blockquote><p>ps: 还没有ios版，那什么时候会有？等什么时候我的ios技能点亮了之后吧，哈哈。</p></blockquote><h2 id="近期版本更新"><a href="#近期版本更新" class="headerlink" title="近期版本更新"></a>近期版本更新</h2><p>V1.4.3 - 2020/03/24</p><ol><li>新增专题内容</li><li>增加实验室页面，添加了硬币功能；</li><li>添加了消息推送，添加了Google Pay；</li><li>优化部分视频播放源；</li><li>解决了一些bug.</li></ol><p>V1.3.5 - 2020/02/27</p><ol><li>添加了轻小说在线阅读的功能；</li><li>优化漫画阅读体验；</li><li>修复一些bug。</li></ol><p>v1.3.1 - 2020/01/18</p><ol><li>修复用户退出后无法保存自设置背景图的问题；</li><li>调整在线漫画阅读站点，移除pica漫画。（毕竟这个站点太糟糕了,有需要这个功能的可以私信我）</li><li>修复Mangbz人气分类错误的问题</li></ol><p>V1.3.0 - 2020/01/16</p><ol><li>漫画在线阅读正式上线。</li><li>添加了多个漫画爬取源</li><li>优化部分UI显示，调整动画列表位置；</li><li>修复少许bug。</li></ol><h2 id="开发支撑"><a href="#开发支撑" class="headerlink" title="开发支撑"></a>开发支撑</h2><p><strong>贝塔动漫</strong> 的开发主要由三方面构成：</p><ol><li>第一个就是移动端应用-<strong>《贝塔动漫》</strong>,现在只有Android平台，上架于<a href="https://play.google.com/store/apps/details?id=com.cpacm.bangumi" target="_blank" rel="noopener">Google Play</a> ；</li><li>第二个是服务端加后台管理，服务端是简单的 <strong>Spring+Mybatis+MySql数据库</strong> 架构，容器为tomcat,负载为nginx(虽说并不需要)，服务器架设在 <strong>google cloud</strong> 上，所以有时候在国内访问时延迟比较高，毕竟也没做cdn这些优化的措施；</li><li>最后就是数据获取部分，通过基于python的scrapy爬虫架构来爬取网上的数据并保存到数据库中，再加上一些手写的python小脚本对数据进行校验和匹配，这样数据部分也能保证提供了。</li></ol><p>下面我们来介绍主体App的功能吧</p><h2 id="贝塔动漫功能介绍"><a href="#贝塔动漫功能介绍" class="headerlink" title="贝塔动漫功能介绍"></a>贝塔动漫功能介绍</h2><p>应用主界面由四个板块构成，各个板块里面又掺杂着一些其他的功能。</p><h3 id="今日新闻"><a href="#今日新闻" class="headerlink" title="今日新闻"></a>今日新闻</h3><p>即首页，界面主要包括 banner栏,一周推荐，专题推荐和新闻列表，前三者都可以通过在后台进行配置。<br>新闻列表主要以抓取 bilibili 的专栏文章为主，其他还包括简书，acfun，gamersky,动漫之家的一些二次元相关文章。每天早晚各爬取一次。<br>一周推荐是一些资源列表的集合，点击即可跳转到相应的详情页。</p><p>其中重点是专题推荐，专题推荐是原创文章，通过后台编辑然后上传，文章内部的快速链接可以直接跳转到应用里面的内容详情页。专题内容有时会锁住，需要通过观看激励广告或者使用硬币解锁。<br>这是新版本刚推出来的功能，文章内容通过 <strong>MarkDown</strong> 渲染，后续可能会不断修改。</p><p><img src="https://cpacmblog.oss-cn-hangzhou.aliyuncs.com/bgm_show1.jpg" alt="今日截图"></p><h3 id="新番表"><a href="#新番表" class="headerlink" title="新番表"></a>新番表</h3><p>每一季新番的放映时间表，主要以日本动漫为主。在新番表里你可以进行追番和查看相关内容的操作。<br>除此之外还有动画浏览页可以通过年份，月份来浏览动画，上季新番页查看上季的新番，高分排行页查看排行榜。</p><p><img src="https://cpacmblog.oss-cn-hangzhou.aliyuncs.com/bgm_show2.jpg" alt="新番表"></p><h3 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h3><p>分类以 bgm 的 tag 检索为主，不一定准确，可能一部动画存在多个tag。<br>这里就有一个 WIKI 的概念，一个动画可能会有很多季，也有可能会有漫画，轻小说甚至游戏，而WIKI就是这系列动画的总称。</p><blockquote><p>分类列表则是直接从 bilibili 拿过来的。</p></blockquote><p><img src="https://cpacmblog.oss-cn-hangzhou.aliyuncs.com/bgm_show3.jpg" alt="分类"> </p><h3 id="漫画"><a href="#漫画" class="headerlink" title="漫画"></a>漫画</h3><p>在分类的上方有两个入口，其一是漫画在线阅读的入口。<br>漫画的数据来源主要爬各大第三方漫画所得，漫画页面主要有列表页（包括最近更新，分类，历史记录，收藏等），详情页（章节列表），阅读页，具体内容如下图所示<br><img src="https://cpacmblog.oss-cn-hangzhou.aliyuncs.com/bgm_show4.jpg" alt="漫画"></p><blockquote><p>后续看看能不能加一个用户自定义漫画网站的功能。</p></blockquote><h3 id="轻小说"><a href="#轻小说" class="headerlink" title="轻小说"></a>轻小说</h3><p>在分类上的另一个入口就是轻小说的入口了，功能与漫画类似，主要数据也是直接在线爬取第三方网站所得。<br>轻小说页面也是包括列表页（包括最近更新，分类，历史记录，收藏等），详情页（章节列表），阅读页</p><p><img src="https://cpacmblog.oss-cn-hangzhou.aliyuncs.com/bgm_show7.jpg" alt="轻小说阅读器"></p><h3 id="动画视频"><a href="#动画视频" class="headerlink" title="动画视频"></a>动画视频</h3><p>动画详情页中包含官方网站和第三方网站的播放源，官方网站的链接主要来自 <a href="https://github.com/bangumi-data/bangumi-data" target="_blank" rel="noopener">bangumi-data</a> 的数据，而第三方的数据则是依赖于 python的爬虫系统了。</p><blockquote><p>在动画的web页中，通过获取播放真实链接（通常是一些 m3u8,mp4的格式）的方式使用自己的播放器替换掉了网页上的播放器。</p></blockquote><p><img src="https://cpacmblog.oss-cn-hangzhou.aliyuncs.com/bgm_show6.jpg" alt="动画相关"></p><h3 id="用户"><a href="#用户" class="headerlink" title="用户"></a>用户</h3><p>最后就是用户相关页面以及一些其他的设置页面了。<br>用户相关页面包括 用户信息页，历史记录页，收藏页，追番页等等；<br>其他页面包括关于页，意见反馈页，实验室页等等</p><p><img src="https://cpacmblog.oss-cn-hangzhou.aliyuncs.com/bgm_show5.jpg" alt="其他"></p><h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><p>除去用户一些可见的功能之外，还有一些不可见的功能，比如说 Umeng,AdMob,Firebase Crashlytics,Firebase Cloud Messaging 等，作为后台的一些支撑。</p><h2 id="后续开发"><a href="#后续开发" class="headerlink" title="后续开发"></a>后续开发</h2><p>接下来应该就没有太大的功能需求了，基本就是基本的数据持续爬取，bug修复之类吧，还有就是专题原创内容的持续输出，App应用在国内的营销宣传之类的。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 应用软件 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 贝塔动漫 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Glide使用Plus</title>
       <link href="/2020/01/07/Glide%E4%BD%BF%E7%94%A8Plus/"/>
       <url>/2020/01/07/Glide%E4%BD%BF%E7%94%A8Plus/</url>
@@ -155,11 +180,11 @@
       
         <tags>
             
+            <tag> python </tag>
+            
             <tag> 环境部署 </tag>
             
             <tag> Linux </tag>
-            
-            <tag> python </tag>
             
         </tags>
       
